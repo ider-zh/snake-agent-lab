@@ -19,7 +19,7 @@ HP Windows 11（build 22631），AMD Ryzen 7 4700U，8 个逻辑处理器，约 
 
 ## 结果
 
-最终功能复验：TypeScript、ESLint、86 项单元测试及构建全部通过；18 项浏览器测试通过，无跳过、失败或重试（436.1 秒）。原始报告见 [hp-browser-results.json](qa/hp-browser-results.json)。随后手机竞技尺寸调整再次通过完整 `npm run check` 和 15 组视觉矩阵（包括 390/320px 固定导航遮挡断言）；受影响的 3 项手机流程回归全部通过（65.5 秒）。最终截图均已目视审查。
+最终功能复验：TypeScript、ESLint、86 项单元测试及构建全部通过；18 项浏览器测试通过，无跳过、失败或重试（436.1 秒）。原始报告见 [hp-browser-results.json](qa/hp-browser-results.json)。随后手机竞技尺寸调整再次通过完整 `npm run check` 和 15 组视觉矩阵（包括 390/320px 固定导航遮挡断言）；受影响的 3 项手机流程回归全部通过（约 1.1 分钟）。最终截图均已目视审查。
 
 | 采样 | 桌面 | 手机尺寸仿真 |
 | --- | ---: | ---: |
