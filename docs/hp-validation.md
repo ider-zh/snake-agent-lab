@@ -56,3 +56,7 @@ Typecheck, lint, 86 unit tests and production build passed. All 20 Playwright de
 `npm run check` passed with 92 unit tests. The full 20 desktop/mobile Playwright tests passed (9.7 minutes); after the Worker scheduling change, all six affected training/checkpoint/evaluation browser tests passed again (1.6 minutes). A separate real-browser default run trained DQN and GA, exported and reimported both models, and evaluated 100 held-out episodes each: means 17.54 and 8.47. Desktop and 390px screenshots were inspected, with no page errors or horizontal overflow.
 
 The original near-zero behavior, failed pilots, three training seeds, full score distributions, wall-clock truncation under load, model compatibility and limitations are documented in [training-effectiveness.md](training-effectiveness.md). These results show learning under the recorded protocol; they do not prove convergence, full-board completion, physical-phone performance, or superiority over stronger search policies.
+
+## CI smoke-test race repair (HP, 2026-10-05)
+
+At commit `e8274ad`, push CI passed; PR CI passed 19 browser tests but exposed a race in the short GA smoke test: the job finished between checking the pause button and clicking it. The smoke test now waits for completion and checks checkpoint availability. Dedicated desktop/mobile checkpoint tests retain pause, cancel and resume coverage. ESLint and both affected HP Chromium tests passed (1.6 minutes). This changes tests only; the recorded learning experiments were not rerun.

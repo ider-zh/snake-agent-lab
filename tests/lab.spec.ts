@@ -26,7 +26,7 @@ test('AI search, four-board arena, batch export, invalid import guard',async({pa
  await nav(page,'回放档案').click();await page.getByLabel('导入回放文件').setInputFiles({name:'invalid.json',mimeType:'application/json',buffer:Buffer.from('{"version":"unknown","actions":[]}')});await expect(page.getByRole('status').filter({hasText:'回放导入失败'})).toBeVisible();
  await page.screenshot({path:test.info().outputPath('batch-result.png'),fullPage:true});
 });
-test('real DQN training, checkpoint export, frozen evaluation and GA controls',async({page})=>{
+test('real DQN training, checkpoint export, frozen evaluation and GA completion',async({page})=>{
  const errors:string[]=[];page.on('pageerror',error=>errors.push(error.message));
  await page.goto('/');await nav(page,'训练实验室').click();await page.getByLabel('训练预算').selectOption('2000');await page.getByRole('button',{name:'开始训练',exact:true}).click();
  await expect(page.getByRole('button',{name:'导出推理模型',exact:true})).toBeEnabled({timeout:60000});
@@ -35,6 +35,9 @@ test('real DQN training, checkpoint export, frozen evaluation and GA controls',a
  const checkpoint=page.waitForEvent('download');await page.getByRole('button',{name:'完整检查点',exact:true}).click();expect((await checkpoint).suggestedFilename()).toContain('checkpoint');
  await page.getByRole('button',{name:/评估冻结模型/}).click();await expect(page.locator('.status-line')).toContainText('任务完成',{timeout:60000});await expect(page.getByRole('button',{name:'导出评估结果'})).toBeEnabled();
  await page.getByRole('button',{name:'GA 神经进化',exact:true}).click();await page.getByLabel('训练预算').selectOption('10000');await page.getByRole('button',{name:'开始训练',exact:true}).click();
- await expect(page.locator('.status-line')).toContainText(/训练中|任务完成/);if(await page.getByRole('button',{name:'暂停',exact:true}).isVisible()){await page.getByRole('button',{name:'暂停',exact:true}).click();await expect(page.locator('.status-line')).toContainText('已暂停');await page.getByRole('button',{name:'停止',exact:true}).click();await expect(page.locator('.status-line')).toContainText('已停止');}
+ // A short GA job may finish between isVisible() and click(). Its pause/cancel/
+ // resume lifecycle is covered by hp-qa's dedicated checkpoint tests.
+ await expect(page.locator('.status-line')).toContainText('任务完成',{timeout:60000});
+ await expect(page.getByRole('button',{name:'完整检查点',exact:true})).toBeEnabled();
  expect(errors).toEqual([]);await page.screenshot({path:test.info().outputPath('training-lab.png'),fullPage:true});
 });
