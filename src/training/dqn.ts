@@ -3,9 +3,9 @@ import { Game, relativeAction } from '../core';
 import { BaseTrainer } from './base';
 import { validateCheckpoint } from './checkpoint';
 import { finiteNumber, makeTrainingConfig, observationSize, replayBytes } from './config';
-import { encodeObservation } from './encoding';
+import { encodeObservation, trainingReward } from './encoding';
 import { FrozenEvaluator } from './evaluation';
-import { argmax, initializeWeights, makeFrozenModel, networkShapes, validateTensors } from './inference';
+import { policyArgmax, initializeWeights, makeFrozenModel, networkShapes, validateTensors } from './inference';
 import { nextTrainingSeed, TrainingRandom } from './random';
 import { ReplayBuffer, type ReplayBatch } from './replay';
 import type { DQNCheckpoint, FrozenModel, SerializedTensor, TrainingConfig, TrainingConfigInput, TrainingMetrics } from './types';
@@ -42,7 +42,7 @@ export class DQNTrainer extends BaseTrainer {
     super(config);
     this.environmentRng = new TrainingRandom(config.seed ^ 0x64cab29d); this.explorationRng = new TrainingRandom(config.seed ^ 0x12ab34cd); this.replayRng = new TrainingRandom(config.seed ^ 0x987fedcb);
     this.episodeSeed = this.nextSeed(); this.game = new Game(config.game, this.episodeSeed);
-    const size = observationSize(config.game.width, config.game.height);
+    const size = observationSize(config.game.width, config.game.height, config.profile);
     const weights = initializeWeights(size, new TrainingRandom(config.seed ^ 0x3456abcd));
     this.online = new DQNNetwork(weights, true); this.target = new DQNNetwork(weights, false);
     this.optimizer = tf.train.adam(config.dqn.learningRate);
@@ -62,10 +62,12 @@ export class DQNTrainer extends BaseTrainer {
       }
       return true;
     }
-    const observation = this.game.observe(); const encoded = encodeObservation(observation);
-    const action = this.explorationRng.next() < this.epsilon ? this.explorationRng.int(3) : argmax(this.online.predict(encoded));
+    const observation = this.game.observe(); const encoded = encodeObservation(observation, this.config.profile);
+    const available = [0,1,2].filter(i => !this.config.profile || encoded[i] === 0);
+    const choices = available.length ? available : [0,1,2];
+    const action = this.explorationRng.next() < this.epsilon ? choices[this.explorationRng.int(choices.length)] : policyArgmax(this.online.predict(encoded), encoded, this.config.profile);
     const result = this.game.step(relativeAction(observation.direction, action));
-    this.replay.push({ observation: encoded, action, reward: result.reward, nextObservation: encodeObservation(result.observation), terminated: result.terminated, truncated: result.truncated });
+    this.replay.push({ observation: encoded, action, reward: trainingReward(observation, result.observation, result.reward, this.config.profile), nextObservation: encodeObservation(result.observation, this.config.profile), terminated: result.terminated, truncated: result.truncated });
     this.counters.samples++; this.counters.envSteps++;
     const d = this.config.dqn;
     if (this.replay.size >= d.warmup && this.counters.samples % d.trainEvery === 0) this.update(this.replay.sample(d.batchSize, this.replayRng));
@@ -86,7 +88,7 @@ export class DQNTrainer extends BaseTrainer {
       const onlineQ = d.doubleDQN ? this.online.forward(next).dataSync() : targetQ;
       const targets = new Float32Array(n);
       for (let i = 0; i < n; i++) {
-        const choice = argmax(onlineQ.subarray(i * 3, i * 3 + 3));
+        const choice = policyArgmax(onlineQ.subarray(i * 3, i * 3 + 3), batch.nextObservations.subarray(i * size, (i + 1) * size), this.config.profile);
         targets[i] = computeTDTarget(batch.rewards[i], !!(batch.flags[i] & 1), !!(batch.flags[i] & 2), targetQ[i * 3 + choice], d.gamma, d.bootstrapTruncated);
         if (!Number.isFinite(targets[i])) throw new Error('Non-finite TD target; training stopped');
       }
@@ -111,7 +113,7 @@ export class DQNTrainer extends BaseTrainer {
     return loss;
   }
   currentModel(): FrozenModel {
-    return makeFrozenModel(this.config.game, 'dqn', this.online.weights(), { seed: this.config.seed, samples: this.counters.samples, updates: this.counters.updates, generation: 0, validationMean: null }, { trainingPolicy: 'generated-excluding-held-out', validationSeeds: this.config.validationSeeds, testSeeds: this.config.testSeeds }, this.config.dqn.doubleDQN ? 'double-dqn' : 'dqn');
+    return makeFrozenModel(this.config.game, 'dqn', this.online.weights(), { seed: this.config.seed, samples: this.counters.samples, updates: this.counters.updates, generation: 0, validationMean: null }, { trainingPolicy: 'generated-excluding-held-out', validationSeeds: this.config.validationSeeds, testSeeds: this.config.testSeeds }, this.config.dqn.doubleDQN ? 'double-dqn' : 'dqn', this.config.profile);
   }
   exportModel(): FrozenModel { return this.bestModel ?? this.currentModel(); }
   metrics(): TrainingMetrics {
@@ -135,7 +137,7 @@ export class DQNTrainer extends BaseTrainer {
       for (const [network, values] of [[trainer.online, online], [trainer.target, target]] as const) {
         values.forEach((w, i) => tf.tidy(() => network.variables[i].assign(tf.tensor(w.values, w.shape))));
       }
-      trainer.replay.dispose(); trainer.replay = ReplayBuffer.restore(checkpoint.replay, trainer.config.dqn.replayCapacity, trainer.replay.inputSize);
+      trainer.replay.dispose(); trainer.replay = ReplayBuffer.restore(checkpoint.replay, trainer.config.dqn.replayCapacity, trainer.replay.inputSize, trainer.config.profile);
       if (!Array.isArray(checkpoint.optimizer) || ![1, 13].includes(checkpoint.optimizer.length)) throw new Error('Invalid Adam checkpoint');
       const expectedShapes = checkpoint.optimizer.length === 1 ? [[]] : [[], ...shapes, ...shapes];
       const tensors = validateTensors(checkpoint.optimizer.map(w => w.tensor), expectedShapes);

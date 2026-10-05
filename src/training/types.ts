@@ -2,6 +2,7 @@ import type { GameConfig, Snapshot } from '../core/types';
 
 export const TRAINING_VERSION = 'snake-training-v1' as const;
 export const OBSERVATION_VERSION = 'board-five-channels-v1' as const;
+export type ObservationVersion = typeof OBSERVATION_VERSION | 'relative-features-v2';
 export const MODEL_VERSION = 'snake-mlp-v1' as const;
 export type TrainingAlgorithm = 'dqn' | 'ga';
 export interface TrainingBudget { maxEnvSteps: number; maxWallMs: number; maxGenerations: number }
@@ -15,11 +16,13 @@ export interface GAConfig {
   mutationRate: number; mutationStd: number; crossoverRate: number;
 }
 export interface TrainingConfig {
+  profile?: 'compact-v2';
   version: typeof TRAINING_VERSION; algorithm: TrainingAlgorithm; seed: number; game: GameConfig;
   budget: TrainingBudget; dqn: DQNConfig; ga: GAConfig;
-  validationSeeds: number[]; testSeeds: number[]; rewardVersion: 'food1-collision-1-step-.001-filled1-v1';
+  validationSeeds: number[]; testSeeds: number[]; rewardVersion: 'food1-collision-1-step-.001-filled1-v1' | 'food10-collision-10-distance-.5-v2';
 }
 export interface TrainingConfigInput {
+  profile?: 'compact-v2';
   seed?: number; game?: Partial<GameConfig>; budget?: Partial<TrainingBudget>;
   dqn?: Partial<DQNConfig>; ga?: Partial<GAConfig>; validationSeeds?: number[]; testSeeds?: number[];
 }
@@ -40,9 +43,9 @@ export interface TrainingMetrics {
 /** Only fixed, known MLP tensors are accepted. No layers, executable code, or remote references. */
 export interface SerializedTensor { shape: number[]; values: number[] }
 export interface FrozenModel {
-  version: typeof MODEL_VERSION; observationVersion: typeof OBSERVATION_VERSION;
+  version: typeof MODEL_VERSION; observationVersion: ObservationVersion;
   architecture: [number, 64, 64, 3]; actionConvention: 'relative-left-straight-right';
-  channels: ['head', 'body', 'food', 'body-order', 'obstacle'];
+  channels: ['head', 'body', 'food', 'body-order', 'obstacle'] | ['danger-relative', 'food-relative', 'wall-rays', 'occupied-rays', 'length'];
   game: GameConfig; algorithm: TrainingAlgorithm; weights: SerializedTensor[];
   seedSplit: { trainingPolicy: 'generated-excluding-held-out'; validationSeeds: number[]; testSeeds: number[] };
   trainingVariant: 'dqn' | 'double-dqn' | 'ga';

@@ -26,17 +26,18 @@ export function validateFrozenModel(value: unknown): FrozenModel {
   const m = value as FrozenModel;
   const allowed = new Set(['version', 'observationVersion', 'architecture', 'actionConvention', 'channels', 'game', 'algorithm', 'weights', 'provenance', 'seedSplit', 'trainingVariant']);
   if (Object.keys(m).some(k => !allowed.has(k))) throw new Error('Unexpected model fields; executable layers and remote references are not supported');
-  if (m.version !== MODEL_VERSION || m.observationVersion !== OBSERVATION_VERSION || m.actionConvention !== 'relative-left-straight-right') throw new Error('Unsupported model or observation version');
+  if (m.version !== MODEL_VERSION || ![OBSERVATION_VERSION, 'relative-features-v2'].includes(m.observationVersion) || m.actionConvention !== 'relative-left-straight-right') throw new Error('Unsupported model or observation version');
   if (!['dqn', 'double-dqn', 'ga'].includes(m.trainingVariant) || (m.algorithm === 'ga') !== (m.trainingVariant === 'ga')) throw new Error('Unsupported training variant');
   if (!m.seedSplit || m.seedSplit.trainingPolicy !== 'generated-excluding-held-out') throw new Error('Missing independent seed split metadata');
   const validationSeeds = validateSeeds(m.seedSplit.validationSeeds, 'validation seeds');
   const testSeeds = validateSeeds(m.seedSplit.testSeeds, 'test seeds');
   if (validationSeeds.some(s => testSeeds.includes(s))) throw new Error('Model seed split overlaps');
   if (m.algorithm !== 'dqn' && m.algorithm !== 'ga') throw new Error('Unsupported model algorithm');
-  if (JSON.stringify(m.channels) !== JSON.stringify(['head', 'body', 'food', 'body-order', 'obstacle'])) throw new Error('Observation channel mismatch');
+  const profile = m.observationVersion === 'relative-features-v2' ? 'compact-v2' : undefined;
+  if (JSON.stringify(m.channels) !== JSON.stringify(profile ? ['danger-relative', 'food-relative', 'wall-rays', 'occupied-rays', 'length'] : ['head', 'body', 'food', 'body-order', 'obstacle'])) throw new Error('Observation channel mismatch');
   if (!m.game || !Array.isArray(m.game.obstacles)) throw new Error('Missing game metadata');
   const game = normalizeConfig(m.game);
-  const size = observationSize(game.width, game.height);
+  const size = observationSize(game.width, game.height, profile);
   if (parameterCount(size) > 250000 || JSON.stringify(m.architecture) !== JSON.stringify([size, 64, 64, 3])) throw new Error('Unsupported network architecture or size');
   if (!m.provenance || typeof m.provenance !== 'object') throw new Error('Missing model provenance');
   const p = m.provenance;
@@ -49,8 +50,8 @@ export function parseFrozenModel(text: string): FrozenModel {
   if (new TextEncoder().encode(text).byteLength > MODEL_FILE_LIMIT) throw new Error('Model exceeds the 10 MiB import limit');
   return validateFrozenModel(JSON.parse(text) as unknown);
 }
-export function makeFrozenModel(game: GameConfig, algorithm: TrainingAlgorithm, weights: SerializedTensor[], provenance: FrozenModel['provenance'], seedSplit: FrozenModel['seedSplit'] = { trainingPolicy: 'generated-excluding-held-out', validationSeeds: [1800000001], testSeeds: [1900000001] }, trainingVariant: FrozenModel['trainingVariant'] = algorithm): FrozenModel {
-  return { seedSplit: { ...seedSplit, validationSeeds: [...seedSplit.validationSeeds], testSeeds: [...seedSplit.testSeeds] }, trainingVariant, version: MODEL_VERSION, observationVersion: OBSERVATION_VERSION, architecture: [observationSize(game.width, game.height), 64, 64, 3], actionConvention: 'relative-left-straight-right', channels: ['head', 'body', 'food', 'body-order', 'obstacle'], game: { ...game, obstacles: [...game.obstacles] }, algorithm, weights: weights.map(w => ({ shape: [...w.shape], values: [...w.values] })), provenance: { ...provenance } };
+export function makeFrozenModel(game: GameConfig, algorithm: TrainingAlgorithm, weights: SerializedTensor[], provenance: FrozenModel['provenance'], seedSplit: FrozenModel['seedSplit'] = { trainingPolicy: 'generated-excluding-held-out', validationSeeds: [1800000001], testSeeds: [1900000001] }, trainingVariant: FrozenModel['trainingVariant'] = algorithm, profile?: 'compact-v2'): FrozenModel {
+  return { seedSplit: { ...seedSplit, validationSeeds: [...seedSplit.validationSeeds], testSeeds: [...seedSplit.testSeeds] }, trainingVariant, version: MODEL_VERSION, observationVersion: profile ? 'relative-features-v2' : OBSERVATION_VERSION, architecture: [observationSize(game.width, game.height, profile), 64, 64, 3], actionConvention: 'relative-left-straight-right', channels: profile ? ['danger-relative', 'food-relative', 'wall-rays', 'occupied-rays', 'length'] : ['head', 'body', 'food', 'body-order', 'obstacle'], game: { ...game, obstacles: [...game.obstacles] }, algorithm, weights: weights.map(w => ({ shape: [...w.shape], values: [...w.values] })), provenance: { ...provenance } };
 }
 export function forwardWeights(weights: readonly SerializedTensor[], input: ArrayLike<number>): number[] {
   let activation = Array.from(input);
@@ -72,10 +73,17 @@ export function argmax(values: ArrayLike<number>): 0 | 1 | 2 {
   for (let i = 1; i < values.length; i++) if (values[i] > values[best]) best = i;
   return best as 0 | 1 | 2;
 }
+/** V2 masks only immediate collisions. It does not choose a food path. */
+export function policyArgmax(values: ArrayLike<number>, encoded: ArrayLike<number>, profile?: 'compact-v2'): 0 | 1 | 2 {
+  if (!profile || [0,1,2].every(i => encoded[i] === 1)) return argmax(values);
+  return argmax([0,1,2].map(i => encoded[i] === 1 ? -Infinity : values[i]));
+}
 export function predictModel(model: FrozenModel, observation: Observation): { action: Direction; qValues: number[] } {
   if (model.game.width !== observation.config.width || model.game.height !== observation.config.height || JSON.stringify(model.game.obstacles) !== JSON.stringify(observation.config.obstacles)) throw new Error('Model and environment board/obstacles differ');
-  const qValues = forwardWeights(model.weights, encodeObservation(observation));
-  return { action: relativeAction(observation.direction, argmax(qValues)), qValues };
+  const profile = model.observationVersion === 'relative-features-v2' ? 'compact-v2' : undefined;
+  const encoded = encodeObservation(observation, profile);
+  const qValues = forwardWeights(model.weights, encoded);
+  return { action: relativeAction(observation.direction, policyArgmax(qValues, encoded, profile)), qValues };
 }
 export function flattenWeights(weights: SerializedTensor[]): Float32Array { return Float32Array.from(weights.flatMap(w => w.values)); }
 export function unflattenWeights(chromosome: Float32Array, inputSize: number): SerializedTensor[] {
@@ -84,5 +92,6 @@ export function unflattenWeights(chromosome: Float32Array, inputSize: number): S
 }
 
 export function assertModelCompatible(model: FrozenModel, config: TrainingConfig): void {
+  if (model.observationVersion !== (config.profile ? 'relative-features-v2' : OBSERVATION_VERSION)) throw new Error('Model observation profile differs from checkpoint');
   if (JSON.stringify(model.game) !== JSON.stringify(config.game) || model.algorithm !== config.algorithm || model.trainingVariant !== (config.algorithm === 'ga' ? 'ga' : config.dqn.doubleDQN ? 'double-dqn' : 'dqn') || JSON.stringify(model.seedSplit.validationSeeds) !== JSON.stringify(config.validationSeeds) || JSON.stringify(model.seedSplit.testSeeds) !== JSON.stringify(config.testSeeds)) throw new Error('Model metadata does not match training configuration');
 }

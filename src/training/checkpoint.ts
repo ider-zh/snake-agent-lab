@@ -23,7 +23,7 @@ export function validateCheckpoint(value: unknown): TrainingCheckpoint {
   for (const mean of [c.validationMean, c.bestValidationMean]) if (mean !== null) finiteNumber(mean, 'validation score', 0, config.game.width * config.game.height);
   if (c.bestModel) assertModelCompatible(validateFrozenModel(c.bestModel), config);
   if (c.validation) { assertModelCompatible(validateFrozenModel(c.validation.model), config); if (JSON.stringify(c.validation.seeds) !== JSON.stringify(config.validationSeeds)) throw new Error('Validation seeds mismatch'); }
-  const size = observationSize(config.game.width, config.game.height);
+  const size = observationSize(config.game.width, config.game.height, config.profile);
   if (c.algorithm === 'dqn') {
     validateTensors(c.online, networkShapes(size)); validateTensors(c.target, networkShapes(size));
     if (!Array.isArray(c.optimizer) || ![1, 13].includes(c.optimizer.length)) throw new Error('Unsupported optimizer state');

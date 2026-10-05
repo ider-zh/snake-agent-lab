@@ -4,7 +4,7 @@ import { validateCheckpoint } from './checkpoint';
 import { finiteNumber, makeTrainingConfig, observationSize, validateSeeds } from './config';
 import { encodeObservation } from './encoding';
 import { FrozenEvaluator } from './evaluation';
-import { argmax, flattenWeights, forwardWeights, initializeWeights, makeFrozenModel, parameterCount, unflattenWeights, validateFrozenModel } from './inference';
+import { policyArgmax, flattenWeights, forwardWeights, initializeWeights, makeFrozenModel, parameterCount, unflattenWeights, validateFrozenModel } from './inference';
 import { nextTrainingSeed, TrainingRandom } from './random';
 import { decodeBytes, encodeBytes } from './replay';
 import type { FitnessDistribution, FrozenModel, GACheckpoint, GAEvaluationState, GAConfig, SerializedTensor, TrainingConfigInput, TrainingMetrics } from './types';
@@ -15,7 +15,7 @@ export function fitnessDistribution(fitness: number[]): FitnessDistribution {
 }
 /** Filling dominates; bounded failure/efficiency tie-breaks provide no reward for idle survival. */
 export function individualFitness(fills: number[], failures: number[], efficiencies: number[]): number { return mean(fills) * 1000 - mean(failures) * 0.1 + mean(efficiencies) * 0.01; }
-export function breedPopulation(population: Float32Array[], fitness: number[], config: GAConfig, rng: TrainingRandom): Float32Array[] {
+export function breedPopulation(population: Float32Array[], fitness: number[], config: GAConfig, rng: TrainingRandom, mutableIndices?: ReadonlySet<number>): Float32Array[] {
   const ranking = population.map((_, i) => i).sort((a, b) => fitness[b] - fitness[a] || a - b);
   const next = ranking.slice(0, config.eliteCount).map(i => new Float32Array(population[i]));
   const tournament = (): number => {
@@ -27,6 +27,7 @@ export function breedPopulation(population: Float32Array[], fitness: number[], c
     const a = population[tournament()], b = population[tournament()], crossover = rng.next() < config.crossoverRate;
     const child = new Float32Array(a.length);
     for (let i = 0; i < child.length; i++) {
+      if (mutableIndices && !mutableIndices.has(i)) { child[i] = a[i]; continue; }
       let value = crossover && rng.next() < 0.5 ? b[i] : a[i];
       if (rng.next() < config.mutationRate) value += rng.normal() * config.mutationStd;
       child[i] = Math.max(-1000000, Math.min(1000000, value));
@@ -34,6 +35,20 @@ export function breedPopulation(population: Float32Array[], fitness: number[], c
     next.push(child);
   }
   return next;
+}
+/** Fixed positive/negative feature basis; evolve 75 output coefficients instead of
+ * searching thousands of hidden weights with a tiny browser population. */
+export function initializeFeaturePolicy(rng: TrainingRandom): SerializedTensor[] {
+  const weights = initializeWeights(12,rng);
+  for (const tensor of weights.slice(0,4)) tensor.values.fill(0);
+  for (let i=0;i<12;i++) { weights[0].values[i*64+i]=1; weights[0].values[i*64+i+12]=-1; }
+  for (let i=0;i<24;i++) weights[2].values[i*64+i]=1;
+  for (let i=24*3;i<64*3;i++) weights[4].values[i]=0;
+  return weights;
+}
+export function featurePolicyGenes(): ReadonlySet<number> {
+  const offset=12*64+64+64*64+64;
+  return new Set([...Array.from({length:72},(_,i)=>offset+i), ...Array.from({length:3},(_,i)=>offset+192+i)]);
 }
 function emptyCurrent(): GAEvaluationState { return { member: 0, seedIndex: 0, scores: [], fills: [], failures: [], efficiencies: [], snapshot: null }; }
 export class GATrainer extends BaseTrainer {
@@ -46,8 +61,8 @@ export class GATrainer extends BaseTrainer {
     const config = makeTrainingConfig('ga', input); super(config);
     this.evolutionRng = new TrainingRandom(config.seed ^ 0xe6274cbf); this.environmentRng = new TrainingRandom(config.seed ^ 0x04a7799c);
     const initializationRng = new TrainingRandom(config.seed ^ 0x6a734321);
-    const size = observationSize(config.game.width, config.game.height);
-    this.population = Array.from({ length: config.ga.populationSize }, () => flattenWeights(initializeWeights(size, initializationRng)));
+    const size = observationSize(config.game.width, config.game.height, config.profile);
+    this.population = Array.from({ length: config.ga.populationSize }, () => flattenWeights(config.profile ? initializeFeaturePolicy(initializationRng) : initializeWeights(size, initializationRng)));
     this.fitness = Array.from({ length: config.ga.populationSize }, () => null); this.trainingSeeds = this.nextSeeds();
   }
   private nextSeeds(): number[] {
@@ -56,7 +71,7 @@ export class GATrainer extends BaseTrainer {
     return seeds;
   }
   private memberModel(member: number): FrozenModel {
-    return makeFrozenModel(this.config.game, 'ga', unflattenWeights(this.population[member], observationSize(this.config.game.width, this.config.game.height)), { seed: this.config.seed, samples: this.counters.samples, updates: 0, generation: this.counters.generation, validationMean: null }, { trainingPolicy: 'generated-excluding-held-out', validationSeeds: this.config.validationSeeds, testSeeds: this.config.testSeeds });
+    return makeFrozenModel(this.config.game, 'ga', unflattenWeights(this.population[member], observationSize(this.config.game.width, this.config.game.height, this.config.profile)), { seed: this.config.seed, samples: this.counters.samples, updates: 0, generation: this.counters.generation, validationMean: null }, { trainingPolicy: 'generated-excluding-held-out', validationSeeds: this.config.validationSeeds, testSeeds: this.config.testSeeds }, 'ga', this.config.profile);
   }
   async advance(): Promise<boolean> {
     if (this.disposed || this.budgetReached()) return false;
@@ -75,15 +90,16 @@ export class GATrainer extends BaseTrainer {
       return true;
     }
     if (this.phase === 'breed') {
-      this.population = breedPopulation(this.population, this.fitness as number[], this.config.ga, this.evolutionRng);
+      this.population = breedPopulation(this.population, this.fitness as number[], this.config.ga, this.evolutionRng, this.config.profile ? featurePolicyGenes() : undefined);
       this.fitness = this.population.map(() => null); this.current = emptyCurrent(); this.game = null; this.cachedWeights = null;
       this.trainingSeeds = this.nextSeeds(); this.phase = 'population'; return true;
     }
     this.game ??= new Game(this.config.game, this.trainingSeeds[this.current.seedIndex]);
-    this.cachedWeights ??= unflattenWeights(this.population[this.current.member], observationSize(this.config.game.width, this.config.game.height));
+    this.cachedWeights ??= unflattenWeights(this.population[this.current.member], observationSize(this.config.game.width, this.config.game.height, this.config.profile));
     const observation = this.game.observe();
-    const qValues = forwardWeights(this.cachedWeights, encodeObservation(observation));
-    const step = this.game.step(relativeAction(observation.direction, argmax(qValues)));
+    const encoded = encodeObservation(observation, this.config.profile);
+    const qValues = forwardWeights(this.cachedWeights, encoded);
+    const step = this.game.step(relativeAction(observation.direction, policyArgmax(qValues, encoded, this.config.profile)));
     this.counters.envSteps++; this.counters.samples++;
     if (step.terminated || step.truncated) {
       const end = step.observation;
@@ -119,7 +135,7 @@ export class GATrainer extends BaseTrainer {
     try {
       trainer.restoreCommon(checkpoint);
       if (!Array.isArray(checkpoint.population) || checkpoint.population.length !== trainer.config.ga.populationSize) throw new Error('GA population mismatch');
-      const count = parameterCount(observationSize(trainer.config.game.width, trainer.config.game.height));
+      const count = parameterCount(observationSize(trainer.config.game.width, trainer.config.game.height, trainer.config.profile));
       trainer.population = checkpoint.population.map(encoded => {
         const chromosome = new Float32Array(decodeBytes(encoded, count * 4).buffer);
         for (const value of chromosome) finiteNumber(value, 'chromosome weight', -1000000, 1000000);

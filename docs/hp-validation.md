@@ -50,3 +50,9 @@ Cloudflare 未部署；没有合并 PR 或推送 main。开发模式 `npm run de
 ## Board enlargement verification (HP, 2026-10-05)
 
 Typecheck, lint, 86 unit tests and production build passed. All 20 Playwright desktop/mobile tests passed (9.3 minutes), including the new board resize/DPR/focus checks. All 41 theme states passed their overflow, contrast, controls and console checks. Six viewport measurements and same-seed screenshots are in [board-size-review.md](board-size-review.md). This verifies layout and operation, not DQN/GA learning effectiveness; that investigation is separate.
+
+## Training effectiveness repair (HP, 2026-10-05)
+
+`npm run check` passed with 92 unit tests. The full 20 desktop/mobile Playwright tests passed (9.7 minutes); after the Worker scheduling change, all six affected training/checkpoint/evaluation browser tests passed again (1.6 minutes). A separate real-browser default run trained DQN and GA, exported and reimported both models, and evaluated 100 held-out episodes each: means 17.54 and 8.47. Desktop and 390px screenshots were inspected, with no page errors or horizontal overflow.
+
+The original near-zero behavior, failed pilots, three training seeds, full score distributions, wall-clock truncation under load, model compatibility and limitations are documented in [training-effectiveness.md](training-effectiveness.md). These results show learning under the recorded protocol; they do not prove convergence, full-board completion, physical-phone performance, or superiority over stronger search policies.

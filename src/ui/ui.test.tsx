@@ -281,7 +281,7 @@ describe('training UI worker lifecycle', () => {
     const worker = TestWorker.instances[0];
     expect(worker.postMessage).toHaveBeenCalledWith(expect.objectContaining({
       type: 'start', jobId: expect.any(String), algorithm: 'dqn',
-      config: expect.objectContaining({ seed: 19, budget: expect.objectContaining({ maxEnvSteps: 2000 }), dqn: expect.objectContaining({ doubleDQN: true }) }),
+      config: expect.objectContaining({ seed: 19, budget: expect.objectContaining({ maxEnvSteps: 2000 }), dqn: expect.objectContaining({ doubleDQN: false }) }),
     }));
     const command = worker.postMessage.mock.calls[0][0];
     if (command.type !== 'start') throw new Error('Expected start command');
@@ -377,7 +377,7 @@ describe('training UI worker lifecycle', () => {
     const command = worker.postMessage.mock.calls[0][0];
     if (command.type !== 'import') throw new Error('Expected checkpoint import');
     expect(command.checkpoint.config.budget).toEqual({
-      maxEnvSteps: checkpoint.config.budget.maxEnvSteps + 10000,
+      maxEnvSteps: checkpoint.config.budget.maxEnvSteps + 100000,
       maxWallMs: checkpoint.config.budget.maxWallMs + 60000,
       maxGenerations: checkpoint.config.budget.maxGenerations + 50,
     });

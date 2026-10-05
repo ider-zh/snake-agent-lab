@@ -1,5 +1,7 @@
 # SnakeLab 设计计划
 
+> 2026-10-05 HP training correction: new jobs use versioned relative features, shaped DQN rewards and a 75-coefficient GA policy. Original 0/1-score defaults were reproduced. Actual learning comparisons, budgets, failed pilots and compatibility are in [training effectiveness](training-effectiveness.md). Earlier full-board training descriptions below are the v1 design/history; they do not describe the new UI defaults.
+
 > HP 实现、浏览器验收与剩余边界见 [HP 验证记录](hp-validation.md)，视觉迭代见 [视觉审查](visual-review.md)。下文保留原始设计目标，不把未验证目标写成结果。
 
 版本：0.1 设计基线 · 2026-10-05。P1–P5 实现已落地，当前实际配置、验证结果与未完成验收见 [实现记录](implementation.md)。本文保留设计时的参数与候选方案，不把未来验收条目改写成已通过。

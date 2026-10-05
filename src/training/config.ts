@@ -13,10 +13,11 @@ export function validateSeeds(seeds: unknown, label = 'seeds'): number[] {
   if (new Set(result).size !== result.length) throw new Error(`${label} must be unique`);
   return result;
 }
-export function observationSize(width: number, height: number): number { return width * height * 5 + 4; }
+export function observationSize(width: number, height: number, profile?: 'compact-v2'): number { return profile === 'compact-v2' ? 12 : width * height * 5 + 4; }
 export function replayBytes(capacity: number, inputSize: number): number { return capacity * (inputSize * 8 + 6); }
 export function makeTrainingConfig(algorithm: TrainingAlgorithm, input: TrainingConfigInput = {}): TrainingConfig {
   if (algorithm !== 'dqn' && algorithm !== 'ga') throw new Error('Unknown training algorithm');
+  if (input.profile !== undefined && input.profile !== 'compact-v2') throw new Error('Unsupported training profile');
   const game = normalizeConfig({ width: 8, height: 8, maxSteps: 5000, maxNoFood: 500, ...input.game });
   if (game.initialLength >= game.width * game.height - game.obstacles.length) throw new Error('Training needs at least one empty cell');
   if (!game.maxSteps || !game.maxNoFood) throw new Error('Training requires finite positive episode and no-food limits');
@@ -45,7 +46,7 @@ export function makeTrainingConfig(algorithm: TrainingAlgorithm, input: Training
   finiteNumber(ga.mutationRate, 'mutationRate', 0, 1);
   finiteNumber(ga.mutationStd, 'mutationStd', 0, 10);
   finiteNumber(ga.crossoverRate, 'crossoverRate', 0, 1);
-  const size = observationSize(game.width, game.height);
+  const size = observationSize(game.width, game.height, input.profile);
   const parameters = size * 64 + 4419;
   finiteNumber(dqn.batchSize, 'batchSize', 1, 256, true);
   if (algorithm === 'dqn' && parameters * dqn.batchSize > 8000000) throw new Error('Optimizer batch exceeds the responsive CPU operation budget; reduce batch size or board size');
@@ -57,5 +58,5 @@ export function makeTrainingConfig(algorithm: TrainingAlgorithm, input: Training
   // Reserve enough space for JSON weights (including Adam/best/validation models) and bounded logs.
   const encodedEstimate = algorithm === 'dqn' ? Math.ceil(replayEstimate * 4 / 3) + parameters * 6 * 32 : Math.ceil(populationBytes * 4 / 3) + parameters * 3 * 32;
   if (encodedEstimate + 8 * 1024 * 1024 > CHECKPOINT_FILE_LIMIT) throw new Error('Estimated full checkpoint exceeds the 128 MiB export/import limit; reduce replay or population');
-  return { version: TRAINING_VERSION, algorithm, seed: input.seed ?? 42, game, budget, dqn, ga, validationSeeds, testSeeds, rewardVersion: 'food1-collision-1-step-.001-filled1-v1' };
+  return { ...(input.profile ? { profile: input.profile } : {}), version: TRAINING_VERSION, algorithm, seed: input.seed ?? 42, game, budget, dqn, ga, validationSeeds, testSeeds, rewardVersion: input.profile ? 'food10-collision-10-distance-.5-v2' : 'food1-collision-1-step-.001-filled1-v1' };
 }

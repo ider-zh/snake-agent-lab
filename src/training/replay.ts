@@ -48,7 +48,7 @@ export class ReplayBuffer {
     const n = this.size;
     return { capacity: this.capacity, inputSize: this.inputSize, size: n, cursor: this.cursor, observations: encodeBytes(this.observations.subarray(0, n * this.inputSize)), nextObservations: encodeBytes(this.nextObservations.subarray(0, n * this.inputSize)), actions: encodeBytes(this.actions.subarray(0, n)), rewards: encodeBytes(this.rewards.subarray(0, n)), flags: encodeBytes(this.flags.subarray(0, n)) };
   }
-  static restore(c: ReplayCheckpoint, capacity: number, inputSize: number): ReplayBuffer {
+  static restore(c: ReplayCheckpoint, capacity: number, inputSize: number, profile?: 'compact-v2'): ReplayBuffer {
     if (!c || c.capacity !== capacity || c.inputSize !== inputSize) throw new Error('Replay configuration mismatch');
     finiteNumber(c.size, 'replay size', 0, capacity, true); finiteNumber(c.cursor, 'replay cursor', 0, capacity - 1, true);
     if (c.size < capacity && c.cursor !== c.size) throw new Error('Invalid partial replay cursor');
@@ -56,8 +56,8 @@ export class ReplayBuffer {
     const next = new Float32Array(decodeBytes(c.nextObservations, c.size * inputSize * 4).buffer);
     const actions = decodeBytes(c.actions, c.size); const flags = decodeBytes(c.flags, c.size);
     const rewards = new Float32Array(decodeBytes(c.rewards, c.size * 4).buffer);
-    for (const array of [observations, next]) for (const n of array) finiteNumber(n, 'replay observation', 0, 1);
-    for (const n of rewards) finiteNumber(n, 'replay reward', -1, 2);
+    for (const array of [observations, next]) for (let i = 0; i < array.length; i++) finiteNumber(array[i], 'replay observation', profile && [3,4].includes(i % inputSize) ? -1 : 0, 1);
+    for (const n of rewards) finiteNumber(n, 'replay reward', profile ? -10 : -1, profile ? 20 : 2);
     for (const n of actions) finiteNumber(n, 'replay action', 0, 2, true);
     for (const n of flags) finiteNumber(n, 'replay flags', 0, 2, true);
     const replay = new ReplayBuffer(capacity, inputSize);

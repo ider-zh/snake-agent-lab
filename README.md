@@ -1,5 +1,7 @@
 # SnakeLab
 
+> 2026-10-05 HP training correction: new jobs use versioned relative features, shaped DQN rewards and a 75-coefficient GA policy. Original 0/1-score defaults were reproduced. Actual learning comparisons, budgets, failed pilots and compatibility are in [training effectiveness](docs/training-effectiveness.md). Earlier full-board training descriptions below are the v1 design/history; they do not describe the new UI defaults.
+
 A local-first playground for Snake, search agents, and real browser training.
 
 SnakeLab 将手动游戏、自动策略、批量实验、回放和 DQN / GA 训练放在统一、确定性的规则核心上。React 管理界面，PixiJS 单画布绘制最多四局，Web Worker 隔离批量仿真与训练。
@@ -39,7 +41,7 @@ npm run test:e2e     # desktop + mobile Chromium workflows
 
 ## 训练与比较边界
 
-8×8 训练使用五个全盘通道（头、身体、食物、身体顺序、障碍）和方向 one-hot，MLP 324→64→64→3。DQN 使用真实 Huber loss / Adam；终止不 bootstrap，截断处理由配置明确控制。训练、验证和测试种子分离，冻结评估不更新权重。
+8×8 新训练使用 12 维相对特征与即时碰撞过滤。DQN 为 12→64→64→3，使用真实 Huber loss / Adam 和距离奖励；GA 固定特征投影，进化 75 个输出系数。终止不 bootstrap，新预设也不对截断 bootstrap。训练、验证和测试种子分离，冻结评估不更新权重。旧版全盘模型和检查点仍按原编码恢复。
 
 UI 的轻量预设为了缩短反馈周期，与设计草案中的研究默认参数不同；完整配置写入模型/检查点。短训练不保证学会，更不能据此宣称胜过搜索。搜索的尾部可达/空间检查是启发式。墙钟决策上限可能受设备负载影响；仅节点预算模式用于严格动作重现。
 

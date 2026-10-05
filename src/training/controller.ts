@@ -68,7 +68,9 @@ export class TrainingController {
           while (this.pending.length) await this.command(this.pending.shift()!);
           if (this.paused) break;
           const start = performance.now();
-          for (let i = 0; i < 32 && performance.now() - start < 16 && !this.pending.length; i++) {
+          // Fast GA steps otherwise spend most of the budget yielding after only
+          // 32 cheap transitions. The time cap still bounds command latency.
+          for (let i = 0; i < 256 && performance.now() - start < 16 && !this.pending.length; i++) {
             if (this.trainer) {
               if (!await this.trainer.advance()) {
                 this.trainer.pause(); this.emit({ type: 'progress', metrics: this.trainer.metrics() });
