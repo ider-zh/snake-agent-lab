@@ -1,37 +1,58 @@
 # SnakeLab
 
-A browser-based Snake playground for human play, AI agents, and in-browser training experiments.
+A local-first playground for Snake, search agents, and real browser training.
 
-SnakeLab（仓库名 `snake-agent-lab`）计划把手动贪吃蛇、自动策略对比和浏览器内训练放在同一套可复现规则下，兼顾游戏体验、算法研究与工程实践。
+SnakeLab 将手动游戏、自动策略、批量实验、回放和 DQN / GA 训练放在统一、确定性的规则核心上。React 管理界面，PixiJS 单画布绘制最多四局，Web Worker 隔离批量仿真与训练。
 
-**当前状态：设计评审阶段。** 本次初始化提供设计文档；游戏、训练器、演示站点及性能数据尚未实现。文中技术栈、参数和验收指标均为待验证方案。
+**当前状态：P1–P5 实现代码已落地，交接到 HP 继续浏览器验收。** 单元/组件、类型、lint 与静态构建结果见 [验证记录](docs/implementation.md)。尚未部署，不宣称真实浏览器端到端验收、性能目标或策略收敛已经通过。
 
-## 计划体验
+## 运行
 
-| 模式 | 可以观察或操作什么 | 阶段 |
-| --- | --- | --- |
-| 手动经典 | 键盘/触控移动、暂停、重开、分数 | MVP |
-| AI 观看 | 切换策略、调速、单步、查看搜索过程 | MVP 起步 |
-| 同种子多策略竞技 | 独立棋盘共享规则与种子集，对比表现 | 第二阶段 |
-| 批量实验 | 关闭绘图运行多局，导出结果 | 第二阶段 |
-| 浏览器训练实验室 | DQN 与 GA/神经进化，暂停、取消、保存恢复 | 第三、四阶段 |
-| 种子与动作回放 | 重现失败、逐步检查决策 | 第二阶段 |
+推荐 Node 24；依赖精确版本见 `package-lock.json`。
 
-自动策略路线：随机/合法随机 → Greedy → BFS/A* 与安全检查 → 有适用条件的 Hamiltonian 环基线 → DQN → GA/神经进化。障碍挑战与高级强化学习算法安排在后续。
+```sh
+npm ci
+npm run dev
+# http://127.0.0.1:5173
+```
 
-## 建议技术方案
+```sh
+npm run check       # TypeScript + ESLint + Vitest + production build
+npm run preview     # static production preview
+npx playwright install chromium
+npm run test:e2e     # desktop + mobile Chromium workflows
+```
 
-采用 TypeScript + Vite；PixiJS 负责棋盘渲染，React 负责控制与统计面板。纯 TypeScript 核心提供 `reset(seed)`、`step(action)`、`observe()`，与 DOM 和绘图解耦。单渲染器展示多个棋盘，Worker 池承担仿真，训练按计算预算运行，界面抽样刷新。
+受限环境如果默认 npm cache 不可写，可为 npm 命令加 `--cache=/tmp/snake-agent-lab-npm-cache`。开发服务器默认只绑定回环；需要局域网访问时由操作者显式选择 `--host`。
 
-TensorFlow.js 是浏览器内训练候选；ONNX Runtime Web 定位为可选模型导入与推理。后端兼容、训练算子和渲染争用需用实际设备验证后确定。Phaser 是需要更完整场景、音效及 Tween 时的备选。
+## 功能
 
-## 评审入口
+- **实验台**：键盘/WASD/触控、单步/暂停/重开、种子与棋盘、路径/搜索可视化、回放保存
+- **策略竞技**：同配置四棋盘；训练或导入的冻结模型可替换第四个策略
+- **经典策略**：Random、Legal Random、Greedy、Safe Greedy、BFS、A*、有条件的 Hamiltonian 环
+- **批量评测**：默认100共同种子，失败/截断分开，原始JSON/CSV、分布、配对差与95%CI；特殊环初态另分组
+- **训练实验室**：真实 TF.js CPU DQN / Double DQN 更新、目标网络、紧凑 replay、Adam 检查点；真实 GA 种群、锦标赛、精英、交叉/变异；暂停、取消、预算、冻结独立评估、导入导出与本地存储
+- **回放档案**：动作、配置、版本与逐步状态哈希验证；本地库与文件导入
+- **P5 扩展**：障碍地图通道、禁用不适用的环策略、Double DQN 独立变体标记
 
-- [完整设计与分阶段验收](docs/design-plan.md)：规则、架构、算法、训练预算、公平比较与风险。
-- [参考项目与技术依据](docs/references.md)：固定版本的源码入口、可借鉴点及许可边界。
-- [维护约定](AGENTS.md)：计划状态与验证记录的维护准则。
+所有模型与数据留在当前浏览器，不含账号、后端、遥测或外部模型下载。浏览器清理站点数据会删除 IndexedDB 存档，重要结果应导出备份。停止训练会释放 replay；要精确续训，请先暂停并导出完整检查点。达到正常预算上限后保留可导出的检查点。
 
-建议优先评估：首版是否采用 12×12 无障碍棋盘；PixiJS + React 的职责划分；第二阶段先完成可复现对比再开展训练；浏览器训练预算是否符合目标设备。当前没有安装或启动命令，待 MVP 工程建立后补充可执行步骤。
+## 训练与比较边界
+
+8×8 训练使用五个全盘通道（头、身体、食物、身体顺序、障碍）和方向 one-hot，MLP 324→64→64→3。DQN 使用真实 Huber loss / Adam；终止不 bootstrap，截断处理由配置明确控制。训练、验证和测试种子分离，冻结评估不更新权重。
+
+UI 的轻量预设为了缩短反馈周期，与设计草案中的研究默认参数不同；完整配置写入模型/检查点。短训练不保证学会，更不能据此宣称胜过搜索。搜索的尾部可达/空间检查是启发式。墙钟决策上限可能受设备负载影响；仅节点预算模式用于严格动作重现。
+
+## 部署到 Cloudflare Pages
+
+这是纯静态 Vite 应用：构建 `npm run build`，输出 `dist`，Node 24。仓库提供 `_headers`、`_redirects` 和 `wrangler.jsonc`。没有云函数、数据库、token 或费用依赖。详见 [部署说明](docs/deployment.md)。部署由维护者后续执行。
+
+## 项目文档
+
+- [实现与验证记录 / HP 交接](docs/implementation.md)
+- [完整设计与分阶段验收](docs/design-plan.md)
+- [参考项目与技术依据](docs/references.md)
+- [维护约定](AGENTS.md)
 
 ## Related Work
 
