@@ -37,7 +37,7 @@ try {
   for(let i=0;i<6;i++) await page.getByRole('button',{name:'单步',exact:true}).click();
   if(width<721){await expect(page.getByRole('group',{name:'选择观察策略'}).getByRole('button')).toHaveCount(4);await page.getByRole('group',{name:'选择观察策略'}).getByRole('button',{name:/BFS/}).click();}
   await page.evaluate(()=>window.scrollTo(0,0)); await page.screenshot({path:`${output}/${width}-arena.png`,fullPage:true}); await audit('arena');
-  if(width<721){await page.locator('.game-panel').evaluate(el=>el.scrollIntoView({block:'start'}));await expect.poll(async()=>page.locator('.board-canvas').evaluate(el=>el.getBoundingClientRect().bottom<=document.querySelector('.sidebar')!.getBoundingClientRect().top)).toBe(true);await page.screenshot({path:`${output}/${width}-arena-focused.png`});}
+  if(width<721){await page.locator('.board-focus').evaluate(el=>el.scrollIntoView({block:'center'}));await expect.poll(async()=>page.locator('.board-canvas').evaluate(el=>el.getBoundingClientRect().bottom<=document.querySelector('.sidebar')!.getBoundingClientRect().top)).toBe(true);await page.screenshot({path:`${output}/${width}-arena-focused.png`});}
   await page.getByRole('navigation').getByRole('button',{name:'训练实验室',exact:true}).click();
   if(width===1440){await page.getByLabel('训练预算').selectOption('2000');await page.getByRole('button',{name:'开始训练',exact:true}).click();await expect(page.locator('.status-line')).toContainText('任务完成',{timeout:60000});}
   await page.evaluate(()=>window.scrollTo(0,0)); await page.screenshot({path:`${output}/${width}-training.png`,fullPage:true}); await audit('training');

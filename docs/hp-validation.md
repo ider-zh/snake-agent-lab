@@ -46,3 +46,7 @@ Cloudflare 未部署；没有合并 PR 或推送 main。开发模式 `npm run de
 ## 统一深色修正最终复验
 
 本轮 `npm run check` 的 TypeScript、ESLint、86 项单元测试及生产构建全部通过；最终桌面/手机 Chromium 回归 18 项通过，无失败、跳过或重试（工具报告约 4.0 分钟）。[原始浏览器报告](qa/soft-dark/browser-results.json)。41 组全模式视觉/对比度/焦点检查通过，见 [深色审查记录](soft-dark-review.md)。首轮批量导出超时及有界测试调整已如实记录；最终移动端该流程约 6 秒完成。
+
+## Board enlargement verification (HP, 2026-10-05)
+
+Typecheck, lint, 86 unit tests and production build passed. All 20 Playwright desktop/mobile tests passed (9.3 minutes), including the new board resize/DPR/focus checks. All 41 theme states passed their overflow, contrast, controls and console checks. Six viewport measurements and same-seed screenshots are in [board-size-review.md](board-size-review.md). This verifies layout and operation, not DQN/GA learning effectiveness; that investigation is separate.

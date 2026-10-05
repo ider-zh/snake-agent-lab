@@ -19,6 +19,7 @@ export function Board({ views, overlay = true }: { views: BoardView[]; overlay?:
   useEffect(() => {
     let cancelled = false;
     let ready = false;
+    let observer: ResizeObserver | undefined;
     const app = new Application();
     let previous = '';
     const redraw = () => {
@@ -33,6 +34,7 @@ export function Board({ views, overlay = true }: { views: BoardView[]; overlay?:
       const gap = count > 1 ? 20 : 0;
       const boxW = (app.screen.width - gap * (cols - 1)) / cols;
       const boxH = (app.screen.height - gap * (rows - 1)) / rows;
+      const rectangles: { x: number; y: number; width: number; height: number; label: string }[] = [];
       current.views.forEach((view, index) => {
         const state = view.observation;
         const titleH = count > 1 ? 26 : 0;
@@ -42,6 +44,7 @@ export function Board({ views, overlay = true }: { views: BoardView[]; overlay?:
         const container = new Container();
         container.x = (index % cols) * (boxW + gap) + (boxW - w) / 2;
         container.y = Math.floor(index / cols) * (boxH + gap) + titleH;
+        rectangles.push({ x: container.x, y: container.y, width: w, height: h, label: view.label });
         app.stage.addChild(container);
         if (count > 1) {
           const title = new Text({ text: `${view.label} · ${state.score} 食物${state.terminated || state.truncated ? ' · 已结束' : ''}`, style: { fontFamily: 'system-ui', fontSize: 12, fill: '#d2dfc4' } });
@@ -89,15 +92,25 @@ export function Board({ views, overlay = true }: { views: BoardView[]; overlay?:
         }
         g.roundRect(0, 0, w, h, 3).stroke({ color: 0x687f5e, width: 1 });
       });
+      if (host.current) host.current.dataset.boardRects = JSON.stringify(rectangles);
     };
-    void app.init({ backgroundAlpha: 0, antialias: true, resolution: Math.min(window.devicePixelRatio || 1, 2), autoDensity: true, preference: 'webgl', resizeTo: host.current!, powerPreference: 'low-power' }).then(() => {
+    const resize = () => {
+      const element = host.current;
+      if (!ready || !element || !element.clientWidth || !element.clientHeight) return;
+      app.renderer.resize(element.clientWidth, element.clientHeight, Math.min(window.devicePixelRatio || 1, 2));
+      redraw();
+    };
+    void app.init({ backgroundAlpha: 0, antialias: true, resolution: Math.min(window.devicePixelRatio || 1, 2), autoDensity: true, preference: 'webgl', powerPreference: 'low-power' }).then(() => {
       if (cancelled) { app.destroy(true, { children: true }); return; }
       ready = true;
       host.current?.appendChild(app.canvas);
+      observer = new ResizeObserver(resize);
+      observer.observe(host.current!);
+      window.addEventListener('resize', resize);
       app.ticker.add(redraw);
-      redraw();
+      resize();
     }).catch(err => { if (!cancelled) setError(`绘图初始化失败：${String(err)}`); });
-    return () => { cancelled = true; if (ready) app.destroy(true, { children: true }); };
+    return () => { cancelled = true; observer?.disconnect(); window.removeEventListener('resize', resize); if (ready) app.destroy(true, { children: true }); };
   }, []);
   return <div className="board-stage">{compact && views.length > 1 && <div className="board-switcher" role="group" aria-label="选择观察策略">{views.map((view, index) => <button key={view.label} aria-pressed={selected === index} onClick={() => setSelected(index)}><strong>{view.label}</strong><small>{view.observation.score} 食物 · {view.observation.steps} 步{view.observation.terminated || view.observation.truncated ? ' · 结束' : ''}</small></button>)}</div>}<div ref={host} className={`board-canvas ${displayed.length > 1 ? 'multi-board' : ''}`} role="img" aria-label={displayed.map(view => `${view.label}，得分 ${view.observation.score}，步数 ${view.observation.steps}`).join('；')}>{error && <p className="error">{error}。请使用支持 WebGL 的浏览器</p>}</div></div>;
 }

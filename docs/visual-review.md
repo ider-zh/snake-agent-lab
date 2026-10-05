@@ -54,3 +54,5 @@ node scripts/visual-qa.ts qa-artifacts/visual
 [手机竞技聚焦视图](qa/mobile-focused.png) · [15 组视觉审查数据](qa/visual-audit.json)
 
 第三轮目视发现手机竞技固定高度导致棋盘底部进入导航覆盖区；改为按视口限制棋盘，并在截图脚本中断言棋盘底部高于固定导航。该断言补充了仅检查横向溢出不足以发现遮挡的问题。
+
+Latest board sizing evidence: [board-size-review.md](board-size-review.md). The soft-dark palette is retained; desktop arena boards measure 409px at 1440px and 550px at 1920px, with 318px focused boards on a 390px phone viewport.

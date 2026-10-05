@@ -77,3 +77,22 @@ nav button{color:var(--ink);background:transparent}.sidebar nav button.active{ba
 .modal-backdrop{background:#19221dd9}.modal{background:#2c372f;border-color:#72846a;color:var(--ink);box-shadow:0 16px 50px #18201b55}.modal h2,.modal strong{color:var(--ink)}.modal p,.modal ol{color:#c2ceba}
 .error{color:#efb3a1!important;background:#49362f;border-color:#b68e7b}.error h2,.error h3,.error p{color:#efc2b3}
 .toast button,.playback-controls button[aria-label]{min-width:44px;min-height:44px}
+
+/* Board-first sizing: use available width, and scroll instead of shrinking to height. */
+.board-canvas>canvas{position:absolute;inset:0}
+.page:has([data-testid=arena-lab]){max-width:1760px}
+.page:has([data-testid=arena-lab]),.page:has([data-testid=game-lab]){padding-top:16px}
+.page:has([data-testid=arena-lab]) .page-heading,.page:has([data-testid=game-lab]) .page-heading{margin-bottom:12px}
+.page:has([data-testid=arena-lab]) h1,.page:has([data-testid=game-lab]) h1{font-size:30px;margin-bottom:5px}
+[data-testid=arena-lab] .metrics-row,[data-testid=game-lab] .metrics-row{padding-block:3px 10px}
+[data-testid=arena-lab] .metric strong,[data-testid=game-lab] .metric strong{font-size:26px}
+[data-testid=arena-lab] .game-layout{grid-template-columns:minmax(0,1fr) 260px;align-items:start}
+[data-testid=game-lab] .game-layout{grid-template-columns:minmax(0,1fr) 300px;align-items:start}
+[data-testid=game-lab] .game-panel .board-focus{max-width:720px}
+[data-testid=arena-lab] .game-panel .board-focus{max-width:1120px;height:auto;aspect-ratio:auto}
+[data-testid=arena-lab] .board-stage{height:auto}
+[data-testid=arena-lab] .game-panel .board-canvas{flex:none;width:100%;height:auto;aspect-ratio:1;margin:0 auto}
+[data-testid=arena-lab] .board-canvas.multi-board{box-sizing:content-box;padding-bottom:52px}
+[data-testid=arena-lab] .multi-board>canvas{position:absolute;inset:0}
+@media(max-width:1180px){[data-testid=arena-lab] .game-layout,[data-testid=game-lab] .game-layout{grid-template-columns:minmax(0,1fr)}[data-testid=arena-lab] .inspector,[data-testid=game-lab] .inspector{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));align-items:start}}
+@media(max-width:720px){[data-testid=arena-lab] .inspector,[data-testid=game-lab] .inspector{grid-template-columns:minmax(0,1fr)}[data-testid=arena-lab] .game-panel>.playback-controls{position:sticky;top:0;z-index:2;background:var(--panel);padding-block:8px}[data-testid=arena-lab] .board-focus{scroll-margin-top:100px;scroll-margin-bottom:80px}.page:has([data-testid=arena-lab]) h1,.page:has([data-testid=game-lab]) h1{font-size:26px}}
