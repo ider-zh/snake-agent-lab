@@ -50,9 +50,9 @@ export function Board({ views, overlay = true }: { views: BoardView[]; overlay?:
         }
         const g = new Graphics();
         container.addChild(g);
-        g.roundRect(0, 0, w, h, 3).fill(0x10251b);
+        g.roundRect(0, 0, w, h, 3).fill(0x27372d);
         for (let y = 0; y < state.config.height; y++) for (let x = 0; x < state.config.width; x++) {
-          if ((x + y) % 2 === 0) g.rect(x * cell + .5, y * cell + .5, cell - 1, cell - 1).fill({ color: 0x203d2b, alpha: .5 });
+          if ((x + y) % 2 === 0) g.rect(x * cell + .5, y * cell + .5, cell - 1, cell - 1).fill({ color: 0x3b5040, alpha: .5 });
         }
         const square = (id: number, color: number, alpha: number, inset: number, radius = 3) => {
           g.roundRect((id % state.config.width) * cell + inset, Math.floor(id / state.config.width) * cell + inset, cell - 2 * inset, cell - 2 * inset, radius).fill({ color, alpha });
@@ -74,7 +74,7 @@ export function Board({ views, overlay = true }: { views: BoardView[]; overlay?:
           g.circle(x, y, cell * .2).fill(0xf3a475);
           g.circle(x - cell * .045, y - cell * .065, cell * .045).fill(0xffdfbd);
         }
-        const color = view.color ?? 0xc7f36b;
+        const color = view.color ?? 0xa6bd92;
         [...state.snake].reverse().forEach((id, reverseIndex) => {
           const i = state.snake.length - reverseIndex - 1;
           square(id, color, i === 0 ? 1 : Math.max(.3, .8 - i / (state.snake.length + 2) * .45), Math.max(1.4, cell * .1), Math.max(2, cell * .18));
@@ -87,7 +87,7 @@ export function Board({ views, overlay = true }: { views: BoardView[]; overlay?:
           const [dx,dy] = vectors[state.direction];
           for (const side of [-1,1]) g.circle(x + dx * cell * .18 + dy * cell * .13 * side, y + dy * cell * .18 - dx * cell * .13 * side, Math.max(1.1, cell * .043)).fill(0x182416);
         }
-        g.roundRect(0, 0, w, h, 3).stroke({ color: 0x587446, width: 1 });
+        g.roundRect(0, 0, w, h, 3).stroke({ color: 0x687f5e, width: 1 });
       });
     };
     void app.init({ backgroundAlpha: 0, antialias: true, resolution: Math.min(window.devicePixelRatio || 1, 2), autoDensity: true, preference: 'webgl', resizeTo: host.current!, powerPreference: 'low-power' }).then(() => {

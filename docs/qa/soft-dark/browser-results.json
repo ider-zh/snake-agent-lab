@@ -1,0 +1,781 @@
+{
+  "config": {
+    "argv": [
+      "C:\\Users\\luhon\\AppData\\Local\\Temp\\snake-node-runtime\\node-v24.15.0-win-x64\\node.exe",
+      "C:\\Users\\luhon\\Documents\\Codex\\2026-10-05\\task-3\\snake-agent-lab\\node_modules\\@playwright\\test\\cli.js",
+      "test",
+      "--reporter=list,json,html"
+    ],
+    "configFile": "C:\\Users\\luhon\\Documents\\Codex\\2026-10-05\\task-3\\snake-agent-lab\\playwright.config.ts",
+    "rootDir": "C:/Users/luhon/Documents/Codex/2026-10-05/task-3/snake-agent-lab/tests",
+    "failOnFlakyTests": false,
+    "forbidOnly": false,
+    "fullyParallel": false,
+    "globalSetup": null,
+    "globalTeardown": null,
+    "globalTimeout": 0,
+    "grep": {},
+    "grepInvert": null,
+    "maxFailures": 0,
+    "metadata": {
+      "actualWorkers": 1
+    },
+    "preserveOutput": "always",
+    "projects": [
+      {
+        "outputDir": "C:/Users/luhon/Documents/Codex/2026-10-05/task-3/snake-agent-lab/test-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 1
+        },
+        "id": "chromium-desktop",
+        "name": "chromium-desktop",
+        "testDir": "C:/Users/luhon/Documents/Codex/2026-10-05/task-3/snake-agent-lab/tests",
+        "testIgnore": [],
+        "testMatch": [
+          "**/*.@(spec|test).?(c|m)[jt]s?(x)"
+        ],
+        "timeout": 90000
+      },
+      {
+        "outputDir": "C:/Users/luhon/Documents/Codex/2026-10-05/task-3/snake-agent-lab/test-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 1
+        },
+        "id": "chromium-mobile",
+        "name": "chromium-mobile",
+        "testDir": "C:/Users/luhon/Documents/Codex/2026-10-05/task-3/snake-agent-lab/tests",
+        "testIgnore": [],
+        "testMatch": [
+          "**/*.@(spec|test).?(c|m)[jt]s?(x)"
+        ],
+        "timeout": 90000
+      }
+    ],
+    "quiet": false,
+    "reporter": [
+      [
+        "list"
+      ],
+      [
+        "json"
+      ],
+      [
+        "html"
+      ]
+    ],
+    "reportSlowTests": {
+      "max": 5,
+      "threshold": 300000
+    },
+    "shard": null,
+    "tags": [],
+    "updateSnapshots": "missing",
+    "updateSourceMethod": "patch",
+    "version": "1.63.0",
+    "workers": 1,
+    "webServer": {
+      "command": "npm run preview -- --host 127.0.0.1 --port 4173",
+      "url": "http://127.0.0.1:4173",
+      "reuseExistingServer": true
+    }
+  },
+  "suites": [
+    {
+      "title": "hp-qa.spec.ts",
+      "file": "hp-qa.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "keyboard queue, repeated pause, mode changes and saved replay survive reload",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium-desktop",
+              "projectName": "chromium-desktop",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 31342,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-05T12:01:07.643Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "9a4eb95b17b56a90aca8-cf75de72387fd6583d82",
+          "file": "hp-qa.spec.ts",
+          "line": 29,
+          "column": 1
+        },
+        {
+          "title": "batch worker pauses, resumes, cancels and saves a partial result",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium-desktop",
+              "projectName": "chromium-desktop",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 15222,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-05T12:01:39.436Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "batch-cancel-timing",
+                      "contentType": "application/json",
+                      "body": "eyJjYW5jZWxNcyI6MTkzLjU4ODkwMDAwMDAwMjQ3LCJjbGlja1RvU3RvcHBlZE1zIjo0OS44OTk5OTk5NzYxNTgxNH0="
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "9a4eb95b17b56a90aca8-39a8ddd912047c881b0c",
+          "file": "hp-qa.spec.ts",
+          "line": 74,
+          "column": 1
+        },
+        {
+          "title": "dqn real worker checkpoint roundtrip, invalid model and local restore",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 180000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium-desktop",
+              "projectName": "chromium-desktop",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 12823,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-05T12:01:54.690Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "dqn-cancel-timing",
+                      "contentType": "application/json",
+                      "body": "eyJjYW5jZWxNcyI6MTcyLjA3MTg5OTk5OTk5NTM3LCJjbGlja1RvU3RvcHBlZE1zIjoyMy43MDAwMDAwMTc4ODEzOTMsImNoZWNrcG9pbnRTdGVwcyI6MjA0fQ=="
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "9a4eb95b17b56a90aca8-8b8c9921b0a8859931fb",
+          "file": "hp-qa.spec.ts",
+          "line": 96,
+          "column": 3
+        },
+        {
+          "title": "ga real worker checkpoint roundtrip, invalid model and local restore",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 180000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium-desktop",
+              "projectName": "chromium-desktop",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 13750,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-05T12:02:07.546Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "ga-cancel-timing",
+                      "contentType": "application/json",
+                      "body": "eyJjYW5jZWxNcyI6MTY5Ljc3MjE5OTk5OTk5MjE1LCJjbGlja1RvU3RvcHBlZE1zIjoyMS41OTk5OTk5OTQwMzk1MzYsImNoZWNrcG9pbnRTdGVwcyI6MzQ2N30="
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "9a4eb95b17b56a90aca8-a1e15476cfe4a86fd04e",
+          "file": "hp-qa.spec.ts",
+          "line": 96,
+          "column": 3
+        },
+        {
+          "title": "tablet navigation retains accessible names",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium-desktop",
+              "projectName": "chromium-desktop",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 3134,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-05T12:02:21.321Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "9a4eb95b17b56a90aca8-017233a7e72b89258986",
+          "file": "hp-qa.spec.ts",
+          "line": 152,
+          "column": 1
+        },
+        {
+          "title": "four-board input and frame timing on this device",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium-desktop",
+              "projectName": "chromium-desktop",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 25536,
+                  "errors": [],
+                  "stdout": [
+                    {
+                      "text": "HP_PERFORMANCE {\"frameP95Ms\":66.70000000000073,\"inputToNextFrameP95Ms\":26.399999976158142,\"frameCount\":510,\"inputCount\":32,\"userAgent\":\"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/153.0.8010.12 Safari/537.36\",\"hardwareConcurrency\":8,\"renderer\":\"ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)\",\"viewport\":[1440,1000]}\n"
+                    }
+                  ],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-05T12:02:24.487Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "hp-performance",
+                      "contentType": "application/json",
+                      "body": "ewogICJmcmFtZVA5NU1zIjogNjYuNzAwMDAwMDAwMDAwNzMsCiAgImlucHV0VG9OZXh0RnJhbWVQOTVNcyI6IDI2LjM5OTk5OTk3NjE1ODE0MiwKICAiZnJhbWVDb3VudCI6IDUxMCwKICAiaW5wdXRDb3VudCI6IDMyLAogICJ1c2VyQWdlbnQiOiAiTW96aWxsYS81LjAgKFdpbmRvd3MgTlQgMTAuMDsgV2luNjQ7IHg2NCkgQXBwbGVXZWJLaXQvNTM3LjM2IChLSFRNTCwgbGlrZSBHZWNrbykgQ2hyb21lLzE1My4wLjgwMTAuMTIgU2FmYXJpLzUzNy4zNiIsCiAgImhhcmR3YXJlQ29uY3VycmVuY3kiOiA4LAogICJyZW5kZXJlciI6ICJBTkdMRSAoR29vZ2xlLCBWdWxrYW4gMS4zLjAgKFN3aWZ0U2hhZGVyIERldmljZSAoU3ViemVybykgKDB4MDAwMEMwREUpKSwgU3dpZnRTaGFkZXIgZHJpdmVyKSIsCiAgInZpZXdwb3J0IjogWwogICAgMTQ0MCwKICAgIDEwMDAKICBdCn0="
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "9a4eb95b17b56a90aca8-d1a0a0338ae6aac91f18",
+          "file": "hp-qa.spec.ts",
+          "line": 160,
+          "column": 1
+        },
+        {
+          "title": "keyboard queue, repeated pause, mode changes and saved replay survive reload",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium-mobile",
+              "projectName": "chromium-mobile",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 13597,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-05T12:03:35.370Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "9a4eb95b17b56a90aca8-e01129293fabbebb544a",
+          "file": "hp-qa.spec.ts",
+          "line": 29,
+          "column": 1
+        },
+        {
+          "title": "batch worker pauses, resumes, cancels and saves a partial result",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium-mobile",
+              "projectName": "chromium-mobile",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 4476,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-05T12:03:49.245Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "batch-cancel-timing",
+                      "contentType": "application/json",
+                      "body": "eyJjYW5jZWxNcyI6NjgwLjg0NjIsImNsaWNrVG9TdG9wcGVkTXMiOjExNC4yOTk5OTk5ODIxMTg2fQ=="
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "9a4eb95b17b56a90aca8-217cc8496815af1f0bc8",
+          "file": "hp-qa.spec.ts",
+          "line": 74,
+          "column": 1
+        },
+        {
+          "title": "dqn real worker checkpoint roundtrip, invalid model and local restore",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 180000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium-mobile",
+              "projectName": "chromium-mobile",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 8147,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-05T12:03:53.735Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "dqn-cancel-timing",
+                      "contentType": "application/json",
+                      "body": "eyJjYW5jZWxNcyI6MTMwLjg0NTYwMDAwMDAwMDU2LCJjbGlja1RvU3RvcHBlZE1zIjoxNC41LCJjaGVja3BvaW50U3RlcHMiOjIxNn0="
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "9a4eb95b17b56a90aca8-bf0e74156e2e0fbf0520",
+          "file": "hp-qa.spec.ts",
+          "line": 96,
+          "column": 3
+        },
+        {
+          "title": "ga real worker checkpoint roundtrip, invalid model and local restore",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 180000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium-mobile",
+              "projectName": "chromium-mobile",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 8238,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-05T12:04:01.896Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "ga-cancel-timing",
+                      "contentType": "application/json",
+                      "body": "eyJjYW5jZWxNcyI6MTI2Ljk1ODEwMDAwMDAwMzQ3LCJjbGlja1RvU3RvcHBlZE1zIjoxNS41OTk5OTk5OTQwMzk1MzYsImNoZWNrcG9pbnRTdGVwcyI6NDU0NH0="
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "9a4eb95b17b56a90aca8-29dda07dfafddbe2d291",
+          "file": "hp-qa.spec.ts",
+          "line": 96,
+          "column": 3
+        },
+        {
+          "title": "tablet navigation retains accessible names",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium-mobile",
+              "projectName": "chromium-mobile",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 2161,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-05T12:04:10.149Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "9a4eb95b17b56a90aca8-ae8ba12c22c01b2d3b06",
+          "file": "hp-qa.spec.ts",
+          "line": 152,
+          "column": 1
+        },
+        {
+          "title": "four-board input and frame timing on this device",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium-mobile",
+              "projectName": "chromium-mobile",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 12926,
+                  "errors": [],
+                  "stdout": [
+                    {
+                      "text": "HP_PERFORMANCE {\"frameP95Ms\":33.40000000000009,\"inputToNextFrameP95Ms\":3.800000011920929,\"frameCount\":456,\"inputCount\":32,\"userAgent\":\"Mozilla/5.0 (iPhone; CPU iPhone OS 15_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/26.6 Mobile/15E148 Safari/604.1\",\"hardwareConcurrency\":8,\"renderer\":\"ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)\",\"viewport\":[390,664]}\n"
+                    }
+                  ],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-05T12:04:12.324Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "hp-performance",
+                      "contentType": "application/json",
+                      "body": "ewogICJmcmFtZVA5NU1zIjogMzMuNDAwMDAwMDAwMDAwMDksCiAgImlucHV0VG9OZXh0RnJhbWVQOTVNcyI6IDMuODAwMDAwMDExOTIwOTI5LAogICJmcmFtZUNvdW50IjogNDU2LAogICJpbnB1dENvdW50IjogMzIsCiAgInVzZXJBZ2VudCI6ICJNb3ppbGxhLzUuMCAoaVBob25lOyBDUFUgaVBob25lIE9TIDE1XzAgbGlrZSBNYWMgT1MgWCkgQXBwbGVXZWJLaXQvNjA1LjEuMTUgKEtIVE1MLCBsaWtlIEdlY2tvKSBWZXJzaW9uLzI2LjYgTW9iaWxlLzE1RTE0OCBTYWZhcmkvNjA0LjEiLAogICJoYXJkd2FyZUNvbmN1cnJlbmN5IjogOCwKICAicmVuZGVyZXIiOiAiQU5HTEUgKEdvb2dsZSwgVnVsa2FuIDEuMy4wIChTd2lmdFNoYWRlciBEZXZpY2UgKFN1Ynplcm8pICgweDAwMDBDMERFKSksIFN3aWZ0U2hhZGVyIGRyaXZlcikiLAogICJ2aWV3cG9ydCI6IFsKICAgIDM5MCwKICAgIDY2NAogIF0KfQ=="
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "9a4eb95b17b56a90aca8-df8336956625b0a00712",
+          "file": "hp-qa.spec.ts",
+          "line": 160,
+          "column": 1
+        }
+      ]
+    },
+    {
+      "title": "lab.spec.ts",
+      "file": "lab.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "manual controls, deterministic restart, responsive canvas and replay",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium-desktop",
+              "projectName": "chromium-desktop",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 10274,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-05T12:02:50.084Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "d60a0d352cedb73bd581-c2906d5cf8db22aad7a4",
+          "file": "lab.spec.ts",
+          "line": 4,
+          "column": 1
+        },
+        {
+          "title": "AI search, four-board arena, batch export, invalid import guard",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium-desktop",
+              "projectName": "chromium-desktop",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 6676,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-05T12:03:00.397Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "d60a0d352cedb73bd581-790ea75bd0747a00798e",
+          "file": "lab.spec.ts",
+          "line": 21,
+          "column": 1
+        },
+        {
+          "title": "real DQN training, checkpoint export, frozen evaluation and GA controls",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium-desktop",
+              "projectName": "chromium-desktop",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 26377,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-05T12:03:07.091Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "d60a0d352cedb73bd581-5c0a9cc42f4fccd4420a",
+          "file": "lab.spec.ts",
+          "line": 29,
+          "column": 1
+        },
+        {
+          "title": "manual controls, deterministic restart, responsive canvas and replay",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium-mobile",
+              "projectName": "chromium-mobile",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 6015,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-05T12:04:25.278Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "d60a0d352cedb73bd581-6f66ee1e6b56c9dc1512",
+          "file": "lab.spec.ts",
+          "line": 4,
+          "column": 1
+        },
+        {
+          "title": "AI search, four-board arena, batch export, invalid import guard",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium-mobile",
+              "projectName": "chromium-mobile",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 6217,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-05T12:04:31.307Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "d60a0d352cedb73bd581-7802c12d3257404bb053",
+          "file": "lab.spec.ts",
+          "line": 21,
+          "column": 1
+        },
+        {
+          "title": "real DQN training, checkpoint export, frozen evaluation and GA controls",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium-mobile",
+              "projectName": "chromium-mobile",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 22076,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-05T12:04:37.541Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "d60a0d352cedb73bd581-648c1c53cf8a88973f05",
+          "file": "lab.spec.ts",
+          "line": 29,
+          "column": 1
+        }
+      ]
+    }
+  ],
+  "errors": [],
+  "stats": {
+    "startTime": "2026-10-05T12:01:02.932Z",
+    "duration": 238400.011,
+    "expected": 18,
+    "skipped": 0,
+    "unexpected": 0,
+    "flaky": 0
+  }
+}

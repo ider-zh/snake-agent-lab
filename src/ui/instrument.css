@@ -40,3 +40,40 @@ nav{gap:8px;counter-reset:workspaces}nav button{color:#becbb7;min-height:60px;pa
 .training-snapshot>.board-stage{background:#10251b}
 /* Keep the mobile arena controls and selected board above the fixed navigation. */
 @media(max-width:720px){.game-panel:has(.board-switcher) .board-focus{height:auto;aspect-ratio:auto}.game-panel:has(.board-switcher) .board-stage{height:auto}.game-panel:has(.board-switcher) .board-canvas{flex:none;width:min(100%,max(180px,calc(100svh - 420px)));height:auto;aspect-ratio:1;margin:0 auto}.game-panel:has(.board-switcher){scroll-margin-top:8px}.board-switcher{flex-shrink:0}}
+
+/* Unified low-glare palette. Geometry and interaction remain unchanged. */
+:root{color-scheme:dark;--paper:#242c28;--ink:#dce4d7;--accent:#a6bd92;--border:#4b5c4d;--muted:#b5c1b0;--panel:#29332d;--raised:#303c34;--field:#202923;--selected:#40533e;--focus:#b8cf9f;color:var(--ink);background:var(--paper)}
+button,input,select{color:var(--ink);border-color:#788875;background:var(--field)}
+button:hover:not(:disabled),.game-panel button:hover:not(:disabled){background:#394a3a;border-color:#a6b69c}
+button.primary,.game-panel button.primary,button.subtle{background:var(--selected);color:#e2eadb;border-color:#809675}
+button.primary:hover:not(:disabled),.game-panel button.primary:hover,button.subtle:hover:not(:disabled){background:#4a6045;color:#e2eadb}
+input[type=checkbox],input[type=range],.speed-label input,.board-legend input{accent-color:var(--accent)}
+button:focus-visible,input:focus-visible,select:focus-visible,a:focus-visible,[tabindex]:focus-visible,.game-panel button:focus-visible,.game-panel .board-focus:focus-visible,.measured-chart svg:focus-visible{outline:3px solid var(--focus);outline-offset:4px}
+.sidebar,.topbar{background:#232c26;border-color:var(--border)}
+.brand>span,.brand>span>span,.topbar strong{color:var(--ink)}.brand img{filter:saturate(.35) brightness(.85)}
+.brand small,.nav-label,nav button small,.build-label,.topbar span:first-child:not(.local-tag),.slash,.local-tag,.page-heading p,.eyebrow,.version-pill,.version-pill span,.page-footer{color:var(--muted)}
+nav button{color:var(--ink);background:transparent}.sidebar nav button.active{background:var(--selected);color:var(--ink);border-color:#758b6b}.sidebar nav button.active small{color:#d0ddc5}.sidebar nav button:hover:not(:disabled){background:#394a3a;color:var(--ink)}nav button.active i,.local-tag>span,.eyebrow-line{background:var(--accent)}
+.privacy-card{border-color:var(--border)}.privacy-card strong,.privacy-card p,.help-link{color:var(--muted)}.privacy-card svg{color:var(--accent)}.help-link:hover{background:#394a3a!important}.build-label,.version-pill,.topbar .icon-button{border-color:var(--border)}
+.configuration-bar,.segmented,.rule-controls>summary{background:#2b372e;border-color:var(--border);color:var(--ink)}
+.configuration-bar>label,.segmented button,.check-label,.field-label,.replay-slider{color:var(--ink)}.segmented button{background:transparent}.segmented button.selected{background:var(--selected);color:var(--ink);box-shadow:none}
+.metrics-row,.metric,.tiny-stats{border-color:var(--border)}.metric>span,.metric small{color:var(--muted)}.metric strong{color:var(--ink)}
+.panel,.game-panel{background:var(--panel);border-color:var(--border);box-shadow:none;color:var(--ink)}
+.panel-heading h2,.game-panel .panel-heading h2,.checkpoint-grid h3{color:var(--ink)}.panel-heading .eyebrow,.game-panel .eyebrow,.game-panel .status-dot,.game-panel .status-dot.live{color:var(--muted)}
+.game-panel .status-dot:before,.game-panel .status-dot.live:before{background:var(--accent)}
+.game-panel button{background:#2c392f;border-color:#788875;color:var(--ink)}.speed-label,.board-legend{color:var(--muted)}.board-legend{border-color:var(--border)}
+.game-panel .board-switcher button[aria-pressed=true],.game-panel .board-switcher button[aria-pressed=true]:hover{background:var(--selected);color:var(--ink);border-color:#a6bd92}.board-switcher button small,.game-panel .board-switcher button[aria-pressed=true] small,.game-panel .board-switcher button[aria-pressed=true]:hover small{color:#d0ddc5}
+.end-banner,.notice,.status-line{background:#303e31;color:#c8d8bb;border-color:#718366}
+.agent-description p,.detail-list dt,.tiny-stats>span,.chart-axis,.muted,.fine-print,.measured-chart figcaption{color:var(--muted)}
+.detail-list dd,.tiny-stats strong,.field-value,.measured-chart strong{color:var(--ink)}.detail-list>div{border-color:var(--border)}
+.badge{background:#354332;border-color:#718366;color:#c9d9bc}
+.replay-callout,.training-banner{background:#303e32;border-color:#61765a;color:var(--ink)}.replay-callout strong,.training-banner h2{color:var(--ink)}.replay-callout p,.training-banner p,.training-banner .eyebrow{color:var(--muted)}.replay-callout button,.dpad button{background:#394b38;color:var(--ink);border-color:#788875}
+.agent-checks label{background:var(--field);color:var(--ink);border-color:#788875}.agent-checks label:has(input:checked){background:#354633;border-color:#8fa381}.agent-checks small{color:#c0ceb7}
+.progress-track{background:#3c4c3d}.progress-track>div{background:#91aa7e}
+.empty-state{background:#263028;border-color:#61735a;color:var(--muted)}.empty-state h2,.empty-state h3{color:var(--ink)}.empty-state p{color:var(--muted)}
+.table-scroll,th,td{border-color:var(--border)}th{background:#303d32;color:#c4d2bb}td{color:var(--ink)}td strong{color:var(--ink)}td small{color:var(--muted)}.accent{color:#b7cba5}tbody tr:hover{background:#334335}summary{color:#c2d2b4}
+.network-glyph,.network-glyph span{color:#9fb58c}.training-snapshot p,.training-snapshot small{color:var(--muted)}.training-snapshot strong{color:var(--ink)}.training-snapshot>.board-stage{background:#27372d;border-color:#374b3b}
+.checkpoint-grid>div+div{border-color:var(--border)}.saved-list button{background:#303d32;border-color:#788875}.saved-list small{color:var(--muted)}
+.toast{background:#354633;border-color:#809675;color:#e2eadb;box-shadow:0 4px 18px #17201b30}.toast button{color:#e2eadb}
+.modal-backdrop{background:#19221dd9}.modal{background:#2c372f;border-color:#72846a;color:var(--ink);box-shadow:0 16px 50px #18201b55}.modal h2,.modal strong{color:var(--ink)}.modal p,.modal ol{color:#c2ceba}
+.error{color:#efb3a1!important;background:#49362f;border-color:#b68e7b}.error h2,.error h3,.error p{color:#efc2b3}
+.toast button,.playback-controls button[aria-label]{min-width:44px;min-height:44px}
