@@ -4,7 +4,7 @@
 
 ## 当前状态
 
-P1–P5 的代码已实现，尚待 HP 上真实浏览器端到端验证和修复。Cloudflare 部署由维护者后续执行。没有训练成绩或性能宣传数字；UI 中指标全部来自真实运行。
+P1–P5 功能已实现，并在 HP 上执行真实 Chromium 端到端验证。最终复验结果、截图和设备限制见 [HP 验证记录](hp-validation.md)。Cloudflare 部署由维护者后续执行；不以短训练宣称策略收敛。
 
 ## 交付模块
 
@@ -33,22 +33,9 @@ P1–P5 的代码已实现，尚待 HP 上真实浏览器端到端验证和修�
 
 ## 已执行验证
 
-云环境最终 `npm run check`（2026-10-05）：TypeScript、ESLint、86项测试（8个文件）和生产构建全部通过。包括27项核心/策略、18项实验/存储、20项训练、6项独立审查回归和15项React组件测试。真实浏览器端到端仍未运行。
+HP 的 `npm run check`（TypeScript、ESLint、86 项 Vitest、生产构建）已通过；Chromium 桌面和手机尺寸共 18 项端到端测试已通过。新增交互覆盖包括重复暂停、焦点、后台训练不重置游戏、DQN/GA 检查点恢复、错误模型导入、回放及 IndexedDB。完整结果与最终复验记录见 [HP 验证记录](hp-validation.md)。
 
-核心测试覆盖尾格释放、增长、碰撞、障碍、反向输入、填满、终局稳定、快照恢复与100种子哈希一致。搜索覆盖完整路径动态验证和A*/BFS路径成本；Hamiltonian包含100种子4×4完整填充样本。
-
-DQN测试证实真实有限权重更新、target同步、终止/截断target、Double DQN、恢复计数器/随机流/replay/Adam、冻结评估和张量释放。GA测试包含确定性、精英、交叉/变异、部分评估续训。审查发现的非法检查点种子/统计值和超大同步batch已纳入回归。
-
-React/jsdom测试不等同于真实WebGL或端到端浏览器验收。GitHub Actions附带Chromium Playwright流程；发布后需核对真实执行结果。
-
-## 当前未完成与 HP 下一步
-
-1. 拉取实现分支，先运行 `npm ci && npm run check`
-2. `npm run dev`，真实浏览器检查首屏、WebGL初始化/卸载、窗口缩放、移动窄屏、四棋盘布局
-3. `npx playwright install chromium && npm run test:e2e`。测试脚本已写，云受限环境未能运行：云浏览器拒绝localhost，本地Chromium缺少允许的socket启动能力；没有绕过限制
-4. 修复实际暴露的UI/Worker流程问题，重点检查：暂停/继续/取消、模型导入与恢复、冻结评估结束状态、本地库成功保存/加载、下载文件回导、可见性暂停
-5. 补记实际设备矩阵、取消延迟、主线程响应/吞吐。p95<100ms/取消<1s是设计目标，当前不能宣称达到
-6. 在最终代码上重跑全部验证，更新本记录；不自动部署Cloudflare、不推main或merge
+测试不等同于长期稳定性、实体手机、Safari、硬件 GPU 或策略优越性验证。可选 Dueling、ONNX、WASM/WebGPU 训练后端未实现；研究级多种子训练对照仍需后续执行。
 
 ## 许可
 

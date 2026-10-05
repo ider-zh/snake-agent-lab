@@ -47,7 +47,7 @@ export class TrainingController {
         if (!this.trainer && !this.evaluator) throw new Error('No paused job; import a checkpoint to resume');
         this.paused = false; this.trainer?.resume(); this.emit({ type: 'status', status: 'running' }); break;
       case 'cancel':
-        if (this.trainer) { this.trainer.pause(); this.emit({ type: 'progress', metrics: this.trainer.metrics() }); this.savedModel = this.trainer.exportModel(); this.emit({ type: 'model', model: this.savedModel }); }
+        if (this.trainer) { this.trainer.pause(); const metrics = this.trainer.metrics(); this.savedModel = this.trainer.exportModel(); this.emit({ type: 'model', model: this.savedModel }); this.release(); this.emit({ type: 'progress', metrics: { ...metrics, tensors: 0, tensorBytes: 0 } }); }
         if (this.evaluator) this.emit({ type: 'evaluation', result: this.evaluator.result('test', true) });
         this.release(); this.emit({ type: 'status', status: 'cancelled', reason: 'cancelled by user; live tensors and replay released' }); break;
       case 'checkpoint':
@@ -74,7 +74,8 @@ export class TrainingController {
                 this.trainer.pause(); this.emit({ type: 'progress', metrics: this.trainer.metrics() });
                 this.savedModel = this.trainer.exportModel(); this.savedCheckpoint = await this.trainer.checkpoint();
                 const reason = this.trainer.stopReason ?? 'completed';
-                this.emit({ type: 'model', model: this.savedModel }); this.release(); this.emit({ type: 'status', status: 'completed', reason }); break;
+                const metrics = this.trainer.metrics();
+                this.emit({ type: 'model', model: this.savedModel }); this.release(); this.emit({ type: 'progress', metrics: { ...metrics, tensors: 0, tensorBytes: 0 } }); this.emit({ type: 'status', status: 'completed', reason }); break;
               }
             } else if (this.evaluator) {
               this.evaluator.tick();

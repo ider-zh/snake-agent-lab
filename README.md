@@ -4,7 +4,7 @@ A local-first playground for Snake, search agents, and real browser training.
 
 SnakeLab 将手动游戏、自动策略、批量实验、回放和 DQN / GA 训练放在统一、确定性的规则核心上。React 管理界面，PixiJS 单画布绘制最多四局，Web Worker 隔离批量仿真与训练。
 
-**当前状态：P1–P5 实现代码已落地，交接到 HP 继续浏览器验收。** 单元/组件、类型、lint 与静态构建结果见 [验证记录](docs/implementation.md)。尚未部署，不宣称真实浏览器端到端验收、性能目标或策略收敛已经通过。
+**当前状态：P1–P5 功能已实现，并完成 HP 上一轮真实 Chromium 桌面与手机尺寸验收。** 最终复验记录、覆盖范围和限制见 [HP 验证记录](docs/hp-validation.md)，视觉迭代与截图见 [视觉审查](docs/visual-review.md)。Cloudflare 部署由维护者后续执行。
 
 ## 运行
 

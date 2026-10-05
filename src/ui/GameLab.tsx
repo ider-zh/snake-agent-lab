@@ -23,16 +23,19 @@ interface Props { arena: boolean; model: FrozenModel|null; onReplay: (replay: Re
 export function GameLab({arena,model,onReplay,notify}:Props) {
  const [manual,setManual]=useState(false); const [strategy,setStrategy]=useState<AgentId|'model'>('astar'); const [size,setSize]=useState(12); const [seed,setSeed]=useState(42); const [obstacles,setObstacles]=useState(false); const [speed,setSpeed]=useState(8); const [running,setRunning]=useState(false); const [overlay,setOverlay]=useState(true); const [states,setStates]=useState<Observation[]>([]); const [revision,setRevision]=useState(0); const [error,setError]=useState(''); const [compareModel,setCompareModel]=useState(false);
  const sessions=useRef<Session[]>([]); const input=useRef<Direction|null>(null); const boardFocus=useRef<HTMLDivElement>(null);
+ const [settingsOpen,setSettingsOpen]=useState(()=>window.innerWidth>720);
+ useEffect(()=>{const query=window.matchMedia?.('(max-width: 720px)');if(!query)return;const change=()=>setSettingsOpen(!query.matches);query.addEventListener('change',change);return()=>query.removeEventListener('change',change);},[]);
+ const activeModel=model&&((arena&&compareModel)||(!arena&&strategy==='model'&&!manual))?model:null;
  const restart=useCallback(()=>{
   setRunning(false); setError(''); input.current=null;
   try {
    const ids:AgentId[]=arena?['astar','bfs','safe-greedy','legal-random']:[strategy==='model'?'legal-random':strategy];
    const walls=obstacles?[size*2+2,size*2+3,size*(size-3)+size-3,size*(size-3)+size-4]:[];
-   const config:Partial<GameConfig>=(model&&((arena&&compareModel)||(!arena&&strategy==='model'&&!manual)))?model.game:{width:size,height:size,initialization:(!arena&&strategy==='hamiltonian'&&!manual)?'cycle':'standard',obstacles:walls,maxSteps:5000,maxNoFood:500};
+   const config:Partial<GameConfig>=activeModel?activeModel.game:{width:size,height:size,initialization:(!arena&&strategy==='hamiltonian'&&!manual)?'cycle':'standard',obstacles:walls,maxSteps:5000,maxNoFood:500};
    sessions.current=ids.map(id=>{const game=new Game(config,seed);return {game,agent:createAgent(id,seed^0xabc124,{maxNodes:10000,maxMs:20}),actions:[],observations:[game.observe()]};});
    setStates(sessions.current.map(s=>s.game.observe())); setRevision(value=>value+1);
   }catch(err){setError(String(err));sessions.current=[];setStates([]);}
- },[arena,manual,strategy,size,seed,obstacles,model,compareModel]);
+ },[arena,manual,strategy,size,seed,obstacles,activeModel]);
  useEffect(()=>restart(),[restart]);
  const tick=useCallback(()=>{
   let active=false;
@@ -58,15 +61,18 @@ export function GameLab({arena,model,onReplay,notify}:Props) {
  },[turn,manual,arena]);
  const makeReplay=()=>{const session=sessions.current[0];if(!session)throw new Error('没有对局');return createReplay({config:session.game.observe().config,seed,actions:session.actions,label:manual?'手动对局':strategy==='model'?`${model?.algorithm} 冻结模型`:session.agent.id});};
  const save=async()=>{try{const replay=makeReplay();await saveRecord('replay',`replay-${Date.now()}`,replay);notify('回放已保存在本浏览器');}catch(err){notify(String(err));}};
- const current=states[0]; const agent=strategy==='model'?{id:'model',label:`${model?.algorithm.toUpperCase()??''} 冻结模型`,tag:'TRAINED MODEL',description:'使用已训练或导入的真实网络权重决策。关闭探索，不更新参数；棋盘与规则严格匹配模型。'}:AGENTS.find(a=>a.id===strategy)!; const terminal=current&&(current.terminated||current.truncated); const history=sessions.current[0]?.observations??[];
+ const current=states[0]; const agent=strategy==='model'?{id:'model',label:`${model?.algorithm.toUpperCase()??''} 冻结模型`,tag:'TRAINED MODEL',description:'使用已训练或导入的真实网络权重决策。关闭探索，不更新参数；棋盘与规则严格匹配模型。'}:AGENTS.find(a=>a.id===strategy)!; const terminal=current&&(arena?states.every(state=>state.terminated||state.truncated):(current.terminated||current.truncated)); const history=sessions.current[0]?.observations??[];
  return <div className="lab-content" data-testid={arena?'arena-lab':'game-lab'}>
-  <div className="configuration-bar">
+  <div className="game-toolbar">
    {!arena&&<div className="segmented" aria-label="控制方式"><button className={!manual?'selected':''} onClick={()=>setManual(false)}>智能体</button><button className={manual?'selected':''} onClick={()=>setManual(true)}>手动游玩</button></div>}
+<details className="rule-controls" open={settingsOpen} onToggle={event=>setSettingsOpen(event.currentTarget.open)}><summary>规则设置 · {current?.config.width??size} × {current?.config.height??size} · #{seed}</summary>
+  <div className="configuration-bar">
    <label>棋盘<select aria-label="棋盘尺寸" disabled={!!model&&((arena&&compareModel)||(!arena&&strategy==='model'&&!manual))} value={size} onChange={e=>setSize(Number(e.target.value))}><option value={8}>8 × 8</option><option value={12}>12 × 12</option><option value={16}>16 × 16</option><option value={9}>9 × 9</option></select></label>
    <label>种子<input aria-label="游戏种子" type="number" min="0" max="4294967295" value={seed} onChange={e=>setSeed(Math.max(0,Math.min(4294967295,Number(e.target.value))))}/></label>
    <label className="check-label"><input type="checkbox" disabled={!!model&&((arena&&compareModel)||(!arena&&strategy==='model'&&!manual))} checked={obstacles} onChange={e=>setObstacles(e.target.checked)}/>障碍地图 <span className="badge">P5</span></label>
    {arena&&model&&<label className="check-label"><input type="checkbox" checked={compareModel} onChange={e=>setCompareModel(e.target.checked)}/>加入冻结模型（同规则）</label>}<span className="local-tag"><span/>确定性核心 v1</span>
   </div>
+</details></div>
   <div className="metrics-row"><Metric label={arena?'首局得分':'获得食物'} value={current?.score??0} detail="+1 / FOOD"/><Metric label="棋盘填充" value={`${current?((current.snake.length/(current.config.width*current.config.height-current.config.obstacles.length))*100).toFixed(1):0}%`} detail={`${current?.snake.length??3} 格蛇身`}/><Metric label="环境步数" value={fmt(current?.steps??0)} detail="上限 5,000 步"/><Metric label={arena?'并行棋盘':'决策耗时'} value={arena?'04':`${(sessions.current[0]?.debug?.elapsedMs??0).toFixed(2)}`} detail={arena?'独立环境 · 相同初态':'毫秒 / 最近一步'}/></div>
   <div className="game-layout">
    <Panel className="game-panel" title={arena?'策略竞技场':manual?'由你掌舵':agent.label} eyebrow={arena?'SIDE BY SIDE':'LIVE ENVIRONMENT'} aside={<span className={`status-dot ${running?'live':''}`}>{running?'运行中':terminal?'本局结束':'已暂停'}</span>}>
@@ -74,7 +80,7 @@ export function GameLab({arena,model,onReplay,notify}:Props) {
      {error?<div className="empty-state error"><Icon name="shield" size={36}/><h3>当前策略不适用于此棋盘</h3><p>{error}</p><button onClick={()=>{setObstacles(false);setSize(12);}}>恢复 12 × 12 无障碍地图</button></div>:states.length>0&&<Board views={states.map((observation,index)=>({observation,label:arena?(compareModel&&model&&index===3?`${model.algorithm.toUpperCase()} 模型`:AGENTS.find(a=>a.id===sessions.current[index]?.agent.id)!.label):manual?'手动':agent.label,debug:sessions.current[index]?.debug,color:[0xb9ec78,0x77cec5,0xc8a2ef,0xf3b47e][index]}))} overlay={overlay}/>}
     </div>
     {terminal&&<div className="end-banner" role="status"><strong>{REASONS[current.reason??'']??'对局结束'}</strong><span>{current.truncated?'实验截断':'规则终局'} · {current.score} 份食物 · {current.steps} 步</span></div>}
-    <div className="playback-controls"><button className="primary" disabled={!!error||!!terminal} onClick={()=>{setRunning(!running);boardFocus.current?.focus();}}><Icon name={running?'pause':'play'} size={17}/>{running?'暂停':'开始运行'}</button><button disabled={running||!!error||!!terminal} onClick={tick} title="推进一步"><Icon name="step" size={17}/><span>单步</span></button><button onClick={restart} title="相同种子重新开始"><Icon name="reset" size={17}/><span>重开</span></button><label className="speed-label">{speed} 步/秒<input aria-label="运行速度" type="range" min="1" max="30" value={speed} onChange={e=>setSpeed(Number(e.target.value))}/></label></div>
+    <div className="playback-controls"><button className="primary" disabled={!!error||!!terminal} onClick={()=>{setRunning(!running);boardFocus.current?.focus({preventScroll:true});}}><Icon name={running?'pause':'play'} size={17}/>{running?'暂停':'开始运行'}</button><button disabled={running||!!error||!!terminal} onClick={tick} title="推进一步"><Icon name="step" size={17}/><span>单步</span></button><button onClick={restart} title="相同种子重新开始"><Icon name="reset" size={17}/><span>重开</span></button><label className="speed-label">{speed} 步/秒<input aria-label="运行速度" type="range" min="1" max="30" value={speed} onChange={e=>setSpeed(Number(e.target.value))}/></label></div>
     <div className="board-legend"><span><i className="head"/>蛇头</span><span><i className="food"/>食物</span><span><i className="path"/>候选路径</span><label><input type="checkbox" checked={overlay} onChange={e=>setOverlay(e.target.checked)}/>显示搜索过程</label></div>
    </Panel>
    <aside className="inspector">

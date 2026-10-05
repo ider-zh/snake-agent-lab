@@ -4,9 +4,18 @@ import type { DebugInfo, Observation } from '../core/types';
 export interface BoardView { observation: Observation; label: string; color?: number; debug?: DebugInfo; }
 export function Board({ views, overlay = true }: { views: BoardView[]; overlay?: boolean }) {
   const host = useRef<HTMLDivElement>(null);
-  const latest = useRef({ views, overlay });
+  const [compact, setCompact] = useState(() => window.matchMedia?.('(max-width: 720px)').matches ?? false);
+  const [selected, setSelected] = useState(0);
+  const displayed = compact && views.length > 1 ? [views[Math.min(selected, views.length - 1)]] : views;
+  const latest = useRef({ views: displayed, overlay });
   const [error, setError] = useState('');
-  useEffect(() => { latest.current = { views, overlay }; });
+  useEffect(() => { latest.current = { views: displayed, overlay }; });
+  useEffect(() => {
+    const query = window.matchMedia('(max-width: 720px)');
+    const change = () => setCompact(query.matches);
+    query.addEventListener('change', change);
+    return () => query.removeEventListener('change', change);
+  }, []);
   useEffect(() => {
     let cancelled = false;
     let ready = false;
@@ -35,15 +44,15 @@ export function Board({ views, overlay = true }: { views: BoardView[]; overlay?:
         container.y = Math.floor(index / cols) * (boxH + gap) + titleH;
         app.stage.addChild(container);
         if (count > 1) {
-          const title = new Text({ text: `${view.label} · ${state.score} 食物${state.terminated || state.truncated ? ' · 已结束' : ''}`, style: { fontFamily: 'system-ui', fontSize: 11, fill: '#a5b2a8' } });
+          const title = new Text({ text: `${view.label} · ${state.score} 食物${state.terminated || state.truncated ? ' · 已结束' : ''}`, style: { fontFamily: 'system-ui', fontSize: 12, fill: '#d2dfc4' } });
           title.y = -22;
           container.addChild(title);
         }
         const g = new Graphics();
         container.addChild(g);
-        g.roundRect(0, 0, w, h, 6).fill(0x121b18);
+        g.roundRect(0, 0, w, h, 3).fill(0x10251b);
         for (let y = 0; y < state.config.height; y++) for (let x = 0; x < state.config.width; x++) {
-          if ((x + y) % 2 === 0) g.rect(x * cell + .5, y * cell + .5, cell - 1, cell - 1).fill({ color: 0x19241f, alpha: .55 });
+          if ((x + y) % 2 === 0) g.rect(x * cell + .5, y * cell + .5, cell - 1, cell - 1).fill({ color: 0x203d2b, alpha: .5 });
         }
         const square = (id: number, color: number, alpha: number, inset: number, radius = 3) => {
           g.roundRect((id % state.config.width) * cell + inset, Math.floor(id / state.config.width) * cell + inset, cell - 2 * inset, cell - 2 * inset, radius).fill({ color, alpha });
@@ -65,7 +74,7 @@ export function Board({ views, overlay = true }: { views: BoardView[]; overlay?:
           g.circle(x, y, cell * .2).fill(0xf3a475);
           g.circle(x - cell * .045, y - cell * .065, cell * .045).fill(0xffdfbd);
         }
-        const color = view.color ?? 0xb9ec78;
+        const color = view.color ?? 0xc7f36b;
         [...state.snake].reverse().forEach((id, reverseIndex) => {
           const i = state.snake.length - reverseIndex - 1;
           square(id, color, i === 0 ? 1 : Math.max(.3, .8 - i / (state.snake.length + 2) * .45), Math.max(1.4, cell * .1), Math.max(2, cell * .18));
@@ -78,7 +87,7 @@ export function Board({ views, overlay = true }: { views: BoardView[]; overlay?:
           const [dx,dy] = vectors[state.direction];
           for (const side of [-1,1]) g.circle(x + dx * cell * .18 + dy * cell * .13 * side, y + dy * cell * .18 - dx * cell * .13 * side, Math.max(1.1, cell * .043)).fill(0x182416);
         }
-        g.roundRect(0, 0, w, h, 6).stroke({ color: 0x344238, width: 1 });
+        g.roundRect(0, 0, w, h, 3).stroke({ color: 0x587446, width: 1 });
       });
     };
     void app.init({ backgroundAlpha: 0, antialias: true, resolution: Math.min(window.devicePixelRatio || 1, 2), autoDensity: true, preference: 'webgl', resizeTo: host.current!, powerPreference: 'low-power' }).then(() => {
@@ -90,5 +99,5 @@ export function Board({ views, overlay = true }: { views: BoardView[]; overlay?:
     }).catch(err => { if (!cancelled) setError(`绘图初始化失败：${String(err)}`); });
     return () => { cancelled = true; if (ready) app.destroy(true, { children: true }); };
   }, []);
-  return <div ref={host} className={`board-canvas ${views.length > 1 ? 'multi-board' : ''}`} role="img" aria-label={views.map(view => `${view.label}，得分 ${view.observation.score}，步数 ${view.observation.steps}`).join('；')}>{error && <p className="error">{error}。请使用支持 WebGL 的浏览器</p>}</div>;
+  return <div className="board-stage">{compact && views.length > 1 && <div className="board-switcher" role="group" aria-label="选择观察策略">{views.map((view, index) => <button key={view.label} aria-pressed={selected === index} onClick={() => setSelected(index)}><strong>{view.label}</strong><small>{view.observation.score} 食物 · {view.observation.steps} 步{view.observation.terminated || view.observation.truncated ? ' · 结束' : ''}</small></button>)}</div>}<div ref={host} className={`board-canvas ${displayed.length > 1 ? 'multi-board' : ''}`} role="img" aria-label={displayed.map(view => `${view.label}，得分 ${view.observation.score}，步数 ${view.observation.steps}`).join('；')}>{error && <p className="error">{error}。请使用支持 WebGL 的浏览器</p>}</div></div>;
 }

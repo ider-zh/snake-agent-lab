@@ -406,7 +406,12 @@ describe('training UI worker lifecycle', () => {
     fireEvent.click(button(/^实验台/));
     expect(worker.terminate).not.toHaveBeenCalled();
     expect(screen.getByTestId('game-lab')).toBeTruthy();
+    fireEvent.click(button('手动游玩'));
+    fireEvent.click(button('单步'));
+    const manualState = current();
     worker.emit({ type: 'progress', jobId: worker.jobId, schemaVersion: 1, sequence: 1, metrics: metrics(37) });
+    worker.emit({ type: 'model', jobId: worker.jobId, schemaVersion: 1, sequence: 2, model: frozenModel() });
+    expect(current()).toEqual(manualState);
     fireEvent.click(button(/^训练实验室/));
     expect(screen.getByRole('status').textContent).toBe('训练中');
     expect(screen.getByText('37 SAMPLES')).toBeTruthy();
