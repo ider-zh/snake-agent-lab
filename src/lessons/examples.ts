@@ -30,6 +30,21 @@ def legal(d):
     return d != (direction+2)%4 and nxt >= 0 and nxt not in obstacles and nxt not in body
 `;
 const snippets: Record<string, [string,string]> = {
+'hamiltonian-shortcut':[`// 环距离构件；索引输入来自固定环，不是棋盘格编号。
+// 非增长可进入释放的尾格；增长必须严格停在尾格之前。
+// 完整策略还要检验物理邻接、身体环序和下一后继可用性。
+function allowed(head,tail,food,target,n,grows) {
+  const distance=cell=>(cell-head+n)%n,advance=distance(target);
+  return advance>0&&advance<=distance(food)&&(grows?advance<distance(tail):advance<=distance(tail));
+}
+console.log(JSON.stringify([allowed(10,2,14,12,16,false),allowed(10,2,14,1,16,false),allowed(10,2,5,2,16,true)]));`, `# 环距离构件；输入是环索引。完整策略另查物理邻接、环序和后继。
+# 非增长可进入释放尾格；增长必须严格停在尾格之前。
+def allowed(head, tail, food, target, n, grows):
+    distance = lambda cell: (cell-head+n)%n
+    advance = distance(target)
+    tail_ok = advance < distance(tail) if grows else advance <= distance(tail)
+    return advance > 0 and advance <= distance(food) and tail_ok
+print(json.dumps([allowed(10,2,14,12,16,False),allowed(10,2,14,1,16,False),allowed(10,2,5,2,16,True)]))`],
 random:[`// 输入外部随机数 u∈[0,1)，输出方向；0.6 对应下。
 function choose(u) { return Math.floor(u*4); }
 console.log(JSON.stringify(choose(0.6)));`, `# 输入随机数 u∈[0,1)，输出方向；与 JS 共享输入。
@@ -214,7 +229,7 @@ def search():
 print(json.dumps(search()))`]; }
 snippets.bfs=search('bfs');snippets.astar=search('astar');
 export const exampleIds = Object.keys(snippets);
-export const expectedOutputs: Record<string,unknown> = {random:2,'legal-random':1,greedy:0,'safe-greedy':{space:62,tailReachable:true},hamiltonian:12,encoding:[0,0,0,-0.25,-0.25,0.5,0.375,0.375,0.5,0.375,0.375,3/63],dqn:{double:3.7,dqn:6.4,terminal:1},ga:374.9515,evaluation:{mean:4,median:3,min:0,max:10},bfs:[36,28,20,19,18],astar:[36,28,20,19,18]};
+export const expectedOutputs: Record<string,unknown> = {'hamiltonian-shortcut':[true,false,false],random:2,'legal-random':1,greedy:0,'safe-greedy':{space:62,tailReachable:true},hamiltonian:12,encoding:[0,0,0,-0.25,-0.25,0.5,0.375,0.375,0.5,0.375,0.375,3/63],dqn:{double:3.7,dqn:6.4,terminal:1},ga:374.9515,evaluation:{mean:4,median:3,min:0,max:10},bfs:[36,28,20,19,18],astar:[36,28,20,19,18]};
 export function exampleCode(id: string, language: 'js'|'py'): string {
   const index=language==='js'?0:1;
   return (index===0?jsBase:pyBase)+ '\n'+snippets[id][index]+'\n';

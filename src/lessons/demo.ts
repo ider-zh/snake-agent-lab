@@ -1,8 +1,8 @@
 import { createAgent } from '../agents';
 import { Game, type AgentId } from '../core';
 export function lessonGame(agent?: AgentId, scene='obstacles'): Game {
-  const game=new Game({width:8,height:8,initialLength:3,initialization:agent==='hamiltonian'?'cycle':'standard',obstacles:agent==='hamiltonian'||scene==='open'?[]:[27],maxSteps:1000,maxNoFood:200},7);
-  if(agent!=='hamiltonian') game.restore({...game.snapshot(),food:18});
+  const game=new Game({width:8,height:8,initialLength:3,initialization:agent?.startsWith('hamiltonian')?'cycle':'standard',obstacles:agent?.startsWith('hamiltonian')||scene==='open'?[]:[27],maxSteps:1000,maxNoFood:200},7);
+  if(!agent?.startsWith('hamiltonian')) game.restore({...game.snapshot(),food:18});
   return game;
 }
 export function lessonDecision(agent: AgentId, scene: string, moves: number) {

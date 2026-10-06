@@ -11,7 +11,7 @@ export interface Observation {
 }
 export interface Snapshot extends Observation { version: 'snake-core-v1'; seed: number; rngState: number; }
 export interface StepResult { observation: Observation; reward: number; events: string[]; terminated: boolean; truncated: boolean; }
-export type AgentId = 'random' | 'legal-random' | 'greedy' | 'safe-greedy' | 'bfs' | 'astar' | 'hamiltonian';
+export type AgentId = 'random' | 'legal-random' | 'greedy' | 'safe-greedy' | 'bfs' | 'astar' | 'hamiltonian' | 'hamiltonian-shortcut';
 export interface SearchNode { cell: number; g: number; h: number; f: number; }
 export interface SearchFrame { current: SearchNode; frontier: SearchNode[]; visited: number[]; }
 export interface DebugInfo { path: number[]; visited: number[]; expanded: number; fallback?: string; elapsedMs: number; trace?: SearchFrame[]; traceTruncated?: boolean; }

@@ -3,6 +3,15 @@
   "python": "Python 3.13.12",
   "results": [
     {
+      "lesson": "hamiltonian-shortcut",
+      "matched": true,
+      "output": [
+        true,
+        false,
+        false
+      ]
+    },
+    {
       "lesson": "random",
       "matched": true,
       "output": 2

@@ -1,3 +1,4 @@
+import { createShortcutAgent } from './shortcut';
 import { cycle, directionBetween, legalActions, moveCell, SeededRandom, simulateMove } from '../core';
 import type { Agent, AgentId, DebugInfo, Decision, Direction, Observation, SearchFrame } from '../core';
 export type { Agent, AgentId, DebugInfo, Decision } from '../core';
@@ -167,8 +168,9 @@ export function hamiltonianApplicable(obs: Observation): boolean {
 
 /** Agent and environment use separate PRNG instances. Wall-clock debug is not replay state. */
 export function createAgent(id: AgentId, seed = 1, requestedBudget: SearchBudget = DEFAULT_BUDGET, options: { trace?: boolean } = {}): Agent {
-  if (!['random', 'legal-random', 'greedy', 'safe-greedy', 'bfs', 'astar', 'hamiltonian'].includes(id)) throw new Error(`Unknown agent: ${id}`);
+  if (!['random', 'legal-random', 'greedy', 'safe-greedy', 'bfs', 'astar', 'hamiltonian', 'hamiltonian-shortcut'].includes(id)) throw new Error(`Unknown agent: ${id}`);
   if (!Number.isInteger(requestedBudget.maxNodes) || requestedBudget.maxNodes < 0 || requestedBudget.maxNodes > 10_000_000 || typeof requestedBudget.maxMs !== 'number' || Number.isNaN(requestedBudget.maxMs) || requestedBudget.maxMs < 0) throw new Error('Invalid decision budget');
+  if (id === 'hamiltonian-shortcut') return createShortcutAgent({ ...requestedBudget });
   const limits = { ...requestedBudget }, random = new SeededRandom(seed);
   return { id, decide(obs: Observation): Decision {
     const budget = new Budget(limits), debug: DebugInfo = { path: [], visited: [], expanded: 0, elapsedMs: 0 };
