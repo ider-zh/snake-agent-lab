@@ -9,6 +9,7 @@ import { createReplay, exportReplay, saveRecord } from '../storage';
 import type { ReplayRecord } from '../storage';
 import { Icon, Metric, Panel, Sparkline, downloadFile, fmt } from './shared';
 export const AGENTS: {id: AgentId; label: string; description: string; tag: string}[] = [
+ {id:'tail-safe',label:'A* + 尾部绕行',description:'先尝试原 A* 安全食物路径；回退时尝试通向尾部的路径与最多16次双格绕行，并精确模拟整条路径。共享节点和时间预算；适用障碍图，但可能停滞或截断，不保证填满。',tag:'BOUNDED HEURISTIC'},
  {id:'hamiltonian-shortcut',label:'Hamiltonian 安全捷径',description:'保持身体沿环有序，只选择不越过食物、精确移动后仍可沿环前进的物理邻格。需要无障碍、偶数边、cycle 初态和至少3格身体；有限预算仍可能截断。',tag:'ORDERED CYCLE'},
  {id:'astar',label:'A* 安全搜索',description:'启发式搜索寻找食物，模拟整条蛇验证路径，再检查尾部可达性与剩余空间。安全检查是启发式，不保证必胜。',tag:'SEARCH'},
  {id:'bfs',label:'BFS 广度搜索',description:'逐层寻找最短候选路径，经过真实规则模拟和空间检查后执行。每一步重新规划。',tag:'SEARCH'},

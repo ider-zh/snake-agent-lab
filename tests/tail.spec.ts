@@ -1,0 +1,21 @@
+import {test,expect} from '@playwright/test';
+test('tail detour can step, pause, replay and teach its limits',async({page},info)=>{
+  const errors:string[]=[];page.on('pageerror',e=>errors.push(e.message));await page.goto('/');
+  await page.getByLabel('决策策略',{exact:true}).selectOption('tail-safe');
+  for(let i=0;i<12;i++)await page.getByRole('button',{name:'单步',exact:true}).click();
+  await page.getByRole('button',{name:'开始运行',exact:true}).click();
+  await page.getByRole('button',{name:'暂停',exact:true}).click();
+  const stats=page.getByTestId('game-lab').locator('.tiny-stats strong[title]');
+  const hash=await stats.getAttribute('title');
+  await page.getByRole('button',{name:'查看本局回放',exact:true}).click();
+  const slider=page.getByLabel('回放进度',{exact:true});await slider.fill((await slider.getAttribute('max'))!);
+  await expect(page.locator('.hash-value')).toHaveText(hash!);
+  await page.getByRole('button',{name:'算法课堂',exact:true}).click();
+  await page.getByLabel('选择课程',{exact:true}).selectOption('tail-safe');
+  await page.getByRole('button',{name:'执行建议动作',exact:true}).click();
+  await expect(page.getByTestId('lesson-state')).toContainText('游戏步数 1');
+  await page.getByRole('button',{name:'Python',exact:true}).click();
+  await expect(page.locator('pre[aria-label="Python 可运行示例"]')).toContainText('def detour');
+  await page.getByTestId('lessons-lab').screenshot({path:`docs/qa/tail/${info.project.name}-lesson.png`});
+  expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1)).toBe(true);expect(errors).toEqual([]);
+});

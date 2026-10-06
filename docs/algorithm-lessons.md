@@ -31,3 +31,7 @@
 ## 第二批：安全捷径优先
 
 新增第 12 课和双语环距离构件；12 对示例实际运行一致。新增策略、通关预算和 30 种子对照见 [通关效率报告](efficient-completion.md)。原 11 课交付已独立提交；其后授权的算法仍按用户质量优先顺序推进。
+
+## Third batch: bounded tail detours
+
+Added an optional A* fallback policy and lesson 13. The default A* remains unchanged. Held-out 240-episode results improve mean food across all four groups, but show persistent no-progress and step-limit failures. Full protocol, raw data and limits: [tail detour report](tail-detour.md). The remaining eight authorized algorithms are still pending; this is not full-scope completion.

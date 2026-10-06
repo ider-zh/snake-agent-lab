@@ -39,7 +39,7 @@ describe('real search lessons',()=>{
     }
   });
   it('all lessons have executable bilingual programs and honest scope',()=>{
-    expect(lessons).toHaveLength(12);
+    expect(lessons).toHaveLength(13);
     for(const lesson of lessons)for(const language of ['js','py'] as const)expect(exampleCode(lesson.id,language)).toContain(language==='js'?'JSON.stringify':'json.dumps');
     const encoded=encodeObservation(lessonGame().observe(),'compact-v2');
     expect(encoded).toHaveLength(12);

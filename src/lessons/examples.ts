@@ -30,6 +30,24 @@ def legal(d):
     return d != (direction+2)%4 and nxt >= 0 and nxt not in obstacles and nxt not in body
 `;
 const snippets: Record<string, [string,string]> = {
+'tail-safe':[`// 输入路径相邻边与禁用格；输出不重复的两格矩形绕行。
+// 构件示例，不包含整条动态路径验证，也不证明长期安全。
+function detour(a,b,used,blocked) {
+  for(let d=0;d<4;d++) {
+    const x=move(a,d),y=move(b,d);
+    if(x>=0&&y>=0&&!used.includes(x)&&!used.includes(y)&&!blocked.includes(x)&&!blocked.includes(y)) return [a,x,y,b];
+  }
+  return null;
+}
+console.log(JSON.stringify(detour(36,28,[36,28],[27])));`, `# 输入路径相邻边与禁用格；只演示矩形绕行构件。
+# 完整策略另做共享预算检查和整条动态路径验证。
+def detour(a, b, used, blocked):
+    for d in range(4):
+        x, y = move(a,d), move(b,d)
+        if x >= 0 and y >= 0 and x not in used and y not in used and x not in blocked and y not in blocked:
+            return [a,x,y,b]
+    return None
+print(json.dumps(detour(36,28,[36,28],[27])))`],
 'hamiltonian-shortcut':[`// 环距离构件；索引输入来自固定环，不是棋盘格编号。
 // 非增长可进入释放的尾格；增长必须严格停在尾格之前。
 // 完整策略还要检验物理邻接、身体环序和下一后继可用性。
@@ -229,7 +247,7 @@ def search():
 print(json.dumps(search()))`]; }
 snippets.bfs=search('bfs');snippets.astar=search('astar');
 export const exampleIds = Object.keys(snippets);
-export const expectedOutputs: Record<string,unknown> = {'hamiltonian-shortcut':[true,false,false],random:2,'legal-random':1,greedy:0,'safe-greedy':{space:62,tailReachable:true},hamiltonian:12,encoding:[0,0,0,-0.25,-0.25,0.5,0.375,0.375,0.5,0.375,0.375,3/63],dqn:{double:3.7,dqn:6.4,terminal:1},ga:374.9515,evaluation:{mean:4,median:3,min:0,max:10},bfs:[36,28,20,19,18],astar:[36,28,20,19,18]};
+export const expectedOutputs: Record<string,unknown> = {'tail-safe':[36,37,29,28],'hamiltonian-shortcut':[true,false,false],random:2,'legal-random':1,greedy:0,'safe-greedy':{space:62,tailReachable:true},hamiltonian:12,encoding:[0,0,0,-0.25,-0.25,0.5,0.375,0.375,0.5,0.375,0.375,3/63],dqn:{double:3.7,dqn:6.4,terminal:1},ga:374.9515,evaluation:{mean:4,median:3,min:0,max:10},bfs:[36,28,20,19,18],astar:[36,28,20,19,18]};
 export function exampleCode(id: string, language: 'js'|'py'): string {
   const index=language==='js'?0:1;
   return (index===0?jsBase:pyBase)+ '\n'+snippets[id][index]+'\n';

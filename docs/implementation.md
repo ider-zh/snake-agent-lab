@@ -50,3 +50,7 @@ HP 的 `npm run check`（TypeScript、ESLint、92 项 Vitest、生产构建）�
 ## 高效填满策略（2026-10-06）
 
 新增有条件 Hamiltonian 安全捷径；同协议独立 30 种子中，8/12/20 三种尺寸充足预算均 30/30 填满，环境步数较纯环减少约 36%/44%/47%。20×20 的 5000 步预算仍全部截断，不宣称任意图必胜。详见 [通关效率报告](efficient-completion.md)。
+
+## Third batch: bounded tail detours
+
+Added an optional A* fallback policy and lesson 13. The default A* remains unchanged. Held-out 240-episode results improve mean food across all four groups, but show persistent no-progress and step-limit failures. Full protocol, raw data and limits: [tail detour report](tail-detour.md). The remaining eight authorized algorithms are still pending; this is not full-scope completion.

@@ -3,6 +3,16 @@
   "python": "Python 3.13.12",
   "results": [
     {
+      "lesson": "tail-safe",
+      "matched": true,
+      "output": [
+        36,
+        37,
+        29,
+        28
+      ]
+    },
+    {
       "lesson": "hamiltonian-shortcut",
       "matched": true,
       "output": [

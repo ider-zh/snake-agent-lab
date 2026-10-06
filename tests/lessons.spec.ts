@@ -22,7 +22,7 @@ test('lessons use real frozen search, explicit moves and accessible bilingual co
   expect(await page.evaluate(()=>(window as unknown as {copied:string}).copied)).toBe(await code.textContent());
   await page.evaluate(()=>Object.defineProperty(navigator,'clipboard',{configurable:true,value:undefined}));
   await page.getByRole('button',{name:'复制代码',exact:true}).click();await expect(page.getByText('复制不可用，请聚焦代码框手动选择，或下载文件。',{exact:true})).toBeVisible();
-  for(const id of ['hamiltonian-shortcut','astar','random','legal-random','greedy','safe-greedy','hamiltonian','encoding','dqn','ga','evaluation']){
+  for(const id of ['tail-safe','hamiltonian-shortcut','astar','random','legal-random','greedy','safe-greedy','hamiltonian','encoding','dqn','ga','evaluation']){
     await page.getByLabel('选择课程',{exact:true}).selectOption(id);
     await expect(page.getByText('边界与限制',{exact:true})).toBeAttached();
     const answer=page.getByText('显示练习解答',{exact:true});await answer.click();await expect(answer.locator('..')).toHaveAttribute('open','');
