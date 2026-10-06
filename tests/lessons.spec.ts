@@ -1,7 +1,7 @@
 import { expect, test } from '@playwright/test';
 test('lessons use real frozen search, explicit moves and accessible bilingual code',async({page},info)=>{
   const errors:string[]=[];page.on('pageerror',error=>errors.push(error.message));
-  await page.goto('/');await page.getByRole('button',{name:'算法课堂',exact:true}).click();
+  await page.goto('/');await page.getByRole('button',{name:'策略课堂',exact:true}).click();
   await expect(page.getByText('无需训练的规划／规则策略',{exact:true})).toBeVisible();
   const state=page.getByTestId('lesson-state'),initial=await state.textContent();
   await expect(page.getByRole('button',{name:'执行建议动作',exact:true})).toBeDisabled();

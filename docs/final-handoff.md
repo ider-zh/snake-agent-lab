@@ -1,5 +1,7 @@
 # HP local handoff — 2026-10-06
 
+Subsequent user-feedback repairs are documented in [the repair report](repair-report.md). The validation below describes the original b8a6592 delivery.
+
 Work is on `feat/algorithm-lessons`, based on merged main `10c40747f265fb1d302f4ad2e806aa91d9b8df6e`. The original task-2 checkout was preserved. All changes remain local; no push, new PR, merge or Cloudflare deployment was performed. Publication still requires the parent's pending authorization. The archive's `SOURCE_COMMIT.txt` identifies its exact commit.
 
 ## Delivered scope

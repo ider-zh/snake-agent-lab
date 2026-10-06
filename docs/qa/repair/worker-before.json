@@ -1,0 +1,18 @@
+{
+  "indexMatchesDist": true,
+  "assets": [
+    {
+      "path": "/assets/index-DGV20j7P.js",
+      "matchesDist": true,
+      "sha256": "5efc11616dbe321241dc5d706dabe54b48b5057e823f6a0d936d1701fbaa92a0"
+    },
+    {
+      "path": "/assets/index-CPUYNot-.css",
+      "matchesDist": true,
+      "sha256": "7550b343af3aed772fd18313a5e04b3f25e66541ea11b1e079583f8fc32963fb"
+    }
+  ],
+  "errors": [],
+  "workers": [],
+  "failedWorkerUi": "训练 Worker 出错：undefined"
+}

@@ -7,7 +7,9 @@ import {adam,actorGradient,argmaxPolicy,criticGradient,criticValue,distribution,
 export interface PolicyCheckpoint {version:'snake-policy-checkpoint-v1';config:PolicyConfig;model:PolicyModel;environment:Snapshot;rng:{policy:number;episodes:number;shuffle:number};actorOptimizer:AdamState;criticOptimizer:AdamState;buffer:PolicySample[];phase:'collect'|'update';order:number[];cursor:number;epoch:number;samples:number;updates:number;episodes:number;scores:number[];loss:number;valueLoss:number;entropy:number;clipFraction:number;elapsedMs:number;curve:LearningMetrics['curve'];}
 export class PolicyTrainer {
   readonly config:PolicyConfig;private model:PolicyModel;private game:Game;private policy:SeededRandom;private episodeRng:SeededRandom;private shuffle:SeededRandom;
-  private teacher=createAgent('astar',1,{maxNodes:1000,maxMs:Infinity});private actorOptimizer:AdamState={m:Array(39).fill(0),v:Array(39).fill(0),t:0};private criticOptimizer:AdamState={m:Array(13).fill(0),v:Array(13).fill(0),t:0};
+  // Pin the stateless v1 teacher: checkpoints and saved provenance retain their
+  // original semantics when interactive search recovery evolves.
+  private teacher=createAgent('astar',1,{maxNodes:1000,maxMs:Infinity},{recovery:false});private actorOptimizer:AdamState={m:Array(39).fill(0),v:Array(39).fill(0),t:0};private criticOptimizer:AdamState={m:Array(13).fill(0),v:Array(13).fill(0),t:0};
   private buffer:PolicySample[]=[];private phase:'collect'|'update'='collect';private order:number[]=[];private cursor=0;private epoch=0;
   samples=0;updates=0;episodes=0;loss=0;valueLoss=0;entropy=0;clipFraction=0;scores:number[]=[];curve:LearningMetrics['curve']=[];
   private accumulated=0;private started=performance.now();private paused=false;

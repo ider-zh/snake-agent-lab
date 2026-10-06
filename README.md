@@ -80,3 +80,7 @@ Real Q-learning/SARSA Worker training, exact checkpoints and independent before/
 PPO-Clip and behavior cloning now train actual independent linear policies with Adam, resumable rollout/minibatch state and frozen evaluation: [policy learning evidence and limitations](docs/policy-learning.md).
 
 Final scope, complete HP browser evidence, exclusions and local run instructions: [HP handoff](docs/final-handoff.md).
+
+## HP 用户反馈修复（2026-10-06）
+
+训练 Worker 启动恢复与错误详情、四路竞技策略选择及模型存档、策略课堂命名和文案调整、搜索策略动态身体路径恢复、Beam/MCTS 进食后出口检查已实现。本轮前后对照、真实浏览器验证与适用边界见 [修复验收记录](docs/repair-report.md)。先前性能与策略评测属于其记录的历史版本。

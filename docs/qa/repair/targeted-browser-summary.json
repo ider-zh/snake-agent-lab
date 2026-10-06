@@ -1,0 +1,99 @@
+{
+  "stats": {
+    "startTime": "2026-10-06T07:27:25.643Z",
+    "duration": 359911.58400000003,
+    "expected": 7,
+    "skipped": 0,
+    "unexpected": 1,
+    "flaky": 0
+  },
+  "tests": [
+    {
+      "file": "late-game.spec.ts",
+      "title": "late-game arena uses production budgets and exports a valid long replay",
+      "project": "chromium-desktop",
+      "status": "expected",
+      "result": "passed",
+      "durationMs": 118659,
+      "retries": 0,
+      "errors": []
+    },
+    {
+      "file": "late-game.spec.ts",
+      "title": "late-game arena uses production budgets and exports a valid long replay",
+      "project": "chromium-mobile",
+      "status": "expected",
+      "result": "passed",
+      "durationMs": 39915,
+      "retries": 0,
+      "errors": []
+    },
+    {
+      "file": "model-rules.spec.ts",
+      "title": "arena model rules are visible and incompatible peers are excluded",
+      "project": "chromium-desktop",
+      "status": "expected",
+      "result": "passed",
+      "durationMs": 9173,
+      "retries": 0,
+      "errors": []
+    },
+    {
+      "file": "model-rules.spec.ts",
+      "title": "arena model rules are visible and incompatible peers are excluded",
+      "project": "chromium-mobile",
+      "status": "unexpected",
+      "result": "failed",
+      "durationMs": 19637,
+      "retries": 0,
+      "errors": [
+        "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeChecked\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: getByTestId('arena-lab').getByRole('checkbox', { name: /障碍地图/ })\nExpected: checked\nTimeout: 15000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeChecked\" getByTestId('arena-lab').getByRole('checkbox', { name: /障碍地图/ }) with timeout 15000ms\u001b[22m\n\u001b[2m  - waiting for getByTestId('arena-lab').getByRole('checkbox', { name: /障碍地图/ })\u001b[22m\n\n\n  18 |  await first.selectOption(obstacleId);\n  19 |  await expect(page.getByLabel('棋盘尺寸',{exact:true})).toHaveValue('8');await expect(page.getByLabel('棋盘尺寸',{exact:true})).toBeDisabled();\n> 20 |  await expect(page.getByTestId('arena-lab').getByRole('checkbox',{name:/障碍地图/})).toBeChecked();\n     |                                                                                  ^\n  21 |  await page.getByRole('button',{name:'单步',exact:true}).click();for(let i=0;i<4;i++)await expect(page.locator('.arena-choice').nth(i)).toContainText('1 步');\n  22 | });\n  23 |\n    at C:\\Users\\luhon\\Documents\\Codex\\2026-10-05\\task-3\\snake-agent-lab\\tests\\model-rules.spec.ts:20:82"
+      ]
+    },
+    {
+      "file": "repair.spec.ts",
+      "title": "arena independently selects four strategies, resets fairly, and retains saved models",
+      "project": "chromium-desktop",
+      "status": "expected",
+      "result": "passed",
+      "durationMs": 22995,
+      "retries": 0,
+      "errors": []
+    },
+    {
+      "file": "repair.spec.ts",
+      "title": "arena independently selects four strategies, resets fairly, and retains saved models",
+      "project": "chromium-mobile",
+      "status": "expected",
+      "result": "passed",
+      "durationMs": 13463,
+      "retries": 0,
+      "errors": []
+    },
+    {
+      "file": "shortcut.spec.ts",
+      "title": "shortcut strategy exposes honest budgets, supports replay and rejects obstacles",
+      "project": "chromium-desktop",
+      "status": "expected",
+      "result": "passed",
+      "durationMs": 71745,
+      "retries": 0,
+      "errors": []
+    },
+    {
+      "file": "shortcut.spec.ts",
+      "title": "shortcut strategy exposes honest budgets, supports replay and rejects obstacles",
+      "project": "chromium-mobile",
+      "status": "expected",
+      "result": "passed",
+      "durationMs": 59214,
+      "retries": 0,
+      "errors": []
+    }
+  ],
+  "performance": [],
+  "limitations": [
+    "Chromium on HP Windows; phone viewport emulation, not a physical phone or Safari",
+    "SwiftShader software rendering; no hardware-GPU performance claim"
+  ]
+}

@@ -9,7 +9,7 @@ test('four planning policies execute, replay and display real search statistics'
     const slider=page.getByLabel('回放进度',{exact:true});await slider.fill((await slider.getAttribute('max'))!);await expect(page.locator('.hash-value')).toHaveText(hash!);
     await page.getByRole('button',{name:'实验台',exact:true}).click();
   }
-  await page.getByRole('button',{name:'算法课堂',exact:true}).click();
+  await page.getByRole('button',{name:'策略课堂',exact:true}).click();
   for(const id of ['dijkstra','best-first','beam','mcts']){
     await page.getByLabel('选择课程',{exact:true}).selectOption(id);
     if(id==='dijkstra'||id==='best-first'){

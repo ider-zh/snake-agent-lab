@@ -1,0 +1,34 @@
+[
+  {
+    "id": "bfs",
+    "steps": 1170,
+    "reason": "no-progress",
+    "identicalDecisionsPathsAndNodeCounts": true,
+    "oldMs": 2066.2913000000044,
+    "newMs": 1148.1959999999947
+  },
+  {
+    "id": "astar",
+    "steps": 1314,
+    "reason": "no-progress",
+    "identicalDecisionsPathsAndNodeCounts": true,
+    "oldMs": 1512.2072999999887,
+    "newMs": 825.1755999999987
+  },
+  {
+    "id": "best-first",
+    "steps": 1314,
+    "reason": "no-progress",
+    "identicalDecisionsPathsAndNodeCounts": true,
+    "oldMs": 1417.3221999999942,
+    "newMs": 809.7214999999997
+  },
+  {
+    "id": "tail-safe",
+    "steps": 1085,
+    "reason": "no-progress",
+    "identicalDecisionsPathsAndNodeCounts": true,
+    "oldMs": 2540.680799999983,
+    "newMs": 1369.6871000000046
+  }
+]

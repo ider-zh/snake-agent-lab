@@ -188,3 +188,7 @@ Real tabular TD training, separate versioned models, exact pending-action/RNG ch
 ## Sixth batch: PPO and imitation learning
 
 Real PPO-Clip/GAE/Adam and supervised behavior cloning are implemented with a clearly labeled linear actor/critic. Both have separate model validation, exact mid-rollout/minibatch resume, Worker/UI integration, independent three-seed results and bilingual lessons (21 total). See [policy learning](policy-learning.md). This completes the nine requested additions in implementation scope; final full-browser status is recorded separately, and weak or failed completion outcomes are not hidden.
+
+## HP 用户反馈修复（2026-10-06）
+
+训练 Worker 启动恢复与错误详情、四路竞技策略选择及模型存档、策略课堂命名和文案调整、搜索策略动态身体路径恢复、Beam/MCTS 进食后出口检查已实现。本轮前后对照、真实浏览器验证与适用边界见 [修复验收记录](repair-report.md)。先前性能与策略评测属于其记录的历史版本。

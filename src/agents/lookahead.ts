@@ -1,4 +1,4 @@
-import {legalActions,SeededRandom,simulateMove} from '../core';
+import {legalActions,moveCell,SeededRandom,simulateMove} from '../core';
 import type {Agent,Direction,Observation,DebugInfo} from '../core';
 import type {SearchBudget} from './index';
 const BEAM_WIDTH=24,BEAM_DEPTH=16,MCTS_DEPTH=24,MCTS_ITERATIONS=512;
@@ -11,11 +11,11 @@ export function planningMove(o:Observation,action:Direction):Observation|null {
   return {...o,snake:m.snake,direction:m.direction,food:m.ate?null:o.food,score:o.score+Number(m.ate),steps,noFood,terminated:filled,truncated:reason==='step-limit'||reason==='no-progress',reason};
 }
 function terminal(o:Observation,depth:number,maxDepth:number):boolean{return o.food===null||o.terminated||o.truncated||depth>=maxDepth;}
-function value(o:Observation,depth:number):number {
+function value(o:Observation,depth:number,budget:WorkBudget):number {
   if(o.reason==='filled')return 1;
   if(o.truncated)return 0;
   const exits=legalActions(o).length;if(!exits)return 0;
-  if(o.food===null)return .85+exits*.04-depth*.001;
+  if(o.food===null)return tailExit(o,budget)===false?0:.85+exits*.04-depth*.001;
   return .1+exits*.04+.35/(1+distance(o))+Math.min(depth,24)*.005;
 }
 export function uct(total:number,visits:number,parentVisits:number):number{return visits===0?Infinity:total/visits+Math.SQRT2*Math.sqrt(Math.log(Math.max(1,parentVisits))/visits);}
@@ -27,6 +27,15 @@ class WorkBudget {
     if(performance.now()-this.start>=this.limits.maxMs){this.reason='time-budget';return false;}
     this.expanded++;return true;
   }
+}
+function tailExit(o:Observation,budget:WorkBudget):boolean|null {
+ if(o.snake.length===o.config.width*o.config.height-o.config.obstacles.length)return true;
+ const tail=o.snake.at(-1)!,blocked=new Set([...o.config.obstacles,...o.snake.slice(1,-1)]),seen=new Set([o.snake[0]]),q=[o.snake[0]];
+ for(let i=0;i<q.length;i++){
+  if(!budget.visit())return null;if(q[i]===tail)return true;
+  for(const d of [0,1,2,3] as Direction[]){const next=moveCell(q[i],d,o.config.width,o.config.height);if(next>=0&&!blocked.has(next)&&!seen.has(next)){seen.add(next);q.push(next);}}
+ }
+ return false;
 }
 interface Candidate {state:Observation;path:number[];action:Direction;depth:number;value:number;}
 interface Tree {state:Observation;depth:number;action?:Direction;parent?:Tree;children:Tree[];untried:Direction[];visits:number;total:number;}
@@ -49,7 +58,7 @@ export function createLookaheadAgent(id:'beam'|'mcts',seed:number,limits:SearchB
               const state=planningMove(node.state,action)!;
               const key=`${state.snake.join(',')}/${state.direction}/${state.food}`;
               if(seen.has(key))continue;seen.add(key);
-              const candidate={state,path:[...node.path,state.snake[0]],action:node.depth?node.action:action,depth,value:value(state,depth)};
+              const candidate={state,path:[...node.path,state.snake[0]],action:node.depth?node.action:action,depth,value:value(state,depth,budget)};
               candidates.push(candidate);maxDepth=Math.max(maxDepth,depth);
               if(debug.visited.length<256)debug.visited.push(state.snake[0]);
               if(!best||candidate.value>best.value)best=candidate;
@@ -81,7 +90,7 @@ export function createLookaheadAgent(id:'beam'|'mcts',seed:number,limits:SearchB
             const legal=legalActions(state);if(!legal.length||!budget.visit())break;
             state=planningMove(state,legal[random.int(legal.length)])!;depth++;
           }
-          maxDepth=Math.max(maxDepth,depth);const reward=value(state,depth);
+          maxDepth=Math.max(maxDepth,depth);const reward=value(state,depth,budget);
           if(debug.visited.length<256)debug.visited.push(state.snake[0]);
           for(let current:Tree|undefined=node;current;current=current.parent){current.visits++;current.total+=reward;}
           if(budget.reason){iterations++;break;}

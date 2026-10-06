@@ -10,7 +10,7 @@ test('tail detour can step, pause, replay and teach its limits',async({page},inf
   await page.getByRole('button',{name:'查看本局回放',exact:true}).click();
   const slider=page.getByLabel('回放进度',{exact:true});await slider.fill((await slider.getAttribute('max'))!);
   await expect(page.locator('.hash-value')).toHaveText(hash!);
-  await page.getByRole('button',{name:'算法课堂',exact:true}).click();
+  await page.getByRole('button',{name:'策略课堂',exact:true}).click();
   await page.getByLabel('选择课程',{exact:true}).selectOption('tail-safe');
   await page.getByRole('button',{name:'执行建议动作',exact:true}).click();
   await expect(page.getByTestId('lesson-state')).toContainText('游戏步数 1');
