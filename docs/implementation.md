@@ -42,3 +42,7 @@ HP 的 `npm run check`（TypeScript、ESLint、92 项 Vitest、生产构建）�
 ## 许可
 
 没有复制两个无明确许可证参考仓库的源码、模型或资源。概念参考保留在 [references.md](references.md)。本项目许可证尚由维护者决定。
+
+## 2026-10-06 教学扩展
+
+独立分支 `feat/algorithm-lessons` 增加 11 课教学、可选真实搜索 trace 和双语程序。97 项单测与完整 check 已通过，浏览器与截图验收以 [教学记录](algorithm-lessons.md) 为准。新增九项算法为后续授权范围，按可运行批次逐项实现，不视为当前完成。

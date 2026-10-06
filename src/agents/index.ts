@@ -1,5 +1,5 @@
 import { cycle, directionBetween, legalActions, moveCell, SeededRandom, simulateMove } from '../core';
-import type { Agent, AgentId, DebugInfo, Decision, Direction, Observation } from '../core';
+import type { Agent, AgentId, DebugInfo, Decision, Direction, Observation, SearchFrame } from '../core';
 export type { Agent, AgentId, DebugInfo, Decision } from '../core';
 
 export interface SearchBudget { maxNodes: number; maxMs: number; }
@@ -46,7 +46,7 @@ class MinHeap {
   }
 }
 
-function pathToFood(obs: Observation, algorithm: 'bfs' | 'astar', budget: Budget, visited: number[]): number[] | null {
+function pathToFood(obs: Observation, algorithm: 'bfs' | 'astar', budget: Budget, visited: number[], trace?: SearchFrame[]): number[] | null {
   if (obs.food === null) return null;
   const { width, height } = obs.config, start = obs.snake[0], goal = obs.food;
   const blocked = new Set([...obs.config.obstacles, ...obs.snake.slice(1, -1)]);
@@ -54,6 +54,12 @@ function pathToFood(obs: Observation, algorithm: 'bfs' | 'astar', budget: Budget
   gScore[start] = 0;
   const queue = [start], heap = new MinHeap(); let index = 0, sequence = 0;
   if (algorithm === 'astar') heap.push({ cell: start, g: 0, f: distance(start, goal, width), sequence: sequence++ });
+  const capture = (current: number) => {
+    if (!trace || trace.length >= 256) return;
+    const node = (cell: number) => { const g = gScore[cell], h = distance(cell, goal, width); return { cell, g, h, f: g + h }; };
+    const pending = algorithm === 'bfs' ? queue.slice(index) : heap.nodes.filter(n => n.g === gScore[n.cell]).slice().sort((a,b) => a.f-b.f || a.sequence-b.sequence).map(n => n.cell);
+    trace.push({ current: node(current), frontier: [...new Set(pending)].map(node), visited: [...visited] });
+  };
   while (algorithm === 'bfs' ? index < queue.length : heap.nodes.length > 0) {
     let current: number;
     if (algorithm === 'bfs') current = queue[index++];
@@ -61,6 +67,7 @@ function pathToFood(obs: Observation, algorithm: 'bfs' | 'astar', budget: Budget
     if (!budget.visit()) return null;
     visited.push(current);
     if (current === goal) {
+      capture(current);
       const path = [goal];
       while (path[path.length - 1] !== start) path.push(previous[path[path.length - 1]]);
       return path.reverse();
@@ -75,6 +82,7 @@ function pathToFood(obs: Observation, algorithm: 'bfs' | 'astar', budget: Budget
       if (algorithm === 'bfs') queue.push(next);
       else heap.push({ cell: next, g: tentative, f: tentative + distance(next, goal, width), sequence: sequence++ });
     }
+    capture(current);
   }
   return null;
 }
@@ -158,7 +166,7 @@ export function hamiltonianApplicable(obs: Observation): boolean {
 }
 
 /** Agent and environment use separate PRNG instances. Wall-clock debug is not replay state. */
-export function createAgent(id: AgentId, seed = 1, requestedBudget: SearchBudget = DEFAULT_BUDGET): Agent {
+export function createAgent(id: AgentId, seed = 1, requestedBudget: SearchBudget = DEFAULT_BUDGET, options: { trace?: boolean } = {}): Agent {
   if (!['random', 'legal-random', 'greedy', 'safe-greedy', 'bfs', 'astar', 'hamiltonian'].includes(id)) throw new Error(`Unknown agent: ${id}`);
   if (!Number.isInteger(requestedBudget.maxNodes) || requestedBudget.maxNodes < 0 || requestedBudget.maxNodes > 10_000_000 || typeof requestedBudget.maxMs !== 'number' || Number.isNaN(requestedBudget.maxMs) || requestedBudget.maxMs < 0) throw new Error('Invalid decision budget');
   const limits = { ...requestedBudget }, random = new SeededRandom(seed);
@@ -205,6 +213,13 @@ export function createAgent(id: AgentId, seed = 1, requestedBudget: SearchBudget
       if (!debug.path.length) { const next = moveCell(obs.snake[0], action, obs.config.width, obs.config.height); debug.path = next >= 0 ? [obs.snake[0], next] : [obs.snake[0]]; }
     }
     debug.expanded = budget.expanded; debug.elapsedMs = budget.elapsed();
+    // Replay the exact search prefix only AFTER deciding. Instrumentation cannot
+    // consume the decision's wall-clock budget or either random stream.
+    if (options.trace && (id === 'bfs' || id === 'astar')) {
+      debug.trace = [];
+      pathToFood(obs, id, new Budget({ maxNodes: Math.min(debug.visited.length, 256), maxMs: Infinity }), [], debug.trace);
+      debug.traceTruncated = debug.visited.length > 256;
+    }
     return { action, debug };
   } };
 }

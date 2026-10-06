@@ -62,3 +62,7 @@ UI 的轻量预设为了缩短反馈周期，与设计草案中的研究默认�
 - [gargimahale/Snake](https://github.com/gargimahale/Snake)：Python/Tkinter 项目，提供 Path、Greedy、Hamilton 与 DQN 路线，可借鉴安全检查、实验模式与训练/评估划分。
 
 引用与研究记录见[参考文档](docs/references.md)。两个指定仓库在本次核查中均未见 LICENSE；本次只借鉴设计理念，未复制源码或沿用其成绩。本仓库许可证由维护者后续决定。
+
+## 算法教学
+
+新增「算法课堂」：11 课中文原理、真实搜索单步、Python/JavaScript 可运行构件、边界与练习。标准 A* 等规划无需训练，DQN/GA 需学习参数。实现与逐项验收见 [教学记录](docs/algorithm-lessons.md)。

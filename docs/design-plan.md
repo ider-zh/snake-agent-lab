@@ -166,3 +166,7 @@ AI 模式显示策略、种子、步数、速度及终局原因，支持单步�
 5. 模型默认只保存在本地；共享模型、托管部署与许可证在维护者评审后单独决定。
 
 返回 [README](../README.md) · 阅读[参考依据](references.md)。
+
+## 12. 教学与新增算法扩展（2026-10-06）
+
+教学使用真实引擎冻结场景与 opt-in 搜索轨迹，代码构件支持 Python/JavaScript。规划无需训练与学习/进化需训练明确区分。已授权后续 Q-learning、SARSA、Beam、MCTS、Dijkstra、贪心最佳优先、条件 Hamiltonian 捷径、PPO、模仿学习；逐项实现/验证状态见 [教学与扩展记录](algorithm-lessons.md)。不更改已验证的 DQN/GA 默认参数。
