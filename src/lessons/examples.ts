@@ -30,6 +30,19 @@ def legal(d):
     return d != (direction+2)%4 and nxt >= 0 and nxt not in obstacles and nxt not in body
 `;
 const snippets: Record<string, [string,string]> = {
+ppo:[`// 固定教学数据：最大化此 PPO-Clip 目标；训练损失取负并另加熵项。
+function objective(ratio,advantage,clip) { return Math.min(ratio*advantage,Math.max(1-clip,Math.min(1+clip,ratio))*advantage); }
+console.log(JSON.stringify([objective(1.5,1,.2),objective(.5,-1,.2)]));`, `# 固定教学数据：最大化裁剪目标；真实损失取负并加熵正则。
+def objective(ratio, advantage, clip):
+    return min(ratio*advantage,max(1-clip,min(1+clip,ratio))*advantage)
+print(json.dumps([objective(1.5,1,.2),objective(.5,-1,.2)]))`],
+imitation:[`// 固定教学概率，不是实测成绩；教师标签为动作1。
+function crossEntropy(probabilities,label) { return -Math.log(Math.max(probabilities[label],1e-12)); }
+console.log(JSON.stringify({before:crossEntropy([1/3,1/3,1/3],1),after:crossEntropy([.1,.8,.1],1)}));`, `# 固定教学概率，不是实测成绩；教师标签为动作1。
+import math
+def cross_entropy(probabilities, label):
+    return -math.log(max(probabilities[label],1e-12))
+print(json.dumps(dict(before=cross_entropy([1/3,1/3,1/3],1),after=cross_entropy([.1,.8,.1],1))))`],
 'q-learning':[`// 固定教学数据，合法动作均可用；输出一次真正的表格 TD 更新。
 function update(q,r,next,alpha,gamma,done) { return q+alpha*(r+(done?0:gamma*Math.max(...next))-q); }
 console.log(JSON.stringify(update(2,1,[2,5,1],.2,.9,false)));`, `# 固定教学数据，下一动作均合法；输出一次表格 TD 更新。
@@ -276,7 +289,7 @@ def search():
 print(json.dumps(search()))`]; }
 snippets.bfs=search('bfs');snippets.astar=search('astar');snippets.dijkstra=search('dijkstra');snippets['best-first']=search('best-first');
 export const exampleIds = Object.keys(snippets);
-export const expectedOutputs: Record<string,unknown> = {'q-learning':2.7,sarsa:1.98,beam:[{id:1,value:.8},{id:2,value:.6}],mcts:1,dijkstra:[36,28,20,19,18],'best-first':[36,28,20,19,18],'tail-safe':[36,37,29,28],'hamiltonian-shortcut':[true,false,false],random:2,'legal-random':1,greedy:0,'safe-greedy':{space:62,tailReachable:true},hamiltonian:12,encoding:[0,0,0,-0.25,-0.25,0.5,0.375,0.375,0.5,0.375,0.375,3/63],dqn:{double:3.7,dqn:6.4,terminal:1},ga:374.9515,evaluation:{mean:4,median:3,min:0,max:10},bfs:[36,28,20,19,18],astar:[36,28,20,19,18]};
+export const expectedOutputs: Record<string,unknown> = {ppo:[1.2,-.8],imitation:{before:Math.log(3),after:-Math.log(.8)},'q-learning':2.7,sarsa:1.98,beam:[{id:1,value:.8},{id:2,value:.6}],mcts:1,dijkstra:[36,28,20,19,18],'best-first':[36,28,20,19,18],'tail-safe':[36,37,29,28],'hamiltonian-shortcut':[true,false,false],random:2,'legal-random':1,greedy:0,'safe-greedy':{space:62,tailReachable:true},hamiltonian:12,encoding:[0,0,0,-0.25,-0.25,0.5,0.375,0.375,0.5,0.375,0.375,3/63],dqn:{double:3.7,dqn:6.4,terminal:1},ga:374.9515,evaluation:{mean:4,median:3,min:0,max:10},bfs:[36,28,20,19,18],astar:[36,28,20,19,18]};
 export function exampleCode(id: string, language: 'js'|'py'): string {
   const index=language==='js'?0:1;
   return (index===0?jsBase:pyBase)+ '\n'+snippets[id][index]+'\n';

@@ -62,3 +62,11 @@ Dijkstra, greedy best-first, Beam and UCT MCTS now have independent decision log
 ## Fifth batch: Q-learning and SARSA
 
 Real tabular TD training, separate versioned models, exact pending-action/RNG checkpoints, frozen inference and bilingual lessons are implemented. Three training seeds per algorithm have bounded before/after independent evaluations; no filled-board claim is made. See [tabular learning](tabular-learning.md). PPO and imitation learning remain pending at this stage.
+
+## Sixth batch: PPO and imitation learning
+
+Real PPO-Clip/GAE/Adam and supervised behavior cloning are implemented with a clearly labeled linear actor/critic. Both have separate model validation, exact mid-rollout/minibatch resume, Worker/UI integration, independent three-seed results and bilingual lessons (21 total). See [policy learning](policy-learning.md). This completes the nine requested additions in implementation scope; final full-browser status is recorded separately, and weak or failed completion outcomes are not hidden.
+
+## Final consolidated handoff
+
+The completed implementation scope and final full-project/browser results are consolidated in [HP handoff](final-handoff.md). Earlier sections remain historical records, not the current pending-feature list.

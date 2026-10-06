@@ -3,6 +3,22 @@
   "python": "Python 3.13.12",
   "results": [
     {
+      "lesson": "ppo",
+      "matched": true,
+      "output": [
+        1.2,
+        -0.8
+      ]
+    },
+    {
+      "lesson": "imitation",
+      "matched": true,
+      "output": {
+        "before": 1.0986122886681098,
+        "after": 0.2231435513142097
+      }
+    },
+    {
       "lesson": "q-learning",
       "matched": true,
       "output": 2.7

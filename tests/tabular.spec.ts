@@ -2,7 +2,7 @@ import {test,expect} from '@playwright/test';
 import {readFileSync} from 'node:fs';
 test('tabular Worker trains, resumes checkpoints, imports safely, evaluates and plays',async({page},info)=>{
   test.setTimeout(120000);const errors:string[]=[];page.on('pageerror',e=>errors.push(e.message));await page.goto('/');
-  await page.getByRole('button',{name:'训练实验室',exact:true}).click();await page.getByRole('button',{name:'Q-learning / SARSA',exact:true}).click();
+  await page.getByRole('button',{name:'训练实验室',exact:true}).click();await page.getByRole('button',{name:'Q-learning / SARSA / PPO / 模仿',exact:true}).click();
   const lab=page.getByTestId('learning-lab');
   await lab.getByLabel('新学习预算',{exact:true}).selectOption('2000');await lab.getByRole('button',{name:'开始新学习训练',exact:true}).click();
   await expect(lab.getByRole('status')).toContainText('任务完成',{timeout:30000});

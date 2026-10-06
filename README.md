@@ -65,7 +65,7 @@ UI 的轻量预设为了缩短反馈周期，与设计草案中的研究默认�
 
 ## 算法教学
 
-新增「算法课堂」：19 课中文原理、真实搜索单步、Python/JavaScript 可运行构件、边界与练习。标准 A* 等规划无需训练，DQN/GA 需学习参数。实现与逐项验收见 [教学记录](docs/algorithm-lessons.md)。
+新增「算法课堂」：21 课中文原理、真实搜索单步、Python/JavaScript 可运行构件、边界与练习。标准 A* 等规划无需训练，DQN/GA 需学习参数。实现与逐项验收见 [教学记录](docs/algorithm-lessons.md)。
 
 ## 高效填满策略（2026-10-06）
 
@@ -76,3 +76,7 @@ Optional A* + bounded tail detours, with all 240 comparison episodes and limitat
 Dijkstra, greedy best-first, bounded Beam and UCT MCTS are available as comparison policies: [implementation and retained failures](docs/planning-policies.md).
 
 Real Q-learning/SARSA Worker training, exact checkpoints and independent before/after results: [tabular learning](docs/tabular-learning.md).
+
+PPO-Clip and behavior cloning now train actual independent linear policies with Adam, resumable rollout/minibatch state and frozen evaluation: [policy learning evidence and limitations](docs/policy-learning.md).
+
+Final scope, complete HP browser evidence, exclusions and local run instructions: [HP handoff](docs/final-handoff.md).
