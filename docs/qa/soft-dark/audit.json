@@ -1,0 +1,412 @@
+[
+  {
+    "width": 1440,
+    "mode": "play",
+    "overflow": false,
+    "lowContrast": [],
+    "smallButtons": [],
+    "reducedMotion": true,
+    "focusVisible": true,
+    "errors": []
+  },
+  {
+    "width": 1440,
+    "mode": "arena",
+    "overflow": false,
+    "lowContrast": [],
+    "smallButtons": [],
+    "reducedMotion": true,
+    "focusVisible": true,
+    "errors": []
+  },
+  {
+    "width": 1440,
+    "mode": "training",
+    "overflow": false,
+    "lowContrast": [],
+    "smallButtons": [],
+    "reducedMotion": true,
+    "focusVisible": true,
+    "errors": []
+  },
+  {
+    "width": 1440,
+    "mode": "batch-empty",
+    "overflow": false,
+    "lowContrast": [],
+    "smallButtons": [],
+    "reducedMotion": true,
+    "focusVisible": true,
+    "errors": []
+  },
+  {
+    "width": 1440,
+    "mode": "batch-results",
+    "overflow": false,
+    "lowContrast": [],
+    "smallButtons": [],
+    "reducedMotion": true,
+    "focusVisible": true,
+    "errors": []
+  },
+  {
+    "width": 1440,
+    "mode": "replay-empty",
+    "overflow": false,
+    "lowContrast": [],
+    "smallButtons": [],
+    "reducedMotion": true,
+    "focusVisible": true,
+    "errors": []
+  },
+  {
+    "width": 1440,
+    "mode": "import-error",
+    "overflow": false,
+    "lowContrast": [],
+    "smallButtons": [],
+    "reducedMotion": true,
+    "focusVisible": true,
+    "errors": []
+  },
+  {
+    "width": 1440,
+    "mode": "replay",
+    "overflow": false,
+    "lowContrast": [],
+    "smallButtons": [],
+    "reducedMotion": true,
+    "focusVisible": true,
+    "errors": []
+  },
+  {
+    "width": 1440,
+    "mode": "help",
+    "overflow": false,
+    "lowContrast": [],
+    "smallButtons": [],
+    "reducedMotion": true,
+    "focusVisible": true,
+    "errors": []
+  },
+  {
+    "width": 1440,
+    "mode": "strategy-error",
+    "overflow": false,
+    "lowContrast": [],
+    "smallButtons": [],
+    "reducedMotion": true,
+    "focusVisible": true,
+    "errors": []
+  },
+  {
+    "width": 1024,
+    "mode": "play",
+    "overflow": false,
+    "lowContrast": [],
+    "smallButtons": [],
+    "reducedMotion": true,
+    "focusVisible": true,
+    "errors": []
+  },
+  {
+    "width": 1024,
+    "mode": "arena",
+    "overflow": false,
+    "lowContrast": [],
+    "smallButtons": [],
+    "reducedMotion": true,
+    "focusVisible": true,
+    "errors": []
+  },
+  {
+    "width": 1024,
+    "mode": "training",
+    "overflow": false,
+    "lowContrast": [],
+    "smallButtons": [],
+    "reducedMotion": true,
+    "focusVisible": true,
+    "errors": []
+  },
+  {
+    "width": 1024,
+    "mode": "batch-empty",
+    "overflow": false,
+    "lowContrast": [],
+    "smallButtons": [],
+    "reducedMotion": true,
+    "focusVisible": true,
+    "errors": []
+  },
+  {
+    "width": 1024,
+    "mode": "replay-empty",
+    "overflow": false,
+    "lowContrast": [],
+    "smallButtons": [],
+    "reducedMotion": true,
+    "focusVisible": true,
+    "errors": []
+  },
+  {
+    "width": 1024,
+    "mode": "import-error",
+    "overflow": false,
+    "lowContrast": [],
+    "smallButtons": [],
+    "reducedMotion": true,
+    "focusVisible": true,
+    "errors": []
+  },
+  {
+    "width": 1024,
+    "mode": "replay",
+    "overflow": false,
+    "lowContrast": [],
+    "smallButtons": [],
+    "reducedMotion": true,
+    "focusVisible": true,
+    "errors": []
+  },
+  {
+    "width": 820,
+    "mode": "play",
+    "overflow": false,
+    "lowContrast": [],
+    "smallButtons": [],
+    "reducedMotion": true,
+    "focusVisible": true,
+    "errors": []
+  },
+  {
+    "width": 820,
+    "mode": "arena",
+    "overflow": false,
+    "lowContrast": [],
+    "smallButtons": [],
+    "reducedMotion": true,
+    "focusVisible": true,
+    "errors": []
+  },
+  {
+    "width": 820,
+    "mode": "training",
+    "overflow": false,
+    "lowContrast": [],
+    "smallButtons": [],
+    "reducedMotion": true,
+    "focusVisible": true,
+    "errors": []
+  },
+  {
+    "width": 820,
+    "mode": "batch-empty",
+    "overflow": false,
+    "lowContrast": [],
+    "smallButtons": [],
+    "reducedMotion": true,
+    "focusVisible": true,
+    "errors": []
+  },
+  {
+    "width": 820,
+    "mode": "replay-empty",
+    "overflow": false,
+    "lowContrast": [],
+    "smallButtons": [],
+    "reducedMotion": true,
+    "focusVisible": true,
+    "errors": []
+  },
+  {
+    "width": 820,
+    "mode": "import-error",
+    "overflow": false,
+    "lowContrast": [],
+    "smallButtons": [],
+    "reducedMotion": true,
+    "focusVisible": true,
+    "errors": []
+  },
+  {
+    "width": 820,
+    "mode": "replay",
+    "overflow": false,
+    "lowContrast": [],
+    "smallButtons": [],
+    "reducedMotion": true,
+    "focusVisible": true,
+    "errors": []
+  },
+  {
+    "width": 390,
+    "mode": "play",
+    "overflow": false,
+    "lowContrast": [],
+    "smallButtons": [],
+    "reducedMotion": true,
+    "focusVisible": true,
+    "errors": []
+  },
+  {
+    "width": 390,
+    "mode": "arena",
+    "overflow": false,
+    "lowContrast": [],
+    "smallButtons": [],
+    "reducedMotion": true,
+    "focusVisible": true,
+    "errors": []
+  },
+  {
+    "width": 390,
+    "mode": "training",
+    "overflow": false,
+    "lowContrast": [],
+    "smallButtons": [],
+    "reducedMotion": true,
+    "focusVisible": true,
+    "errors": []
+  },
+  {
+    "width": 390,
+    "mode": "batch-empty",
+    "overflow": false,
+    "lowContrast": [],
+    "smallButtons": [],
+    "reducedMotion": true,
+    "focusVisible": true,
+    "errors": []
+  },
+  {
+    "width": 390,
+    "mode": "batch-results",
+    "overflow": false,
+    "lowContrast": [],
+    "smallButtons": [],
+    "reducedMotion": true,
+    "focusVisible": true,
+    "errors": []
+  },
+  {
+    "width": 390,
+    "mode": "replay-empty",
+    "overflow": false,
+    "lowContrast": [],
+    "smallButtons": [],
+    "reducedMotion": true,
+    "focusVisible": true,
+    "errors": []
+  },
+  {
+    "width": 390,
+    "mode": "import-error",
+    "overflow": false,
+    "lowContrast": [],
+    "smallButtons": [],
+    "reducedMotion": true,
+    "focusVisible": true,
+    "errors": []
+  },
+  {
+    "width": 390,
+    "mode": "replay",
+    "overflow": false,
+    "lowContrast": [],
+    "smallButtons": [],
+    "reducedMotion": true,
+    "focusVisible": true,
+    "errors": []
+  },
+  {
+    "width": 390,
+    "mode": "help",
+    "overflow": false,
+    "lowContrast": [],
+    "smallButtons": [],
+    "reducedMotion": true,
+    "focusVisible": true,
+    "errors": []
+  },
+  {
+    "width": 390,
+    "mode": "strategy-error",
+    "overflow": false,
+    "lowContrast": [],
+    "smallButtons": [],
+    "reducedMotion": true,
+    "focusVisible": true,
+    "errors": []
+  },
+  {
+    "width": 320,
+    "mode": "play",
+    "overflow": false,
+    "lowContrast": [],
+    "smallButtons": [],
+    "reducedMotion": true,
+    "focusVisible": true,
+    "errors": []
+  },
+  {
+    "width": 320,
+    "mode": "arena",
+    "overflow": false,
+    "lowContrast": [],
+    "smallButtons": [],
+    "reducedMotion": true,
+    "focusVisible": true,
+    "errors": []
+  },
+  {
+    "width": 320,
+    "mode": "training",
+    "overflow": false,
+    "lowContrast": [],
+    "smallButtons": [],
+    "reducedMotion": true,
+    "focusVisible": true,
+    "errors": []
+  },
+  {
+    "width": 320,
+    "mode": "batch-empty",
+    "overflow": false,
+    "lowContrast": [],
+    "smallButtons": [],
+    "reducedMotion": true,
+    "focusVisible": true,
+    "errors": []
+  },
+  {
+    "width": 320,
+    "mode": "replay-empty",
+    "overflow": false,
+    "lowContrast": [],
+    "smallButtons": [],
+    "reducedMotion": true,
+    "focusVisible": true,
+    "errors": []
+  },
+  {
+    "width": 320,
+    "mode": "import-error",
+    "overflow": false,
+    "lowContrast": [],
+    "smallButtons": [],
+    "reducedMotion": true,
+    "focusVisible": true,
+    "errors": []
+  },
+  {
+    "width": 320,
+    "mode": "replay",
+    "overflow": false,
+    "lowContrast": [],
+    "smallButtons": [],
+    "reducedMotion": true,
+    "focusVisible": true,
+    "errors": []
+  }
+]

@@ -1,0 +1,218 @@
+[
+  {
+    "viewport": [
+      1440,
+      1000
+    ],
+    "mode": "play",
+    "canvasWidth": 440,
+    "canvasHeight": 440,
+    "bufferWidth": 440,
+    "bufferHeight": 440,
+    "dpr": 1,
+    "perBoardWidth": 440,
+    "perBoardHeight": 440,
+    "count": 1,
+    "rects": null,
+    "overflow": false,
+    "boardAreaToViewport": 0.13444444444444445
+  },
+  {
+    "viewport": [
+      1440,
+      1000
+    ],
+    "mode": "arena",
+    "canvasWidth": 440,
+    "canvasHeight": 440,
+    "bufferWidth": 440,
+    "bufferHeight": 440,
+    "dpr": 1,
+    "perBoardWidth": 184,
+    "perBoardHeight": 184,
+    "count": 4,
+    "rects": null,
+    "overflow": false,
+    "boardAreaToViewport": 0.09404444444444444
+  },
+  {
+    "viewport": [
+      1920,
+      1080
+    ],
+    "mode": "play",
+    "canvasWidth": 480,
+    "canvasHeight": 480,
+    "bufferWidth": 480,
+    "bufferHeight": 480,
+    "dpr": 1,
+    "perBoardWidth": 480,
+    "perBoardHeight": 480,
+    "count": 1,
+    "rects": null,
+    "overflow": false,
+    "boardAreaToViewport": 0.1111111111111111
+  },
+  {
+    "viewport": [
+      1920,
+      1080
+    ],
+    "mode": "arena",
+    "canvasWidth": 480,
+    "canvasHeight": 480,
+    "bufferWidth": 480,
+    "bufferHeight": 480,
+    "dpr": 1,
+    "perBoardWidth": 204,
+    "perBoardHeight": 204,
+    "count": 4,
+    "rects": null,
+    "overflow": false,
+    "boardAreaToViewport": 0.08027777777777778
+  },
+  {
+    "viewport": [
+      1024,
+      768
+    ],
+    "mode": "play",
+    "canvasWidth": 280,
+    "canvasHeight": 280,
+    "bufferWidth": 280,
+    "bufferHeight": 280,
+    "dpr": 1,
+    "perBoardWidth": 280,
+    "perBoardHeight": 280,
+    "count": 1,
+    "rects": null,
+    "overflow": false,
+    "boardAreaToViewport": 0.09969075520833333
+  },
+  {
+    "viewport": [
+      1024,
+      768
+    ],
+    "mode": "arena",
+    "canvasWidth": 280,
+    "canvasHeight": 280,
+    "bufferWidth": 280,
+    "bufferHeight": 280,
+    "dpr": 1,
+    "perBoardWidth": 104,
+    "perBoardHeight": 104,
+    "count": 4,
+    "rects": null,
+    "overflow": false,
+    "boardAreaToViewport": 0.055013020833333336
+  },
+  {
+    "viewport": [
+      390,
+      664
+    ],
+    "mode": "play",
+    "canvasWidth": 318,
+    "canvasHeight": 318,
+    "bufferWidth": 636,
+    "bufferHeight": 636,
+    "dpr": 2,
+    "perBoardWidth": 318,
+    "perBoardHeight": 318,
+    "count": 1,
+    "rects": null,
+    "overflow": false,
+    "boardAreaToViewport": 0.39050046339202965
+  },
+  {
+    "viewport": [
+      390,
+      664
+    ],
+    "mode": "arena",
+    "canvasWidth": 244,
+    "canvasHeight": 244,
+    "bufferWidth": 488,
+    "bufferHeight": 488,
+    "dpr": 2,
+    "perBoardWidth": 244,
+    "perBoardHeight": 244,
+    "count": 1,
+    "rects": null,
+    "overflow": false,
+    "boardAreaToViewport": 0.22990423231387086
+  },
+  {
+    "viewport": [
+      320,
+      664
+    ],
+    "mode": "play",
+    "canvasWidth": 272,
+    "canvasHeight": 272,
+    "bufferWidth": 544,
+    "bufferHeight": 544,
+    "dpr": 2,
+    "perBoardWidth": 272,
+    "perBoardHeight": 272,
+    "count": 1,
+    "rects": null,
+    "overflow": false,
+    "boardAreaToViewport": 0.3481927710843373
+  },
+  {
+    "viewport": [
+      320,
+      664
+    ],
+    "mode": "arena",
+    "canvasWidth": 244,
+    "canvasHeight": 244,
+    "bufferWidth": 488,
+    "bufferHeight": 488,
+    "dpr": 2,
+    "perBoardWidth": 244,
+    "perBoardHeight": 244,
+    "count": 1,
+    "rects": null,
+    "overflow": false,
+    "boardAreaToViewport": 0.28019578313253013
+  },
+  {
+    "viewport": [
+      1440,
+      720
+    ],
+    "mode": "play",
+    "canvasWidth": 280,
+    "canvasHeight": 280,
+    "bufferWidth": 280,
+    "bufferHeight": 280,
+    "dpr": 1,
+    "perBoardWidth": 280,
+    "perBoardHeight": 280,
+    "count": 1,
+    "rects": null,
+    "overflow": false,
+    "boardAreaToViewport": 0.07561728395061729
+  },
+  {
+    "viewport": [
+      1440,
+      720
+    ],
+    "mode": "arena",
+    "canvasWidth": 280,
+    "canvasHeight": 280,
+    "bufferWidth": 280,
+    "bufferHeight": 280,
+    "dpr": 1,
+    "perBoardWidth": 104,
+    "perBoardHeight": 104,
+    "count": 4,
+    "rects": null,
+    "overflow": false,
+    "boardAreaToViewport": 0.041728395061728395
+  }
+]

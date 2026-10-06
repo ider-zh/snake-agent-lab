@@ -1,6 +1,10 @@
 # SnakeLab 设计计划
 
-版本：0.1 · 2026-10-05 · 状态：待评审，尚未实现。
+> 2026-10-05 HP training correction: new jobs use versioned relative features, shaped DQN rewards and a 75-coefficient GA policy. Original 0/1-score defaults were reproduced. Actual learning comparisons, budgets, failed pilots and compatibility are in [training effectiveness](training-effectiveness.md). Earlier full-board training descriptions below are the v1 design/history; they do not describe the new UI defaults.
+
+> HP 实现、浏览器验收与剩余边界见 [HP 验证记录](hp-validation.md)，视觉迭代见 [视觉审查](visual-review.md)。下文保留原始设计目标，不把未验证目标写成结果。
+
+版本：0.1 设计基线 · 2026-10-05。P1–P5 实现已落地，当前实际配置、验证结果与未完成验收见 [实现记录](implementation.md)。本文保留设计时的参数与候选方案，不把未来验收条目改写成已通过。
 
 ## 1. 目标与首版范围
 
@@ -140,7 +144,7 @@ AI 模式显示策略、种子、步数、速度及终局原因，支持单步�
 
 ## 10. 阶段与验收
 
-所有阶段目前均为“计划”，下表是未来验收任务，不代表测试已通过。
+下表保留最初的验收标准；实际实现/验证状态以 [实现记录](implementation.md) 为准，不以代码存在代替浏览器验收。
 
 | 阶段 | 交付 | 可判定验收条件 |
 | --- | --- | --- |

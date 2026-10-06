@@ -1,0 +1,62 @@
+# HP 验证记录
+
+日期：2026-10-05。交接基线：`388bbcb4729a6fec6d7189854f401df95c3763d1`；分支：`feat/snakelab-full-lab`。此文件随 HP 修复提交保存。
+
+## 环境与方法
+
+HP Windows 11（build 22631），AMD Ryzen 7 4700U，8 个逻辑处理器，约 63.4 GiB 内存；官方 Node 24.15.0。浏览器测试使用 Playwright Chromium，训练使用 TF.js CPU。渲染检测返回 ANGLE/SwiftShader，属于软件渲染，不能代表真实 Radeon GPU 或实体手机表现。
+
+`npm run check` 执行 TypeScript、ESLint、86 项 Vitest 与生产构建。`npx playwright test` 用桌面 1440×1000 与手机触控仿真执行 18 项浏览器测试。`node scripts/visual-qa.ts qa-artifacts/release` 对 1440、1024、820、390、320px 的实验台、竞技、训练采集截图与 DOM 审查。截图另行目视检查，不以单元测试代替视觉验收。
+
+## 覆盖
+
+- 键盘方向队列、输入框保护、重复暂停、单步、模式切换、帮助弹窗焦点循环与 Escape、图表键盘查看真实采样。
+- 回放动作和哈希校验、文件导出、IndexedDB 保存与刷新恢复。
+- 批量 Worker 暂停、恢复、取消、部分结果保存。
+- DQN 与 GA 的真实 Worker 训练、预算、暂停、完整检查点导出/导入、继续训练、页面模式切换、有效/无效模型导入、本地检查点刷新恢复；停止后张量归零且不可保存已释放检查点。
+- 平板导航名称、五个宽度布局、44px 可用按钮、可见文本对比度和减少动态效果偏好。
+- 四局同时模拟时的页面输入与帧间隔采样；手机只显示选中的一局，四局仍同时模拟。
+
+## 结果
+
+最终功能复验：TypeScript、ESLint、86 项单元测试及构建全部通过；18 项浏览器测试通过，无跳过、失败或重试（436.1 秒）。原始报告见 [hp-browser-results.json](qa/hp-browser-results.json)。随后手机竞技尺寸调整再次通过完整 `npm run check` 和 15 组视觉矩阵（包括 390/320px 固定导航遮挡断言）；受影响的 3 项手机流程回归全部通过（约 1.1 分钟）。最终截图均已目视审查。
+
+| 采样 | 桌面 | 手机尺寸仿真 |
+| --- | ---: | ---: |
+| 输入至下一帧 p95 | 24.6 ms | 7.0 ms |
+| 帧间隔 p95 | 66.6 ms | 50.1 ms |
+| 批量取消：点击事件至已停止 DOM | 62.4 ms | 168.1 ms |
+| DQN 取消：同上 | 26.0 ms | 21.0 ms |
+| GA 取消：同上 | 21.6 ms | 21.5 ms |
+
+每端输入 32 次；桌面 419 帧，手机尺寸 640 帧。取消仅各一次样本，不是 p95 或长期保证。Playwright 外层点击耗时包含滚动和可操作等待，例如手机批量取消外层为 2673 ms，不能混同为 Worker 确认延迟。表中点击事件至状态改变由页面事件与 MutationObserver 测量。手机 UA 仿真显示 Safari 字样，实际引擎仍为 Chromium。
+
+## 修复与视觉审查
+
+修复竞技首局终止导致控制不可用、后台训练发布模型重置普通游戏、手机启动时焦点滚动、停止训练残留张量统计，以及训练停止后仍可请求保存已释放检查点的问题。测试工具升级至 Vitest 4.1.11；官方 npm audit 在锁文件更新后报告零漏洞。
+
+视觉迭代与前后截图见 [视觉审查](visual-review.md)。此前采用纸色工作台、深绿棋盘和青柠操作色；用户评审后已统一为柔和深色，见 [本轮配色修正](soft-dark-review.md)。手机竞技可切换单局，规则可折叠，运行控制置于棋盘上方。图表只显示真实记录，支持指针和键盘查看采样。
+
+## 未验证与未实现
+
+未验证实体手机、Safari/Firefox、硬件 GPU、长期训练内存/温度/耗电、真人屏幕阅读器、真实用户 Web Vitals、研究级多种子策略优越性。DOM 对比度脚本不是完整 WCAG 认证。设计奖项仅作质量参考，没有参赛、获奖或外部评审结论。可选 Dueling、ONNX、WASM/WebGPU 训练后端未实现。
+
+Cloudflare 未部署；没有合并 PR 或推送 main。开发模式 `npm run dev` 使用 5173；生产预览 `npm run preview -- --host 127.0.0.1 --port 4173` 使用本机地址 http://127.0.0.1:4173/。
+
+## 统一深色修正最终复验
+
+本轮 `npm run check` 的 TypeScript、ESLint、86 项单元测试及生产构建全部通过；最终桌面/手机 Chromium 回归 18 项通过，无失败、跳过或重试（工具报告约 4.0 分钟）。[原始浏览器报告](qa/soft-dark/browser-results.json)。41 组全模式视觉/对比度/焦点检查通过，见 [深色审查记录](soft-dark-review.md)。首轮批量导出超时及有界测试调整已如实记录；最终移动端该流程约 6 秒完成。
+
+## Board enlargement verification (HP, 2026-10-05)
+
+Typecheck, lint, 86 unit tests and production build passed. All 20 Playwright desktop/mobile tests passed (9.3 minutes), including the new board resize/DPR/focus checks. All 41 theme states passed their overflow, contrast, controls and console checks. Six viewport measurements and same-seed screenshots are in [board-size-review.md](board-size-review.md). This verifies layout and operation, not DQN/GA learning effectiveness; that investigation is separate.
+
+## Training effectiveness repair (HP, 2026-10-05)
+
+`npm run check` passed with 92 unit tests. The full 20 desktop/mobile Playwright tests passed (9.7 minutes); after the Worker scheduling change, all six affected training/checkpoint/evaluation browser tests passed again (1.6 minutes). A separate real-browser default run trained DQN and GA, exported and reimported both models, and evaluated 100 held-out episodes each: means 17.54 and 8.47. Desktop and 390px screenshots were inspected, with no page errors or horizontal overflow.
+
+The original near-zero behavior, failed pilots, three training seeds, full score distributions, wall-clock truncation under load, model compatibility and limitations are documented in [training-effectiveness.md](training-effectiveness.md). These results show learning under the recorded protocol; they do not prove convergence, full-board completion, physical-phone performance, or superiority over stronger search policies.
+
+## CI smoke-test race repair (HP, 2026-10-05)
+
+At commit `e8274ad`, push CI passed; PR CI passed 19 browser tests but exposed a race in the short GA smoke test: the job finished between checking the pause button and clicking it. The smoke test now waits for completion and checks checkpoint availability. Dedicated desktop/mobile checkpoint tests retain pause, cancel and resume coverage. ESLint and both affected HP Chromium tests passed (1.6 minutes). This changes tests only; the recorded learning experiments were not rerun.

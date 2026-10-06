@@ -1,0 +1,398 @@
+[
+  {
+    "viewport": [
+      1440,
+      1000
+    ],
+    "mode": "play",
+    "canvasWidth": 720,
+    "canvasHeight": 720,
+    "bufferWidth": 720,
+    "bufferHeight": 720,
+    "dpr": 1,
+    "perBoardWidth": 720,
+    "perBoardHeight": 720,
+    "count": 1,
+    "rects": [
+      {
+        "x": 0,
+        "y": 0,
+        "width": 720,
+        "height": 720,
+        "label": "A* 安全搜索"
+      }
+    ],
+    "overflow": false,
+    "boardAreaToViewport": 0.36
+  },
+  {
+    "viewport": [
+      1440,
+      1000
+    ],
+    "mode": "arena",
+    "canvasWidth": 838,
+    "canvasHeight": 890,
+    "bufferWidth": 838,
+    "bufferHeight": 890,
+    "dpr": 1,
+    "perBoardWidth": 409,
+    "perBoardHeight": 409,
+    "count": 4,
+    "rects": [
+      {
+        "x": 0,
+        "y": 26,
+        "width": 409,
+        "height": 409,
+        "label": "A* 安全搜索"
+      },
+      {
+        "x": 429,
+        "y": 26,
+        "width": 409,
+        "height": 409,
+        "label": "BFS 广度搜索"
+      },
+      {
+        "x": 0,
+        "y": 481,
+        "width": 409,
+        "height": 409,
+        "label": "安全贪心"
+      },
+      {
+        "x": 429,
+        "y": 481,
+        "width": 409,
+        "height": 409,
+        "label": "合法随机"
+      }
+    ],
+    "overflow": false,
+    "boardAreaToViewport": 0.46466944444444447
+  },
+  {
+    "viewport": [
+      1920,
+      1080
+    ],
+    "mode": "play",
+    "canvasWidth": 720,
+    "canvasHeight": 720,
+    "bufferWidth": 720,
+    "bufferHeight": 720,
+    "dpr": 1,
+    "perBoardWidth": 720,
+    "perBoardHeight": 720,
+    "count": 1,
+    "rects": [
+      {
+        "x": 0,
+        "y": 0,
+        "width": 720,
+        "height": 720,
+        "label": "A* 安全搜索"
+      }
+    ],
+    "overflow": false,
+    "boardAreaToViewport": 0.25
+  },
+  {
+    "viewport": [
+      1920,
+      1080
+    ],
+    "mode": "arena",
+    "canvasWidth": 1120,
+    "canvasHeight": 1172,
+    "bufferWidth": 1120,
+    "bufferHeight": 1172,
+    "dpr": 1,
+    "perBoardWidth": 550,
+    "perBoardHeight": 550,
+    "count": 4,
+    "rects": [
+      {
+        "x": 0,
+        "y": 26,
+        "width": 550,
+        "height": 550,
+        "label": "A* 安全搜索"
+      },
+      {
+        "x": 570,
+        "y": 26,
+        "width": 550,
+        "height": 550,
+        "label": "BFS 广度搜索"
+      },
+      {
+        "x": 0,
+        "y": 622,
+        "width": 550,
+        "height": 550,
+        "label": "安全贪心"
+      },
+      {
+        "x": 570,
+        "y": 622,
+        "width": 550,
+        "height": 550,
+        "label": "合法随机"
+      }
+    ],
+    "overflow": false,
+    "boardAreaToViewport": 0.5835262345679012
+  },
+  {
+    "viewport": [
+      1024,
+      768
+    ],
+    "mode": "play",
+    "canvasWidth": 720,
+    "canvasHeight": 720,
+    "bufferWidth": 720,
+    "bufferHeight": 720,
+    "dpr": 1,
+    "perBoardWidth": 720,
+    "perBoardHeight": 720,
+    "count": 1,
+    "rects": [
+      {
+        "x": 0,
+        "y": 0,
+        "width": 720,
+        "height": 720,
+        "label": "A* 安全搜索"
+      }
+    ],
+    "overflow": false,
+    "boardAreaToViewport": 0.6591796875
+  },
+  {
+    "viewport": [
+      1024,
+      768
+    ],
+    "mode": "arena",
+    "canvasWidth": 758,
+    "canvasHeight": 810,
+    "bufferWidth": 758,
+    "bufferHeight": 810,
+    "dpr": 1,
+    "perBoardWidth": 369,
+    "perBoardHeight": 369,
+    "count": 4,
+    "rects": [
+      {
+        "x": 0,
+        "y": 26,
+        "width": 369,
+        "height": 369,
+        "label": "A* 安全搜索"
+      },
+      {
+        "x": 389,
+        "y": 26,
+        "width": 369,
+        "height": 369,
+        "label": "BFS 广度搜索"
+      },
+      {
+        "x": 0,
+        "y": 441,
+        "width": 369,
+        "height": 369,
+        "label": "安全贪心"
+      },
+      {
+        "x": 389,
+        "y": 441,
+        "width": 369,
+        "height": 369,
+        "label": "合法随机"
+      }
+    ],
+    "overflow": false,
+    "boardAreaToViewport": 0.6925506591796875
+  },
+  {
+    "viewport": [
+      390,
+      664
+    ],
+    "mode": "play",
+    "canvasWidth": 318,
+    "canvasHeight": 318,
+    "bufferWidth": 636,
+    "bufferHeight": 636,
+    "dpr": 2,
+    "perBoardWidth": 318,
+    "perBoardHeight": 318,
+    "count": 1,
+    "rects": [
+      {
+        "x": 0,
+        "y": 0,
+        "width": 318,
+        "height": 318,
+        "label": "A* 安全搜索"
+      }
+    ],
+    "overflow": false,
+    "boardAreaToViewport": 0.39050046339202965
+  },
+  {
+    "viewport": [
+      390,
+      664
+    ],
+    "mode": "arena",
+    "canvasWidth": 318,
+    "canvasHeight": 318,
+    "bufferWidth": 636,
+    "bufferHeight": 636,
+    "dpr": 2,
+    "perBoardWidth": 318,
+    "perBoardHeight": 318,
+    "count": 1,
+    "rects": [
+      {
+        "x": 0,
+        "y": 0,
+        "width": 318,
+        "height": 318,
+        "label": "BFS 广度搜索"
+      }
+    ],
+    "overflow": false,
+    "boardAreaToViewport": 0.39050046339202965
+  },
+  {
+    "viewport": [
+      320,
+      664
+    ],
+    "mode": "play",
+    "canvasWidth": 272,
+    "canvasHeight": 272,
+    "bufferWidth": 544,
+    "bufferHeight": 544,
+    "dpr": 2,
+    "perBoardWidth": 272,
+    "perBoardHeight": 272,
+    "count": 1,
+    "rects": [
+      {
+        "x": 0,
+        "y": 0,
+        "width": 272,
+        "height": 272,
+        "label": "A* 安全搜索"
+      }
+    ],
+    "overflow": false,
+    "boardAreaToViewport": 0.3481927710843373
+  },
+  {
+    "viewport": [
+      320,
+      664
+    ],
+    "mode": "arena",
+    "canvasWidth": 272,
+    "canvasHeight": 272,
+    "bufferWidth": 544,
+    "bufferHeight": 544,
+    "dpr": 2,
+    "perBoardWidth": 272,
+    "perBoardHeight": 272,
+    "count": 1,
+    "rects": [
+      {
+        "x": 0,
+        "y": 0,
+        "width": 272,
+        "height": 272,
+        "label": "BFS 广度搜索"
+      }
+    ],
+    "overflow": false,
+    "boardAreaToViewport": 0.3481927710843373
+  },
+  {
+    "viewport": [
+      1440,
+      720
+    ],
+    "mode": "play",
+    "canvasWidth": 720,
+    "canvasHeight": 720,
+    "bufferWidth": 720,
+    "bufferHeight": 720,
+    "dpr": 1,
+    "perBoardWidth": 720,
+    "perBoardHeight": 720,
+    "count": 1,
+    "rects": [
+      {
+        "x": 0,
+        "y": 0,
+        "width": 720,
+        "height": 720,
+        "label": "A* 安全搜索"
+      }
+    ],
+    "overflow": false,
+    "boardAreaToViewport": 0.5
+  },
+  {
+    "viewport": [
+      1440,
+      720
+    ],
+    "mode": "arena",
+    "canvasWidth": 838,
+    "canvasHeight": 890,
+    "bufferWidth": 838,
+    "bufferHeight": 890,
+    "dpr": 1,
+    "perBoardWidth": 409,
+    "perBoardHeight": 409,
+    "count": 4,
+    "rects": [
+      {
+        "x": 0,
+        "y": 26,
+        "width": 409,
+        "height": 409,
+        "label": "A* 安全搜索"
+      },
+      {
+        "x": 429,
+        "y": 26,
+        "width": 409,
+        "height": 409,
+        "label": "BFS 广度搜索"
+      },
+      {
+        "x": 0,
+        "y": 481,
+        "width": 409,
+        "height": 409,
+        "label": "安全贪心"
+      },
+      {
+        "x": 429,
+        "y": 481,
+        "width": 409,
+        "height": 409,
+        "label": "合法随机"
+      }
+    ],
+    "overflow": false,
+    "boardAreaToViewport": 0.6453742283950618
+  }
+]
