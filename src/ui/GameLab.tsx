@@ -2,8 +2,8 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import { Game } from '../core';
 import type { Agent, AgentId, DebugInfo, Direction, GameConfig, Observation } from '../core/types';
 import { createAgent } from '../agents';
-import type { FrozenModel } from '../training/types';
-import { predictModel } from '../training/inference';
+import type { PlayableModel } from '../learning/playable';
+import { predictPlayable } from '../learning/playable';
 import { Board } from '../render/Board';
 import { createReplay, exportReplay, saveRecord } from '../storage';
 import type { ReplayRecord } from '../storage';
@@ -25,7 +25,7 @@ export const AGENTS: {id: AgentId; label: string; description: string; tag: stri
 ];
 const REASONS: Record<string,string> = {'wall':'撞到边界','body':'撞到身体','obstacle':'撞到障碍','filled':'填满棋盘，胜利！','step-limit':'达到步数预算','no-progress':'达到无进展预算'};
 interface Session { game: Game; agent: Agent; actions: Direction[]; scores: number[]; debug?: DebugInfo; }
-interface Props { arena: boolean; model: FrozenModel|null; onReplay: (replay: ReplayRecord) => void; notify: (message: string) => void; }
+interface Props { arena: boolean; model: PlayableModel|null; onReplay: (replay: ReplayRecord) => void; notify: (message: string) => void; }
 export function GameLab({arena,model,onReplay,notify}:Props) {
  const [completionBudget,setCompletionBudget]=useState(true); const [manual,setManual]=useState(false); const [strategy,setStrategy]=useState<AgentId|'model'>('astar'); const [size,setSize]=useState(12); const [seed,setSeed]=useState(42); const [obstacles,setObstacles]=useState(false); const [speed,setSpeed]=useState(8); const [running,setRunning]=useState(false); const [overlay,setOverlay]=useState(true); const [states,setStates]=useState<Observation[]>([]); const [revision,setRevision]=useState(0); const [error,setError]=useState(''); const [compareModel,setCompareModel]=useState(false);
  const sessions=useRef<Session[]>([]); const input=useRef<Direction|null>(null); const boardFocus=useRef<HTMLDivElement>(null);
@@ -48,7 +48,7 @@ export function GameLab({arena,model,onReplay,notify}:Props) {
   sessions.current.forEach((session,index)=>{
    const state=session.game.observe(); if(state.terminated||state.truncated)return;
    let action:Direction;
-   if(manual&&!arena){action=input.current??state.direction;}else if(model&&((!arena&&strategy==='model')||(arena&&compareModel&&index===3))){action=predictModel(model,state).action;session.debug={path:[],visited:[],expanded:0,elapsedMs:0};}else{const decision=session.agent.decide(state);action=decision.action;session.debug=decision.debug;}
+   if(manual&&!arena){action=input.current??state.direction;}else if(model&&((!arena&&strategy==='model')||(arena&&compareModel&&index===3))){action=predictPlayable(model,state).action;session.debug={path:[],visited:[],expanded:0,elapsedMs:0};}else{const decision=session.agent.decide(state);action=decision.action;session.debug=decision.debug;}
    if(index===0)input.current=null;
    session.game.step(action);session.actions.push(action);session.scores.push(session.game.observe().score);
    if(!session.game.observe().terminated&&!session.game.observe().truncated)active=true;

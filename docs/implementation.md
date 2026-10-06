@@ -58,3 +58,7 @@ Added an optional A* fallback policy and lesson 13. The default A* remains uncha
 ## Fourth batch: planning comparisons
 
 Dijkstra, greedy best-first, Beam and UCT MCTS now have independent decision logic, classroom examples and bounded multi-seed comparisons. Beam/MCTS failures are retained and neither replaces the default. See [planning policies](planning-policies.md). Q-learning, SARSA, PPO and imitation learning remain pending at this stage.
+
+## Fifth batch: Q-learning and SARSA
+
+Real tabular TD training, separate versioned models, exact pending-action/RNG checkpoints, frozen inference and bilingual lessons are implemented. Three training seeds per algorithm have bounded before/after independent evaluations; no filled-board claim is made. See [tabular learning](tabular-learning.md). PPO and imitation learning remain pending at this stage.

@@ -3,6 +3,16 @@
   "python": "Python 3.13.12",
   "results": [
     {
+      "lesson": "q-learning",
+      "matched": true,
+      "output": 2.7
+    },
+    {
+      "lesson": "sarsa",
+      "matched": true,
+      "output": 1.98
+    },
+    {
       "lesson": "beam",
       "matched": true,
       "output": [

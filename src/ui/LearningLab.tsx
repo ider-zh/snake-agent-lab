@@ -1,0 +1,47 @@
+import {useEffect,useRef,useState} from 'react';
+import {normalizeConfig} from '../core';
+import {parseTabularCheckpoint,parseTabularModel,TabularTrainer,type LearningMetrics,type TabularAlgorithm,type TabularCheckpoint,type TabularModel} from '../learning/tabular';
+import type {LearningCommand,LearningEvent,TabularEvaluation} from '../learning/controller';
+import {saveRecord,listRecords,loadRecord,type StoredRecordSummary} from '../storage';
+import {Board} from '../render/Board';
+import {Panel,Metric,Sparkline,downloadFile} from './shared';
+export function LearningLab({notify,onModel,onActive}:{notify:(message:string)=>void;onModel:(model:TabularModel)=>void;onActive:(active:boolean)=>void}){
+  const [algorithm,setAlgorithm]=useState<TabularAlgorithm>('q-learning'),[seed,setSeed]=useState(7),[budget,setBudget]=useState(50000),[obstacles,setObstacles]=useState(false);
+  const [status,setStatus]=useState('idle'),[reason,setReason]=useState(''),[metrics,setMetrics]=useState<LearningMetrics|null>(null),[model,setModel]=useState<TabularModel|null>(null),[evaluation,setEvaluation]=useState<TabularEvaluation|null>(null),[imported,setImported]=useState<TabularCheckpoint|null>(null),[saved,setSaved]=useState<StoredRecordSummary[]>([]),[extend,setExtend]=useState(false);
+  const worker=useRef<Worker|null>(null),job=useRef(''),sequence=useRef(0),saveMode=useRef<'file'|'local'>('file'),input=useRef<HTMLInputElement>(null);
+  const [checkpointReady,setCheckpointReady]=useState(false);
+  const active=['initializing','running','paused'].includes(status);
+  useEffect(()=>onActive(active),[active,onActive]);
+  const refresh=()=>{void listRecords('checkpoint').then(rows=>setSaved(rows.filter(r=>r.id.startsWith('learning-')))).catch(e=>notify(String(e)));};
+  useEffect(()=>{void listRecords('checkpoint').then(rows=>setSaved(rows.filter(r=>r.id.startsWith('learning-')))).catch(()=>undefined);return()=>worker.current?.terminate();},[]);
+  const command=(type:'pause'|'resume'|'cancel'|'checkpoint')=>worker.current?.postMessage({type,jobId:job.current} satisfies LearningCommand);
+  useEffect(()=>{const hidden=()=>{if(document.hidden&&status==='running')command('pause');};document.addEventListener('visibilitychange',hidden);return()=>document.removeEventListener('visibilitychange',hidden);},[status]);
+  const attach=()=>{
+    setCheckpointReady(false);worker.current?.terminate();const w=new Worker(new URL('../workers/learning.worker.ts',import.meta.url),{type:'module'});worker.current=w;job.current=crypto.randomUUID();sequence.current=0;
+    w.onerror=e=>{setStatus('error');setReason(e.message);notify(e.message);};
+    w.onmessage=(e:MessageEvent<LearningEvent>)=>{const d=e.data;if(d.jobId!==job.current||d.sequence<=sequence.current)return;sequence.current=d.sequence;
+      if(d.type==='status'){setStatus(d.status);setReason(d.reason??'');}
+      if(d.type==='metrics'){setMetrics(d.metrics);setCheckpointReady(true);}
+      if(d.type==='model'){setModel(d.model);onModel(d.model);}
+      if(d.type==='evaluation')setEvaluation(d.result);
+      if(d.type==='checkpoint'){if(saveMode.current==='file')downloadFile(`snake-${d.checkpoint.config.algorithm}-checkpoint.json`,JSON.stringify(d.checkpoint));else void saveRecord('checkpoint',`learning-${d.checkpoint.config.algorithm}-${Date.now()}`,d.checkpoint).then(()=>{notify('新学习检查点已保存在本浏览器');refresh();}).catch(e=>notify(String(e)));}
+    };return w;
+  };
+  const start=()=>{setStatus('initializing');setMetrics(null);setEvaluation(null);setReason('');const w=attach();w.postMessage({type:'start',jobId:job.current,config:{algorithm,seed,maxSteps:budget,maxWallMs:60000,game:normalizeConfig({width:8,height:8,maxSteps:1000,maxNoFood:200,obstacles:obstacles?[18,19,44,45]:[]})}} satisfies LearningCommand);};
+  const restore=()=>{if(!imported)return;setStatus('initializing');setEvaluation(null);const w=attach();w.postMessage({type:'restore',jobId:job.current,checkpoint:imported,extraSteps:extend?budget:undefined} satisfies LearningCommand);};
+  const read=async(file:File|undefined)=>{if(!file)return;try{if(file.size>10*1024*1024)throw new Error('文件超过 10 MB');const text=await file.text();const raw=JSON.parse(text);if(raw?.version==='snake-tabular-v1'){const m=parseTabularModel(text);setModel(m);onModel(m);notify('表格推理模型已验证');}else{const c=parseTabularCheckpoint(text);setImported(c);setAlgorithm(c.config.algorithm);notify('表格检查点已验证，可恢复训练');}}catch(e){notify(`导入失败：${String(e)}`);}};
+  const evaluate=()=>{if(!model)return;setStatus('initializing');setEvaluation(null);const w=attach();w.postMessage({type:'evaluate',jobId:job.current,model,split:'test'} satisfies LearningCommand);};
+  return <div className="lab-content" data-testid="learning-lab"><Panel title="表格强化学习" eyebrow="Q-LEARNING / SARSA"><p>Q-learning 用下一状态的最大合法 Q 值；SARSA 用实际采样的下一动作。二者都更新真实 Q 表，不调用规划器代替策略。</p>
+    <fieldset disabled={active} className="unstyled-fieldset"><div className="form-grid"><label className="field-label">学习算法<select aria-label="新学习算法" value={algorithm} onChange={e=>setAlgorithm(e.target.value as TabularAlgorithm)}><option value="q-learning">Q-learning</option><option value="sarsa">SARSA</option></select></label><label className="field-label">种子<input aria-label="新学习种子" type="number" min={0} value={seed} onChange={e=>setSeed(Number(e.target.value))}/></label><label className="field-label">预算<select aria-label="新学习预算" value={budget} onChange={e=>setBudget(Number(e.target.value))}><option value={2000}>2,000 步 · 检查</option><option value={10000}>10,000 步</option><option value={50000}>50,000 步</option><option value={100000}>100,000 步</option></select></label></div><label className="check-label"><input type="checkbox" checked={obstacles} onChange={e=>setObstacles(e.target.checked)}/>新学习障碍地图</label></fieldset>
+    <p className="notice">8×8；5,832 个离散局部状态 × 3 相对动作，α=0.2、γ=0.95，ε 从 1 降至 0.05。立即碰撞过滤，终止和截断不 bootstrap。局部编码不是完整 Markov 状态，不保证通关。每次训练最多 60 秒，每局 1,000 步／无食物 200 步。</p>
+    <div className="button-row"><button className="primary" disabled={active} onClick={start}>开始新学习训练</button>{active&&<><button onClick={()=>command(status==='paused'?'resume':'pause')}>{status==='paused'?'继续新学习':'暂停新学习'}</button><button onClick={()=>command('cancel')}>停止新学习</button></>}</div><p role="status">{{idle:'准备就绪',initializing:'初始化',running:'训练或评估中',paused:'已暂停',completed:'任务完成',cancelled:'已停止',error:'任务错误'}[status]}{reason&&` · ${reason}`}</p>
+  </Panel><div className="metrics-row"><Metric label="学习样本" value={metrics?.samples??0}/><Metric label="表格更新" value={metrics?.updates??0}/><Metric label="已改变表项" value={metrics?.changedEntries??0}/><Metric label="训练平均食物" value={(metrics?.meanScore??0).toFixed(2)}/></div>
+  <Panel title="实际学习记录"><Sparkline values={metrics?.curve.map(x=>x.meanScore)??[]} label="表格学习曲线"/><p>最近更新平方量 {(metrics?.loss??0).toFixed(6)} · ε {(metrics?.epsilon??1).toFixed(3)} · 用时 {((metrics?.elapsedMs??0)/1000).toFixed(1)} 秒</p>{metrics&&<div className="training-snapshot"><Board views={[{observation:metrics.snapshot,label:'真实训练采样'}]}/></div>}<p className="muted">表项变化是更新证据；训练曲线不是独立测试成绩。模型使用最终参数，不用测试集挑选检查点。</p></Panel>
+  <Panel title="新学习模型与检查点"><div className="button-row"><button disabled={!checkpointReady||status==='initializing'} onClick={()=>{saveMode.current='file';command('checkpoint');}}>导出新学习检查点</button><button disabled={!checkpointReady||status==='initializing'} onClick={()=>{saveMode.current='local';command('checkpoint');}}>保存新学习到本地</button><button disabled={!model||active} onClick={()=>model&&downloadFile(`snake-${model.algorithm}-model.json`,JSON.stringify(model))}>导出新学习模型</button><button disabled={active} onClick={()=>input.current?.click()}>导入新学习文件</button></div>
+    <input className="sr-only" ref={input} type="file" accept=".json,application/json" aria-label="导入新学习模型或检查点" onChange={e=>{const file=e.target.files?.[0];e.target.value='';void read(file);}}/>
+    {saved.length>0&&<label className="field-label">本地表格检查点<select aria-label="本地新学习检查点" disabled={active} defaultValue="" onChange={e=>{if(e.target.value)void loadRecord('checkpoint',e.target.value).then(value=>{const c=TabularTrainer.restore(value).checkpoint();setImported(c);setAlgorithm(c.config.algorithm);notify('已载入表格检查点');}).catch(e=>notify(String(e)));}}><option value="">选择记录</option>{saved.map(r=><option key={r.id} value={r.id}>{r.id}</option>)}</select></label>}
+    {imported&&<><label className="check-label"><input type="checkbox" checked={extend} onChange={e=>setExtend(e.target.checked)}/>恢复时追加 {budget} 步／60 秒</label><button disabled={active} onClick={restore}>恢复新学习检查点</button></>}
+    <p className="muted">检查点保存 Q 表、随机流、当前身体、SARSA 待执行动作与计数。暂停后可保存并精确恢复；停止也保留最近完整状态。文件只接受版本化有限数值，最大 10 MB。已载入模型可用于实验台与竞技。</p>
+    <button className="primary" disabled={!model||active} onClick={evaluate}>评估新学习冻结模型 · {model?.seedSplit.testSeeds.length??20} 局</button>{evaluation&&<div data-testid="learning-evaluation"><p>独立 {evaluation.split} · {evaluation.episodes.length} 局 · 平均食物 {evaluation.meanScore.toFixed(2)} · {evaluation.cancelled?'未完成':'完成'}</p><p>通关 {evaluation.episodes.filter(r=>r.reason==='filled').length} · 碰撞 {evaluation.episodes.filter(r=>['wall','body','obstacle'].includes(r.reason??'')).length} · 截断 {evaluation.episodes.filter(r=>['step-limit','no-progress'].includes(r.reason??'')).length}</p><button onClick={()=>downloadFile('snake-tabular-evaluation.json',JSON.stringify(evaluation,null,2))}>导出新学习评估</button></div>}
+  </Panel></div>;
+}

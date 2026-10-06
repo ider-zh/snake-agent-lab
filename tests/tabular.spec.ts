@@ -1,0 +1,28 @@
+import {test,expect} from '@playwright/test';
+import {readFileSync} from 'node:fs';
+test('tabular Worker trains, resumes checkpoints, imports safely, evaluates and plays',async({page},info)=>{
+  test.setTimeout(120000);const errors:string[]=[];page.on('pageerror',e=>errors.push(e.message));await page.goto('/');
+  await page.getByRole('button',{name:'训练实验室',exact:true}).click();await page.getByRole('button',{name:'Q-learning / SARSA',exact:true}).click();
+  const lab=page.getByTestId('learning-lab');
+  await lab.getByLabel('新学习预算',{exact:true}).selectOption('2000');await lab.getByRole('button',{name:'开始新学习训练',exact:true}).click();
+  await expect(lab.getByRole('status')).toContainText('任务完成',{timeout:30000});
+  await expect(lab.locator('.metric').filter({hasText:'表格更新'}).locator('strong')).toHaveText('2000');
+  expect(Number(await lab.locator('.metric').filter({hasText:'已改变表项'}).locator('strong').textContent())).toBeGreaterThan(0);
+  const exportModel=page.waitForEvent('download');await lab.getByRole('button',{name:'导出新学习模型',exact:true}).click();const modelFile=await (await exportModel).path();const model=JSON.parse(readFileSync(modelFile!,'utf8'));expect(model.algorithm).toBe('q-learning');
+  await lab.getByRole('button',{name:/评估新学习冻结模型/}).click();await expect(lab.getByTestId('learning-evaluation')).toContainText('20 局',{timeout:30000});
+  await lab.getByLabel('新学习算法',{exact:true}).selectOption('sarsa');await lab.getByLabel('新学习预算',{exact:true}).selectOption('100000');await lab.getByRole('button',{name:'开始新学习训练',exact:true}).click();
+  await lab.getByRole('button',{name:'暂停新学习',exact:true}).click();await expect(lab.getByRole('status')).toContainText('已暂停');
+  await expect(page.getByRole('button',{name:'DQN / GA',exact:true})).toBeDisabled();
+  const checkpointDownload=page.waitForEvent('download');await lab.getByRole('button',{name:'导出新学习检查点',exact:true}).click();const checkpointFile=await (await checkpointDownload).path();const checkpoint=JSON.parse(readFileSync(checkpointFile!,'utf8'));expect(checkpoint.config.algorithm).toBe('sarsa');
+  await lab.getByRole('button',{name:'保存新学习到本地',exact:true}).click();await expect(lab.getByLabel('本地新学习检查点',{exact:true})).toBeVisible();
+  await lab.getByRole('button',{name:'继续新学习',exact:true}).click();await lab.getByRole('button',{name:'停止新学习',exact:true}).click();await expect(lab.getByRole('status')).toContainText('已停止');
+  await lab.getByLabel('导入新学习模型或检查点',{exact:true}).setInputFiles(checkpointFile!);await lab.getByRole('button',{name:'恢复新学习检查点',exact:true}).click();
+  await lab.getByRole('button',{name:'暂停新学习',exact:true}).click();await expect(lab.getByRole('status')).toContainText('已暂停');await lab.getByRole('button',{name:'停止新学习',exact:true}).click();
+  await lab.getByLabel('导入新学习模型或检查点',{exact:true}).setInputFiles({name:'bad.json',mimeType:'application/json',buffer:Buffer.from(JSON.stringify({...model,table:[0]}))});await expect(page.getByText(/导入失败/)).toBeVisible();
+  await lab.getByLabel('导入新学习模型或检查点',{exact:true}).setInputFiles(modelFile!);
+  await lab.screenshot({path:`docs/qa/tabular/${info.project.name}-training.png`});
+  expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1)).toBe(true);
+  await page.getByRole('button',{name:'实验台',exact:true}).click();await page.getByLabel('决策策略',{exact:true}).selectOption('model');for(let i=0;i<5;i++)await page.getByRole('button',{name:'单步',exact:true}).click();
+  await page.getByRole('button',{name:'查看本局回放',exact:true}).click();await expect(page.getByText('当前帧验证一致',{exact:true})).toBeVisible();
+  expect(errors).toEqual([]);
+});
