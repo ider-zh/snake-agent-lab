@@ -30,6 +30,23 @@ def legal(d):
     return d != (direction+2)%4 and nxt >= 0 and nxt not in obstacles and nxt not in body
 `;
 const snippets: Record<string, [string,string]> = {
+beam:[`// 一层束剪枝构件：输入候选与分数，保留 k 项；不是完整游戏策略。
+function prune(candidates,k) { return [...candidates].sort((a,b)=>b.value-a.value||a.id-b.id).slice(0,k); }
+console.log(JSON.stringify(prune([{id:0,value:.3},{id:1,value:.8},{id:2,value:.6}],2)));`, `# 一层束剪枝构件：输入候选和分数，保留 k 项。
+def prune(candidates, k):
+    return sorted(candidates,key=lambda c: (-c['value'],c['id']))[:k]
+print(json.dumps(prune([dict(id=0,value=.3),dict(id=1,value=.8),dict(id=2,value=.6)],2)))`],
+mcts:[`// UCT 构件；total 为累积叶价值，不是获胜计数。输出选择下标。
+function uct(total,visits,parent) { return visits===0?Infinity:total/visits+Math.SQRT2*Math.sqrt(Math.log(parent)/visits); }
+const nodes=[{total:4,visits:5},{total:2,visits:2},{total:1,visits:3}];
+const values=nodes.map(n=>uct(n.total,n.visits,10));
+console.log(JSON.stringify(values.indexOf(Math.max(...values))));`, `# UCT 构件；累积叶价值不是获胜计数。输出选择下标。
+import math
+def uct(total, visits, parent):
+    return float('inf') if visits == 0 else total/visits+math.sqrt(2*math.log(parent)/visits)
+nodes = [(4,5),(2,2),(1,3)]
+values = [uct(total,visits,10) for total,visits in nodes]
+print(json.dumps(values.index(max(values))))`],
 'tail-safe':[`// 输入路径相邻边与禁用格；输出不重复的两格矩形绕行。
 // 构件示例，不包含整条动态路径验证，也不证明长期安全。
 function detour(a,b,used,blocked) {
@@ -199,14 +216,14 @@ def summarize(scores):
     return dict(mean=sum(scores)/n,median=median,min=ordered[0],max=ordered[-1])
 print(json.dumps(summarize([0,2,4,10])))`],
 };
-function search(algorithm: 'bfs'|'astar'): [string,string] { return [
+function search(algorithm: 'bfs'|'astar'|'dijkstra'|'best-first'): [string,string] { return [
 `// 静态 ${algorithm.toUpperCase()}：输入上面的冻结地图，输出头到食物的格编号路径。
 // 不模拟未来身体，不构成完整 Snake 安全策略。
 function search() {
   const blocked=new Set([...obstacles,...snake.slice(1,-1)]),start=snake[0];
   const queue=[{cell:start,g:0,order:0}],cost=new Map([[start,0]]),parent=new Map();let order=1;
   while(queue.length) {
-    ${algorithm==='astar'?'queue.sort((a,b)=>(a.g+distance(a.cell,food))-(b.g+distance(b.cell,food))||a.order-b.order);':'// FIFO：不重新排序队列。'}
+    ${algorithm==='bfs'?'// FIFO：不重新排序队列。':algorithm==='dijkstra'?'queue.sort((a,b)=>a.g-b.g||a.order-b.order);':algorithm==='best-first'?'queue.sort((a,b)=>distance(a.cell,food)-distance(b.cell,food)||a.order-b.order);':'queue.sort((a,b)=>(a.g+distance(a.cell,food))-(b.g+distance(b.cell,food))||a.order-b.order);'}
     const current=queue.shift();if(current.g!==cost.get(current.cell))continue;
     if(current.cell===food) { const path=[food];while(path.at(-1)!==start)path.push(parent.get(path.at(-1)));return path.reverse(); }
     for(let d=0;d<4;d++) {
@@ -225,7 +242,7 @@ def search():
     blocked, start = set(obstacles+snake[1:-1]), snake[0]
     queue, cost, parent, order = [(start,0,0)], {start:0}, {}, 1
     while queue:
-        ${algorithm==='astar'?'queue.sort(key=lambda n: (n[1]+distance(n[0],food),n[2]))':'# FIFO：不重新排序队列。'}
+        ${algorithm==='bfs'?'# FIFO：不重新排序队列。':algorithm==='dijkstra'?'queue.sort(key=lambda n: (n[1],n[2]))':algorithm==='best-first'?'queue.sort(key=lambda n: (distance(n[0],food),n[2]))':'queue.sort(key=lambda n: (n[1]+distance(n[0],food),n[2]))'}
         cell, g, _ = queue.pop(0)
         if g != cost[cell]:
             continue
@@ -245,9 +262,9 @@ def search():
             order += 1
     return None
 print(json.dumps(search()))`]; }
-snippets.bfs=search('bfs');snippets.astar=search('astar');
+snippets.bfs=search('bfs');snippets.astar=search('astar');snippets.dijkstra=search('dijkstra');snippets['best-first']=search('best-first');
 export const exampleIds = Object.keys(snippets);
-export const expectedOutputs: Record<string,unknown> = {'tail-safe':[36,37,29,28],'hamiltonian-shortcut':[true,false,false],random:2,'legal-random':1,greedy:0,'safe-greedy':{space:62,tailReachable:true},hamiltonian:12,encoding:[0,0,0,-0.25,-0.25,0.5,0.375,0.375,0.5,0.375,0.375,3/63],dqn:{double:3.7,dqn:6.4,terminal:1},ga:374.9515,evaluation:{mean:4,median:3,min:0,max:10},bfs:[36,28,20,19,18],astar:[36,28,20,19,18]};
+export const expectedOutputs: Record<string,unknown> = {beam:[{id:1,value:.8},{id:2,value:.6}],mcts:1,dijkstra:[36,28,20,19,18],'best-first':[36,28,20,19,18],'tail-safe':[36,37,29,28],'hamiltonian-shortcut':[true,false,false],random:2,'legal-random':1,greedy:0,'safe-greedy':{space:62,tailReachable:true},hamiltonian:12,encoding:[0,0,0,-0.25,-0.25,0.5,0.375,0.375,0.5,0.375,0.375,3/63],dqn:{double:3.7,dqn:6.4,terminal:1},ga:374.9515,evaluation:{mean:4,median:3,min:0,max:10},bfs:[36,28,20,19,18],astar:[36,28,20,19,18]};
 export function exampleCode(id: string, language: 'js'|'py'): string {
   const index=language==='js'?0:1;
   return (index===0?jsBase:pyBase)+ '\n'+snippets[id][index]+'\n';

@@ -3,6 +3,25 @@
   "python": "Python 3.13.12",
   "results": [
     {
+      "lesson": "beam",
+      "matched": true,
+      "output": [
+        {
+          "id": 1,
+          "value": 0.8
+        },
+        {
+          "id": 2,
+          "value": 0.6
+        }
+      ]
+    },
+    {
+      "lesson": "mcts",
+      "matched": true,
+      "output": 1
+    },
+    {
       "lesson": "tail-safe",
       "matched": true,
       "output": [
@@ -104,6 +123,28 @@
     },
     {
       "lesson": "astar",
+      "matched": true,
+      "output": [
+        36,
+        28,
+        20,
+        19,
+        18
+      ]
+    },
+    {
+      "lesson": "dijkstra",
+      "matched": true,
+      "output": [
+        36,
+        28,
+        20,
+        19,
+        18
+      ]
+    },
+    {
+      "lesson": "best-first",
       "matched": true,
       "output": [
         36,

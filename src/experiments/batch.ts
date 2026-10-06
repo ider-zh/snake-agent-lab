@@ -9,7 +9,7 @@ export const DEFAULT_SEEDS: readonly number[] = Object.freeze(Array.from({length
 export const MAX_BATCH_EPISODES = 700;
 export const MAX_DECISION_SAMPLES = 512;
 export const WARMUP_DECISIONS = 5;
-const AGENTS: AgentId[] = ['random', 'legal-random', 'greedy', 'safe-greedy', 'bfs', 'astar', 'hamiltonian', 'hamiltonian-shortcut', 'tail-safe'];
+const AGENTS: AgentId[] = ['random', 'legal-random', 'greedy', 'safe-greedy', 'bfs', 'astar', 'hamiltonian', 'hamiltonian-shortcut', 'tail-safe', 'dijkstra', 'best-first', 'beam', 'mcts'];
 const delay = () => new Promise<void>(resolve => setTimeout(resolve, 0));
 const clock = () => globalThis.performance?.now() ?? Date.now();
 function integer(value: number, name: string, min: number, max: number): number {

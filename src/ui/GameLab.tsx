@@ -9,6 +9,10 @@ import { createReplay, exportReplay, saveRecord } from '../storage';
 import type { ReplayRecord } from '../storage';
 import { Icon, Metric, Panel, Sparkline, downloadFile, fmt } from './shared';
 export const AGENTS: {id: AgentId; label: string; description: string; tag: string}[] = [
+ {id:'dijkstra',label:'Dijkstra 一致代价',description:'优先队列按累计代价 g 扩展，再做动态路径与空间验证。本项目边代价均为1，因此最短距离与 BFS 相同；不保证长期安全。',tag:'UNIFORM COST'},
+ {id:'best-first',label:'贪心最佳优先',description:'优先队列只按到食物的曼哈顿距离 h 扩展，仍保留父路径与动态验证。不同于只看下一步的纯贪心；不保证最短路径。',tag:'BEST FIRST'},
+ {id:'beam',label:'Beam 束搜索',description:'用真实身体移动扩展候选，每层最多保留24条，最多16层。按食物、局部出口和距离评分；吃到当前食物即停止模拟，不预知新食物。剪枝可能错过解。',tag:'BOUNDED LOOKAHEAD'},
+ {id:'mcts',label:'MCTS 蒙特卡洛树',description:'UCT 选择、扩展、随机 rollout、回传；最多512轮、深度24，并受共享节点/时间上限约束。当前食物处停止模拟；有限模拟与叶评分不保证通关。',tag:'SEEDED UCT'},
  {id:'tail-safe',label:'A* + 尾部绕行',description:'先尝试原 A* 安全食物路径；回退时尝试通向尾部的路径与最多16次双格绕行，并精确模拟整条路径。共享节点和时间预算；适用障碍图，但可能停滞或截断，不保证填满。',tag:'BOUNDED HEURISTIC'},
  {id:'hamiltonian-shortcut',label:'Hamiltonian 安全捷径',description:'保持身体沿环有序，只选择不越过食物、精确移动后仍可沿环前进的物理邻格。需要无障碍、偶数边、cycle 初态和至少3格身体；有限预算仍可能截断。',tag:'ORDERED CYCLE'},
  {id:'astar',label:'A* 安全搜索',description:'启发式搜索寻找食物，模拟整条蛇验证路径，再检查尾部可达性与剩余空间。安全检查是启发式，不保证必胜。',tag:'SEARCH'},

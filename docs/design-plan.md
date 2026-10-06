@@ -176,3 +176,7 @@ AI 模式显示策略、种子、步数、速度及终局原因，支持单步�
 ## Third batch: bounded tail detours
 
 Added an optional A* fallback policy and lesson 13. The default A* remains unchanged. Held-out 240-episode results improve mean food across all four groups, but show persistent no-progress and step-limit failures. Full protocol, raw data and limits: [tail detour report](tail-detour.md). The remaining eight authorized algorithms are still pending; this is not full-scope completion.
+
+## Fourth batch: planning comparisons
+
+Dijkstra, greedy best-first, Beam and UCT MCTS now have independent decision logic, classroom examples and bounded multi-seed comparisons. Beam/MCTS failures are retained and neither replaces the default. See [planning policies](planning-policies.md). Q-learning, SARSA, PPO and imitation learning remain pending at this stage.

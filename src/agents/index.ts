@@ -1,3 +1,4 @@
+import { createLookaheadAgent } from './lookahead';
 import { tailDecision } from './tail';
 import { createShortcutAgent } from './shortcut';
 import { cycle, directionBetween, legalActions, moveCell, SeededRandom, simulateMove } from '../core';
@@ -48,17 +49,18 @@ class MinHeap {
   }
 }
 
-function pathToFood(obs: Observation, algorithm: 'bfs' | 'astar', budget: Budget, visited: number[], trace?: SearchFrame[]): number[] | null {
+function pathToFood(obs: Observation, algorithm: 'bfs' | 'astar' | 'dijkstra' | 'best-first', budget: Budget, visited: number[], trace?: SearchFrame[]): number[] | null {
   if (obs.food === null) return null;
   const { width, height } = obs.config, start = obs.snake[0], goal = obs.food;
   const blocked = new Set([...obs.config.obstacles, ...obs.snake.slice(1, -1)]);
   const count = width * height, previous = new Int32Array(count).fill(-1), gScore = new Float64Array(count).fill(Infinity);
   gScore[start] = 0;
   const queue = [start], heap = new MinHeap(); let index = 0, sequence = 0;
-  if (algorithm === 'astar') heap.push({ cell: start, g: 0, f: distance(start, goal, width), sequence: sequence++ });
+  const priority = (g: number, h: number) => algorithm === 'dijkstra' ? g : algorithm === 'best-first' ? h : g + h;
+  if (algorithm !== 'bfs') heap.push({ cell: start, g: 0, f: priority(0, distance(start, goal, width)), sequence: sequence++ });
   const capture = (current: number) => {
     if (!trace || trace.length >= 256) return;
-    const node = (cell: number) => { const g = gScore[cell], h = distance(cell, goal, width); return { cell, g, h, f: g + h }; };
+    const node = (cell: number) => { const g = gScore[cell], h = distance(cell, goal, width); return { cell, g, h, f: priority(g,h) }; };
     const pending = algorithm === 'bfs' ? queue.slice(index) : heap.nodes.filter(n => n.g === gScore[n.cell]).slice().sort((a,b) => a.f-b.f || a.sequence-b.sequence).map(n => n.cell);
     trace.push({ current: node(current), frontier: [...new Set(pending)].map(node), visited: [...visited] });
   };
@@ -82,7 +84,7 @@ function pathToFood(obs: Observation, algorithm: 'bfs' | 'astar', budget: Budget
       if (tentative >= gScore[next]) continue;
       previous[next] = current; gScore[next] = tentative;
       if (algorithm === 'bfs') queue.push(next);
-      else heap.push({ cell: next, g: tentative, f: tentative + distance(next, goal, width), sequence: sequence++ });
+      else heap.push({ cell: next, g: tentative, f: priority(tentative, distance(next, goal, width)), sequence: sequence++ });
     }
     capture(current);
   }
@@ -169,8 +171,9 @@ export function hamiltonianApplicable(obs: Observation): boolean {
 
 /** Agent and environment use separate PRNG instances. Wall-clock debug is not replay state. */
 export function createAgent(id: AgentId, seed = 1, requestedBudget: SearchBudget = DEFAULT_BUDGET, options: { trace?: boolean } = {}): Agent {
-  if (!['random', 'legal-random', 'greedy', 'safe-greedy', 'bfs', 'astar', 'hamiltonian', 'hamiltonian-shortcut', 'tail-safe'].includes(id)) throw new Error(`Unknown agent: ${id}`);
+  if (!['random', 'legal-random', 'greedy', 'safe-greedy', 'bfs', 'astar', 'hamiltonian', 'hamiltonian-shortcut', 'tail-safe', 'dijkstra', 'best-first', 'beam', 'mcts'].includes(id)) throw new Error(`Unknown agent: ${id}`);
   if (!Number.isInteger(requestedBudget.maxNodes) || requestedBudget.maxNodes < 0 || requestedBudget.maxNodes > 10_000_000 || typeof requestedBudget.maxMs !== 'number' || Number.isNaN(requestedBudget.maxMs) || requestedBudget.maxMs < 0) throw new Error('Invalid decision budget');
+  if (id === 'beam' || id === 'mcts') return createLookaheadAgent(id,seed,{...requestedBudget});
   if (id === 'tail-safe') { const limits={...requestedBudget}, base=createAgent('astar',seed,limits); return {id,decide:obs=>tailDecision(obs,base.decide(obs),limits)}; }
   if (id === 'hamiltonian-shortcut') return createShortcutAgent({ ...requestedBudget });
   const limits = { ...requestedBudget }, random = new SeededRandom(seed);
@@ -219,7 +222,7 @@ export function createAgent(id: AgentId, seed = 1, requestedBudget: SearchBudget
     debug.expanded = budget.expanded; debug.elapsedMs = budget.elapsed();
     // Replay the exact search prefix only AFTER deciding. Instrumentation cannot
     // consume the decision's wall-clock budget or either random stream.
-    if (options.trace && (id === 'bfs' || id === 'astar')) {
+    if (options.trace && (id === 'bfs' || id === 'astar' || id === 'dijkstra' || id === 'best-first')) {
       debug.trace = [];
       pathToFood(obs, id, new Budget({ maxNodes: Math.min(debug.visited.length, 256), maxMs: Infinity }), [], debug.trace);
       debug.traceTruncated = debug.visited.length > 256;
