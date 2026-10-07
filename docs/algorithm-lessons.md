@@ -47,3 +47,9 @@ Real tabular TD training, separate versioned models, exact pending-action/RNG ch
 ## Sixth batch: PPO and imitation learning
 
 Real PPO-Clip/GAE/Adam and supervised behavior cloning are implemented with a clearly labeled linear actor/critic. Both have separate model validation, exact mid-rollout/minibatch resume, Worker/UI integration, independent three-seed results and bilingual lessons (21 total). See [policy learning](policy-learning.md). This completes the nine requested additions in implementation scope; final full-browser status is recorded separately, and weak or failed completion outcomes are not hidden.
+
+## 当前阅读界面（2026-10-07）
+
+入口现称「策略课堂」。全部 21 课改为文档式目录与文章，保留真实演示和 42 份双语示例；当前代码区支持高亮、键盘语言切换和复制，不再提供示例下载。上文下载描述属于历史版本。当前布局、导航及浏览器证据见 [课堂改版验收](classroom-redesign.md)。
+
+全部 21 课已扩写为面向初学者的完整正文，含术语、具体手算、代码映射、失败诊断、练习详解和每课来源；合计约 2.56 万中文字符、34 个来源链接。125 项单元测试、最终 10 项桌面/手机浏览器回归、42 份双语程序运行和 17 项教材数值核对通过，完整证据见 [课堂改版与内容验收](classroom-redesign.md)。

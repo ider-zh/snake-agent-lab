@@ -44,6 +44,7 @@ class TestWorker {
 }
 
 beforeEach(() => {
+  window.history.replaceState(null, '', window.location.pathname);
   vi.stubGlobal('indexedDB', new IDBFactory());
   vi.stubGlobal('Worker', TestWorker);
   TestWorker.instances = [];

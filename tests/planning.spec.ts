@@ -11,7 +11,7 @@ test('four planning policies execute, replay and display real search statistics'
   }
   await page.getByRole('button',{name:'策略课堂',exact:true}).click();
   for(const id of ['dijkstra','best-first','beam','mcts']){
-    await page.getByLabel('选择课程',{exact:true}).selectOption(id);
+    await page.locator(`.lesson-index a[data-lesson-id="${id}"]`).click();
     if(id==='dijkstra'||id==='best-first'){
       await page.getByRole('button',{name:'下一步搜索',exact:true}).click();
       await expect(page.getByTestId('lesson-state')).toContainText('游戏步数 0');
@@ -20,6 +20,6 @@ test('four planning policies execute, replay and display real search statistics'
     await page.getByRole('button',{name:'执行建议动作',exact:true}).click();await expect(page.getByTestId('lesson-state')).toContainText('游戏步数 1');
     expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1)).toBe(true);
   }
-  await page.getByTestId('lessons-lab').screenshot({path:`docs/qa/planning/${info.project.name}-mcts.png`});
+  await page.getByTestId('lessons-lab').screenshot({path:`docs/qa/classroom/${info.project.name}-mcts.png`});
   expect(errors).toEqual([]);
 });

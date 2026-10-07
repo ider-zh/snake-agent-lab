@@ -1,0 +1,248 @@
+{
+  "lessonCount": 21,
+  "uniqueSourceCount": 34,
+  "totalChineseCharacters": 25564,
+  "lessons": [
+    {
+      "id": "random",
+      "chineseCharacters": 978,
+      "mechanismSections": 2,
+      "workedSteps": 4,
+      "exercises": 2,
+      "sources": [
+        "https://docs.python.org/3/library/random.html",
+        "https://gymnasium.farama.org/tutorials/training_agents/action_masking_taxi/"
+      ]
+    },
+    {
+      "id": "legal-random",
+      "chineseCharacters": 1098,
+      "mechanismSections": 2,
+      "workedSteps": 4,
+      "exercises": 2,
+      "sources": [
+        "https://gymnasium.farama.org/tutorials/training_agents/action_masking_taxi/",
+        "https://docs.python.org/3/library/random.html"
+      ]
+    },
+    {
+      "id": "greedy",
+      "chineseCharacters": 1060,
+      "mechanismSections": 2,
+      "workedSteps": 4,
+      "exercises": 2,
+      "sources": [
+        "https://inst.eecs.berkeley.edu/~cs188/textbook/search/informed.html",
+        "https://www.cs.ubc.ca/~poole/aibook/3e/html/ArtInt3e.Ch3.S6.html"
+      ]
+    },
+    {
+      "id": "safe-greedy",
+      "chineseCharacters": 1160,
+      "mechanismSections": 2,
+      "workedSteps": 4,
+      "exercises": 2,
+      "sources": [
+        "https://www.redblobgames.com/pathfinding/tower-defense/",
+        "https://algs4.cs.princeton.edu/code/javadoc/edu/princeton/cs/algs4/BreadthFirstPaths.html"
+      ]
+    },
+    {
+      "id": "bfs",
+      "chineseCharacters": 1227,
+      "mechanismSections": 3,
+      "workedSteps": 4,
+      "exercises": 2,
+      "sources": [
+        "https://inst.eecs.berkeley.edu/~cs188/textbook/search/uninformed.html",
+        "https://www.redblobgames.com/pathfinding/a-star/implementation.html",
+        "https://algs4.cs.princeton.edu/code/javadoc/edu/princeton/cs/algs4/BreadthFirstPaths.html"
+      ]
+    },
+    {
+      "id": "dijkstra",
+      "chineseCharacters": 1083,
+      "mechanismSections": 3,
+      "workedSteps": 4,
+      "exercises": 2,
+      "sources": [
+        "https://inst.eecs.berkeley.edu/~cs188/textbook/search/uninformed.html",
+        "https://www.redblobgames.com/pathfinding/a-star/implementation.html",
+        "https://algs4.cs.princeton.edu/code/javadoc/edu/princeton/cs/algs4/DijkstraUndirectedSP.html"
+      ]
+    },
+    {
+      "id": "astar",
+      "chineseCharacters": 1141,
+      "mechanismSections": 3,
+      "workedSteps": 4,
+      "exercises": 2,
+      "sources": [
+        "https://inst.eecs.berkeley.edu/~cs188/textbook/search/informed.html",
+        "https://www.redblobgames.com/pathfinding/a-star/implementation.html",
+        "https://www.cs.cmu.edu/~15281/coursenotes/search/index.html"
+      ]
+    },
+    {
+      "id": "best-first",
+      "chineseCharacters": 1032,
+      "mechanismSections": 2,
+      "workedSteps": 4,
+      "exercises": 2,
+      "sources": [
+        "https://inst.eecs.berkeley.edu/~cs188/textbook/search/informed.html",
+        "https://www.redblobgames.com/pathfinding/a-star/introduction.html#heuristic-search",
+        "https://www.cs.ubc.ca/~poole/aibook/3e/html/ArtInt3e.Ch3.S6.html"
+      ]
+    },
+    {
+      "id": "beam",
+      "chineseCharacters": 1306,
+      "mechanismSections": 3,
+      "workedSteps": 4,
+      "exercises": 2,
+      "sources": [
+        "https://www.redblobgames.com/pathfinding/a-star/implementation.html",
+        "https://deeplearning.cs.cmu.edu/F22/document/homework/HW4/P2/HW4P2_F22.pdf",
+        "https://direct.mit.edu/tacl/article/doi/10.1162/tacl_a_00346/96473/Best-First-Beam-Search"
+      ]
+    },
+    {
+      "id": "hamiltonian",
+      "chineseCharacters": 1237,
+      "mechanismSections": 3,
+      "workedSteps": 4,
+      "exercises": 2,
+      "sources": [
+        "https://johnflux.com/2015/05/02/nokia-6110-part-3-algorithms/",
+        "https://csaws.cs.technion.ac.il/~itai/publications/Algorithms/Hamilton-paths.pdf"
+      ]
+    },
+    {
+      "id": "hamiltonian-shortcut",
+      "chineseCharacters": 1165,
+      "mechanismSections": 3,
+      "workedSteps": 4,
+      "exercises": 2,
+      "sources": [
+        "https://johnflux.com/2015/05/02/nokia-6110-part-3-algorithms/",
+        "https://csaws.cs.technion.ac.il/~itai/publications/Algorithms/Hamilton-paths.pdf"
+      ]
+    },
+    {
+      "id": "tail-safe",
+      "chineseCharacters": 1302,
+      "mechanismSections": 3,
+      "workedSteps": 4,
+      "exercises": 2,
+      "sources": [
+        "https://github.com/chynl/snake#graph-search"
+      ]
+    },
+    {
+      "id": "mcts",
+      "chineseCharacters": 1247,
+      "mechanismSections": 3,
+      "workedSteps": 4,
+      "exercises": 2,
+      "sources": [
+        "https://ics.uci.edu/~dechter/courses/ics-295/fall-2019/papers/2006-csaba.pdf",
+        "https://jeffbradberry.com/posts/2015/09/intro-to-monte-carlo-tree-search/",
+        "https://arxiv.org/abs/cs/0703062"
+      ]
+    },
+    {
+      "id": "evaluation",
+      "chineseCharacters": 1517,
+      "mechanismSections": 4,
+      "workedSteps": 4,
+      "exercises": 3,
+      "sources": [
+        "https://gymnasium.farama.org/api/env/",
+        "https://spinningup.openai.com/en/latest/spinningup/rl_intro.html"
+      ]
+    },
+    {
+      "id": "encoding",
+      "chineseCharacters": 1338,
+      "mechanismSections": 3,
+      "workedSteps": 4,
+      "exercises": 2,
+      "sources": [
+        "https://spinningup.openai.com/en/latest/spinningup/rl_intro.html",
+        "https://mitpress.mit.edu/9780262039246/reinforcement-learning/"
+      ]
+    },
+    {
+      "id": "q-learning",
+      "chineseCharacters": 1162,
+      "mechanismSections": 3,
+      "workedSteps": 4,
+      "exercises": 3,
+      "sources": [
+        "https://www.gatsby.ucl.ac.uk/~dayan/papers/wd92.html",
+        "https://mitpress.mit.edu/9780262039246/reinforcement-learning/",
+        "https://gymnasium.farama.org/tutorials/gymnasium_basics/handling_time_limits/"
+      ]
+    },
+    {
+      "id": "sarsa",
+      "chineseCharacters": 1117,
+      "mechanismSections": 3,
+      "workedSteps": 4,
+      "exercises": 3,
+      "sources": [
+        "https://mitpress.mit.edu/9780262039246/reinforcement-learning/",
+        "https://www.gatsby.ucl.ac.uk/~dayan/papers/wd92.html",
+        "https://gymnasium.farama.org/tutorials/gymnasium_basics/handling_time_limits/"
+      ]
+    },
+    {
+      "id": "dqn",
+      "chineseCharacters": 1305,
+      "mechanismSections": 4,
+      "workedSteps": 4,
+      "exercises": 3,
+      "sources": [
+        "https://arxiv.org/abs/1312.5602",
+        "https://arxiv.org/abs/1509.06461",
+        "https://gymnasium.farama.org/tutorials/gymnasium_basics/handling_time_limits/"
+      ]
+    },
+    {
+      "id": "ga",
+      "chineseCharacters": 1333,
+      "mechanismSections": 3,
+      "workedSteps": 4,
+      "exercises": 3,
+      "sources": [
+        "https://deap.readthedocs.io/en/master/tutorials/basic/part2.html",
+        "https://arxiv.org/abs/1712.06567"
+      ]
+    },
+    {
+      "id": "ppo",
+      "chineseCharacters": 1285,
+      "mechanismSections": 4,
+      "workedSteps": 4,
+      "exercises": 3,
+      "sources": [
+        "https://arxiv.org/abs/1707.06347",
+        "https://spinningup.openai.com/en/latest/algorithms/ppo.html",
+        "https://arxiv.org/abs/1506.02438"
+      ]
+    },
+    {
+      "id": "imitation",
+      "chineseCharacters": 1471,
+      "mechanismSections": 4,
+      "workedSteps": 4,
+      "exercises": 3,
+      "sources": [
+        "https://imitation.readthedocs.io/en/latest/algorithms/bc.html",
+        "https://proceedings.mlr.press/v15/ross11a.html",
+        "https://imitation.readthedocs.io/en/latest/algorithms/dagger.html"
+      ]
+    }
+  ]
+}

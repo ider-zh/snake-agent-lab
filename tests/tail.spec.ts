@@ -11,11 +11,11 @@ test('tail detour can step, pause, replay and teach its limits',async({page},inf
   const slider=page.getByLabel('回放进度',{exact:true});await slider.fill((await slider.getAttribute('max'))!);
   await expect(page.locator('.hash-value')).toHaveText(hash!);
   await page.getByRole('button',{name:'策略课堂',exact:true}).click();
-  await page.getByLabel('选择课程',{exact:true}).selectOption('tail-safe');
+  await page.locator('.lesson-index a[data-lesson-id="tail-safe"]').click();
   await page.getByRole('button',{name:'执行建议动作',exact:true}).click();
   await expect(page.getByTestId('lesson-state')).toContainText('游戏步数 1');
-  await page.getByRole('button',{name:'Python',exact:true}).click();
+  await page.getByRole('tab',{name:'Python',exact:true}).click();
   await expect(page.locator('pre[aria-label="Python 可运行示例"]')).toContainText('def detour');
-  await page.getByTestId('lessons-lab').screenshot({path:`docs/qa/tail/${info.project.name}-lesson.png`});
+  await page.getByTestId('lessons-lab').screenshot({path:`docs/qa/classroom/${info.project.name}-lesson.png`});
   expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1)).toBe(true);expect(errors).toEqual([]);
 });
