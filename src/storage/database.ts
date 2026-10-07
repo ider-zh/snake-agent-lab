@@ -2,7 +2,7 @@ import { validateResults } from '../experiments/import';
 import { validateReplay } from './replay';
 import { assertRecord, stringifyBoundedJSON, parseBoundedJSON } from './validation';
 
-export type RecordKind = 'replay' | 'result' | 'checkpoint';
+export type RecordKind = 'replay' | 'result' | 'checkpoint' | 'model';
 export interface StoredRecordSummary { id: string; kind: RecordKind; updatedAt: string; bytes: number; }
 interface StoredRecord extends StoredRecordSummary { version: 'snake-storage-v1'; key: string; json: string; }
 export class StorageError extends Error {
@@ -10,7 +10,7 @@ export class StorageError extends Error {
 }
 export const MAX_CHECKPOINT_STORAGE_BYTES = 128 * 1024 * 1024;
 const STORE = 'records';
-function validateKind(kind: RecordKind): void { if (!['replay', 'result', 'checkpoint'].includes(kind)) throw new Error('Unsupported record kind'); }
+function validateKind(kind: RecordKind): void { if (!['replay', 'result', 'checkpoint', 'model'].includes(kind)) throw new Error('Unsupported record kind'); }
 function recordKey(kind: RecordKind, id: string): string {
   validateKind(kind);
   if (typeof id !== 'string' || !id.trim() || id.length > 160) throw new Error('Record ID must contain 1–160 characters');

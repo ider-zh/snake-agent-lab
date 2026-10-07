@@ -1,0 +1,1770 @@
+{
+  "baselineCommit": "b8a65927f4e6efae5472e641c74952f7ead3f781",
+  "note": "Wall-clock durations are not compared; some final rows were resumed after a behavior-preserving search allocation optimization.",
+  "comparisons": [
+    {
+      "name": "final",
+      "protocol": {
+        "seeds": [
+          63001,
+          63002,
+          63003,
+          63004,
+          63005
+        ],
+        "initialization": "cycle for all policies; dense length 40",
+        "maxSteps": "N*N",
+        "maxNoFood": "4*N",
+        "decisionNodes": 2000,
+        "decisionMs": "Infinity (deterministic offline comparison)"
+      },
+      "groups": [
+        {
+          "scenario": "8-open",
+          "id": "random",
+          "before": {
+            "episodes": 5,
+            "filled": 0,
+            "collision": 5,
+            "stagnation": 0,
+            "stepLimit": 0,
+            "meanFood": 0.2,
+            "meanSteps": 7.6,
+            "meanRepeatedStates": 0
+          },
+          "after": {
+            "episodes": 5,
+            "filled": 0,
+            "collision": 5,
+            "stagnation": 0,
+            "stepLimit": 0,
+            "meanFood": 0.2,
+            "meanSteps": 7.6,
+            "meanRepeatedStates": 0
+          }
+        },
+        {
+          "scenario": "8-open",
+          "id": "legal-random",
+          "before": {
+            "episodes": 5,
+            "filled": 0,
+            "collision": 5,
+            "stagnation": 0,
+            "stepLimit": 0,
+            "meanFood": 4.2,
+            "meanSteps": 248.6,
+            "meanRepeatedStates": 13.2
+          },
+          "after": {
+            "episodes": 5,
+            "filled": 0,
+            "collision": 5,
+            "stagnation": 0,
+            "stepLimit": 0,
+            "meanFood": 4.2,
+            "meanSteps": 248.6,
+            "meanRepeatedStates": 13.2
+          }
+        },
+        {
+          "scenario": "8-open",
+          "id": "greedy",
+          "before": {
+            "episodes": 5,
+            "filled": 0,
+            "collision": 5,
+            "stagnation": 0,
+            "stepLimit": 0,
+            "meanFood": 3.6,
+            "meanSteps": 20,
+            "meanRepeatedStates": 0
+          },
+          "after": {
+            "episodes": 5,
+            "filled": 0,
+            "collision": 5,
+            "stagnation": 0,
+            "stepLimit": 0,
+            "meanFood": 3.6,
+            "meanSteps": 20,
+            "meanRepeatedStates": 0
+          }
+        },
+        {
+          "scenario": "8-open",
+          "id": "safe-greedy",
+          "before": {
+            "episodes": 5,
+            "filled": 0,
+            "collision": 0,
+            "stagnation": 5,
+            "stepLimit": 0,
+            "meanFood": 23.6,
+            "meanSteps": 457.8,
+            "meanRepeatedStates": 131
+          },
+          "after": {
+            "episodes": 5,
+            "filled": 0,
+            "collision": 0,
+            "stagnation": 5,
+            "stepLimit": 0,
+            "meanFood": 23.6,
+            "meanSteps": 457.8,
+            "meanRepeatedStates": 131
+          }
+        },
+        {
+          "scenario": "8-open",
+          "id": "bfs",
+          "before": {
+            "episodes": 5,
+            "filled": 0,
+            "collision": 0,
+            "stagnation": 5,
+            "stepLimit": 0,
+            "meanFood": 24,
+            "meanSteps": 472,
+            "meanRepeatedStates": 166.8
+          },
+          "after": {
+            "episodes": 5,
+            "filled": 2,
+            "collision": 0,
+            "stagnation": 3,
+            "stepLimit": 0,
+            "meanFood": 59.8,
+            "meanSteps": 1011.6,
+            "meanRepeatedStates": 20.2
+          }
+        },
+        {
+          "scenario": "8-open",
+          "id": "astar",
+          "before": {
+            "episodes": 5,
+            "filled": 0,
+            "collision": 0,
+            "stagnation": 5,
+            "stepLimit": 0,
+            "meanFood": 24.6,
+            "meanSteps": 456.6,
+            "meanRepeatedStates": 163
+          },
+          "after": {
+            "episodes": 5,
+            "filled": 2,
+            "collision": 0,
+            "stagnation": 3,
+            "stepLimit": 0,
+            "meanFood": 59.8,
+            "meanSteps": 1072.4,
+            "meanRepeatedStates": 10.6
+          }
+        },
+        {
+          "scenario": "8-open",
+          "id": "dijkstra",
+          "before": {
+            "episodes": 5,
+            "filled": 0,
+            "collision": 0,
+            "stagnation": 5,
+            "stepLimit": 0,
+            "meanFood": 24,
+            "meanSteps": 472,
+            "meanRepeatedStates": 166.8
+          },
+          "after": {
+            "episodes": 5,
+            "filled": 2,
+            "collision": 0,
+            "stagnation": 3,
+            "stepLimit": 0,
+            "meanFood": 59.8,
+            "meanSteps": 1011.6,
+            "meanRepeatedStates": 20.2
+          }
+        },
+        {
+          "scenario": "8-open",
+          "id": "best-first",
+          "before": {
+            "episodes": 5,
+            "filled": 0,
+            "collision": 0,
+            "stagnation": 5,
+            "stepLimit": 0,
+            "meanFood": 26.4,
+            "meanSteps": 478.8,
+            "meanRepeatedStates": 138.8
+          },
+          "after": {
+            "episodes": 5,
+            "filled": 1,
+            "collision": 0,
+            "stagnation": 4,
+            "stepLimit": 0,
+            "meanFood": 59.4,
+            "meanSteps": 1069,
+            "meanRepeatedStates": 30
+          }
+        },
+        {
+          "scenario": "8-open",
+          "id": "beam",
+          "before": {
+            "episodes": 5,
+            "filled": 0,
+            "collision": 5,
+            "stagnation": 0,
+            "stepLimit": 0,
+            "meanFood": 24.4,
+            "meanSteps": 163.2,
+            "meanRepeatedStates": 0
+          },
+          "after": {
+            "episodes": 5,
+            "filled": 2,
+            "collision": 2,
+            "stagnation": 1,
+            "stepLimit": 0,
+            "meanFood": 55.4,
+            "meanSteps": 832.4,
+            "meanRepeatedStates": 75.2
+          }
+        },
+        {
+          "scenario": "8-open",
+          "id": "mcts",
+          "before": {
+            "episodes": 5,
+            "filled": 0,
+            "collision": 5,
+            "stagnation": 0,
+            "stepLimit": 0,
+            "meanFood": 41,
+            "meanSteps": 396.4,
+            "meanRepeatedStates": 35
+          },
+          "after": {
+            "episodes": 5,
+            "filled": 5,
+            "collision": 0,
+            "stagnation": 0,
+            "stepLimit": 0,
+            "meanFood": 61,
+            "meanSteps": 664.6,
+            "meanRepeatedStates": 0
+          }
+        },
+        {
+          "scenario": "8-open",
+          "id": "tail-safe",
+          "before": {
+            "episodes": 5,
+            "filled": 2,
+            "collision": 0,
+            "stagnation": 3,
+            "stepLimit": 0,
+            "meanFood": 51.6,
+            "meanSteps": 941.4,
+            "meanRepeatedStates": 72.4
+          },
+          "after": {
+            "episodes": 5,
+            "filled": 2,
+            "collision": 0,
+            "stagnation": 3,
+            "stepLimit": 0,
+            "meanFood": 59.4,
+            "meanSteps": 969.4,
+            "meanRepeatedStates": 127
+          }
+        },
+        {
+          "scenario": "8-open",
+          "id": "hamiltonian",
+          "before": {
+            "episodes": 5,
+            "filled": 5,
+            "collision": 0,
+            "stagnation": 0,
+            "stepLimit": 0,
+            "meanFood": 61,
+            "meanSteps": 918.8,
+            "meanRepeatedStates": 0
+          },
+          "after": {
+            "episodes": 5,
+            "filled": 5,
+            "collision": 0,
+            "stagnation": 0,
+            "stepLimit": 0,
+            "meanFood": 61,
+            "meanSteps": 918.8,
+            "meanRepeatedStates": 0
+          }
+        },
+        {
+          "scenario": "8-open",
+          "id": "hamiltonian-shortcut",
+          "before": {
+            "episodes": 5,
+            "filled": 5,
+            "collision": 0,
+            "stagnation": 0,
+            "stepLimit": 0,
+            "meanFood": 61,
+            "meanSteps": 611.6,
+            "meanRepeatedStates": 0
+          },
+          "after": {
+            "episodes": 5,
+            "filled": 5,
+            "collision": 0,
+            "stagnation": 0,
+            "stepLimit": 0,
+            "meanFood": 61,
+            "meanSteps": 611.6,
+            "meanRepeatedStates": 0
+          }
+        },
+        {
+          "scenario": "12-open",
+          "id": "random",
+          "before": {
+            "episodes": 5,
+            "filled": 0,
+            "collision": 5,
+            "stagnation": 0,
+            "stepLimit": 0,
+            "meanFood": 0,
+            "meanSteps": 9,
+            "meanRepeatedStates": 0
+          },
+          "after": {
+            "episodes": 5,
+            "filled": 0,
+            "collision": 5,
+            "stagnation": 0,
+            "stepLimit": 0,
+            "meanFood": 0,
+            "meanSteps": 9,
+            "meanRepeatedStates": 0
+          }
+        },
+        {
+          "scenario": "12-open",
+          "id": "legal-random",
+          "before": {
+            "episodes": 5,
+            "filled": 0,
+            "collision": 5,
+            "stagnation": 0,
+            "stepLimit": 0,
+            "meanFood": 4.8,
+            "meanSteps": 675.6,
+            "meanRepeatedStates": 43.6
+          },
+          "after": {
+            "episodes": 5,
+            "filled": 0,
+            "collision": 5,
+            "stagnation": 0,
+            "stepLimit": 0,
+            "meanFood": 4.8,
+            "meanSteps": 675.6,
+            "meanRepeatedStates": 43.6
+          }
+        },
+        {
+          "scenario": "12-open",
+          "id": "greedy",
+          "before": {
+            "episodes": 5,
+            "filled": 0,
+            "collision": 5,
+            "stagnation": 0,
+            "stepLimit": 0,
+            "meanFood": 4.8,
+            "meanSteps": 46.6,
+            "meanRepeatedStates": 0
+          },
+          "after": {
+            "episodes": 5,
+            "filled": 0,
+            "collision": 5,
+            "stagnation": 0,
+            "stepLimit": 0,
+            "meanFood": 4.8,
+            "meanSteps": 46.6,
+            "meanRepeatedStates": 0
+          }
+        },
+        {
+          "scenario": "12-open",
+          "id": "safe-greedy",
+          "before": {
+            "episodes": 5,
+            "filled": 0,
+            "collision": 0,
+            "stagnation": 5,
+            "stepLimit": 0,
+            "meanFood": 49.2,
+            "meanSteps": 1384,
+            "meanRepeatedStates": 168.8
+          },
+          "after": {
+            "episodes": 5,
+            "filled": 0,
+            "collision": 0,
+            "stagnation": 5,
+            "stepLimit": 0,
+            "meanFood": 49.2,
+            "meanSteps": 1384,
+            "meanRepeatedStates": 168.8
+          }
+        },
+        {
+          "scenario": "12-open",
+          "id": "bfs",
+          "before": {
+            "episodes": 5,
+            "filled": 0,
+            "collision": 0,
+            "stagnation": 5,
+            "stepLimit": 0,
+            "meanFood": 63.2,
+            "meanSteps": 1793.8,
+            "meanRepeatedStates": 376.4
+          },
+          "after": {
+            "episodes": 5,
+            "filled": 0,
+            "collision": 0,
+            "stagnation": 5,
+            "stepLimit": 0,
+            "meanFood": 135,
+            "meanSteps": 4350.6,
+            "meanRepeatedStates": 1
+          }
+        },
+        {
+          "scenario": "12-open",
+          "id": "astar",
+          "before": {
+            "episodes": 5,
+            "filled": 0,
+            "collision": 0,
+            "stagnation": 5,
+            "stepLimit": 0,
+            "meanFood": 61,
+            "meanSteps": 1608.6,
+            "meanRepeatedStates": 318
+          },
+          "after": {
+            "episodes": 5,
+            "filled": 1,
+            "collision": 0,
+            "stagnation": 4,
+            "stepLimit": 0,
+            "meanFood": 133.8,
+            "meanSteps": 4527.2,
+            "meanRepeatedStates": 0.2
+          }
+        },
+        {
+          "scenario": "12-open",
+          "id": "dijkstra",
+          "before": {
+            "episodes": 5,
+            "filled": 0,
+            "collision": 0,
+            "stagnation": 5,
+            "stepLimit": 0,
+            "meanFood": 63.2,
+            "meanSteps": 1793.8,
+            "meanRepeatedStates": 376.4
+          },
+          "after": {
+            "episodes": 5,
+            "filled": 0,
+            "collision": 0,
+            "stagnation": 5,
+            "stepLimit": 0,
+            "meanFood": 135,
+            "meanSteps": 4350.6,
+            "meanRepeatedStates": 1
+          }
+        },
+        {
+          "scenario": "12-open",
+          "id": "best-first",
+          "before": {
+            "episodes": 5,
+            "filled": 0,
+            "collision": 0,
+            "stagnation": 5,
+            "stepLimit": 0,
+            "meanFood": 60.8,
+            "meanSteps": 1644.6,
+            "meanRepeatedStates": 322
+          },
+          "after": {
+            "episodes": 5,
+            "filled": 0,
+            "collision": 0,
+            "stagnation": 5,
+            "stepLimit": 0,
+            "meanFood": 135,
+            "meanSteps": 4343.2,
+            "meanRepeatedStates": 84.6
+          }
+        },
+        {
+          "scenario": "12-open",
+          "id": "beam",
+          "before": {
+            "episodes": 5,
+            "filled": 0,
+            "collision": 5,
+            "stagnation": 0,
+            "stepLimit": 0,
+            "meanFood": 43.2,
+            "meanSteps": 468.6,
+            "meanRepeatedStates": 0
+          },
+          "after": {
+            "episodes": 5,
+            "filled": 0,
+            "collision": 5,
+            "stagnation": 0,
+            "stepLimit": 0,
+            "meanFood": 63.2,
+            "meanSteps": 858.8,
+            "meanRepeatedStates": 0
+          }
+        },
+        {
+          "scenario": "12-open",
+          "id": "mcts",
+          "before": {
+            "episodes": 5,
+            "filled": 0,
+            "collision": 5,
+            "stagnation": 0,
+            "stepLimit": 0,
+            "meanFood": 48.2,
+            "meanSteps": 620,
+            "meanRepeatedStates": 0.2
+          },
+          "after": {
+            "episodes": 5,
+            "filled": 3,
+            "collision": 2,
+            "stagnation": 0,
+            "stepLimit": 0,
+            "meanFood": 126.4,
+            "meanSteps": 2923.8,
+            "meanRepeatedStates": 62.4
+          }
+        },
+        {
+          "scenario": "12-open",
+          "id": "tail-safe",
+          "before": {
+            "episodes": 5,
+            "filled": 0,
+            "collision": 0,
+            "stagnation": 5,
+            "stepLimit": 0,
+            "meanFood": 111,
+            "meanSteps": 4405.4,
+            "meanRepeatedStates": 203.2
+          },
+          "after": {
+            "episodes": 5,
+            "filled": 4,
+            "collision": 0,
+            "stagnation": 1,
+            "stepLimit": 0,
+            "meanFood": 140.2,
+            "meanSteps": 3797.4,
+            "meanRepeatedStates": 87.2
+          }
+        },
+        {
+          "scenario": "12-open",
+          "id": "hamiltonian",
+          "before": {
+            "episodes": 5,
+            "filled": 5,
+            "collision": 0,
+            "stagnation": 0,
+            "stepLimit": 0,
+            "meanFood": 141,
+            "meanSteps": 5046.2,
+            "meanRepeatedStates": 0
+          },
+          "after": {
+            "episodes": 5,
+            "filled": 5,
+            "collision": 0,
+            "stagnation": 0,
+            "stepLimit": 0,
+            "meanFood": 141,
+            "meanSteps": 5046.2,
+            "meanRepeatedStates": 0
+          }
+        },
+        {
+          "scenario": "12-open",
+          "id": "hamiltonian-shortcut",
+          "before": {
+            "episodes": 5,
+            "filled": 5,
+            "collision": 0,
+            "stagnation": 0,
+            "stepLimit": 0,
+            "meanFood": 141,
+            "meanSteps": 2913.4,
+            "meanRepeatedStates": 0
+          },
+          "after": {
+            "episodes": 5,
+            "filled": 5,
+            "collision": 0,
+            "stagnation": 0,
+            "stepLimit": 0,
+            "meanFood": 141,
+            "meanSteps": 2913.4,
+            "meanRepeatedStates": 0
+          }
+        },
+        {
+          "scenario": "8-dense",
+          "id": "random",
+          "before": {
+            "episodes": 5,
+            "filled": 0,
+            "collision": 5,
+            "stagnation": 0,
+            "stepLimit": 0,
+            "meanFood": 0,
+            "meanSteps": 5.6,
+            "meanRepeatedStates": 0
+          },
+          "after": {
+            "episodes": 5,
+            "filled": 0,
+            "collision": 5,
+            "stagnation": 0,
+            "stepLimit": 0,
+            "meanFood": 0,
+            "meanSteps": 5.6,
+            "meanRepeatedStates": 0
+          }
+        },
+        {
+          "scenario": "8-dense",
+          "id": "legal-random",
+          "before": {
+            "episodes": 5,
+            "filled": 0,
+            "collision": 5,
+            "stagnation": 0,
+            "stepLimit": 0,
+            "meanFood": 0.4,
+            "meanSteps": 18.2,
+            "meanRepeatedStates": 0
+          },
+          "after": {
+            "episodes": 5,
+            "filled": 0,
+            "collision": 5,
+            "stagnation": 0,
+            "stepLimit": 0,
+            "meanFood": 0.4,
+            "meanSteps": 18.2,
+            "meanRepeatedStates": 0
+          }
+        },
+        {
+          "scenario": "8-dense",
+          "id": "greedy",
+          "before": {
+            "episodes": 5,
+            "filled": 0,
+            "collision": 5,
+            "stagnation": 0,
+            "stepLimit": 0,
+            "meanFood": 2.4,
+            "meanSteps": 10.4,
+            "meanRepeatedStates": 0
+          },
+          "after": {
+            "episodes": 5,
+            "filled": 0,
+            "collision": 5,
+            "stagnation": 0,
+            "stepLimit": 0,
+            "meanFood": 2.4,
+            "meanSteps": 10.4,
+            "meanRepeatedStates": 0
+          }
+        },
+        {
+          "scenario": "8-dense",
+          "id": "safe-greedy",
+          "before": {
+            "episodes": 5,
+            "filled": 0,
+            "collision": 0,
+            "stagnation": 5,
+            "stepLimit": 0,
+            "meanFood": 1.4,
+            "meanSteps": 270.2,
+            "meanRepeatedStates": 129.4
+          },
+          "after": {
+            "episodes": 5,
+            "filled": 0,
+            "collision": 0,
+            "stagnation": 5,
+            "stepLimit": 0,
+            "meanFood": 1.4,
+            "meanSteps": 270.2,
+            "meanRepeatedStates": 129.4
+          }
+        },
+        {
+          "scenario": "8-dense",
+          "id": "bfs",
+          "before": {
+            "episodes": 5,
+            "filled": 0,
+            "collision": 0,
+            "stagnation": 5,
+            "stepLimit": 0,
+            "meanFood": 2.2,
+            "meanSteps": 312.2,
+            "meanRepeatedStates": 123.6
+          },
+          "after": {
+            "episodes": 5,
+            "filled": 5,
+            "collision": 0,
+            "stagnation": 0,
+            "stepLimit": 0,
+            "meanFood": 24,
+            "meanSteps": 491.8,
+            "meanRepeatedStates": 0
+          }
+        },
+        {
+          "scenario": "8-dense",
+          "id": "astar",
+          "before": {
+            "episodes": 5,
+            "filled": 0,
+            "collision": 0,
+            "stagnation": 5,
+            "stepLimit": 0,
+            "meanFood": 2.2,
+            "meanSteps": 312.2,
+            "meanRepeatedStates": 123.6
+          },
+          "after": {
+            "episodes": 5,
+            "filled": 5,
+            "collision": 0,
+            "stagnation": 0,
+            "stepLimit": 0,
+            "meanFood": 24,
+            "meanSteps": 491.8,
+            "meanRepeatedStates": 0
+          }
+        },
+        {
+          "scenario": "8-dense",
+          "id": "dijkstra",
+          "before": {
+            "episodes": 5,
+            "filled": 0,
+            "collision": 0,
+            "stagnation": 5,
+            "stepLimit": 0,
+            "meanFood": 2.2,
+            "meanSteps": 312.2,
+            "meanRepeatedStates": 123.6
+          },
+          "after": {
+            "episodes": 5,
+            "filled": 5,
+            "collision": 0,
+            "stagnation": 0,
+            "stepLimit": 0,
+            "meanFood": 24,
+            "meanSteps": 491.8,
+            "meanRepeatedStates": 0
+          }
+        },
+        {
+          "scenario": "8-dense",
+          "id": "best-first",
+          "before": {
+            "episodes": 5,
+            "filled": 0,
+            "collision": 0,
+            "stagnation": 5,
+            "stepLimit": 0,
+            "meanFood": 2.2,
+            "meanSteps": 312.2,
+            "meanRepeatedStates": 123.6
+          },
+          "after": {
+            "episodes": 5,
+            "filled": 5,
+            "collision": 0,
+            "stagnation": 0,
+            "stepLimit": 0,
+            "meanFood": 24,
+            "meanSteps": 491.8,
+            "meanRepeatedStates": 0
+          }
+        },
+        {
+          "scenario": "8-dense",
+          "id": "beam",
+          "before": {
+            "episodes": 5,
+            "filled": 0,
+            "collision": 5,
+            "stagnation": 0,
+            "stepLimit": 0,
+            "meanFood": 7.6,
+            "meanSteps": 100.4,
+            "meanRepeatedStates": 0
+          },
+          "after": {
+            "episodes": 5,
+            "filled": 2,
+            "collision": 1,
+            "stagnation": 2,
+            "stepLimit": 0,
+            "meanFood": 21.8,
+            "meanSteps": 571.2,
+            "meanRepeatedStates": 101
+          }
+        },
+        {
+          "scenario": "8-dense",
+          "id": "mcts",
+          "before": {
+            "episodes": 5,
+            "filled": 0,
+            "collision": 5,
+            "stagnation": 0,
+            "stepLimit": 0,
+            "meanFood": 7,
+            "meanSteps": 67.2,
+            "meanRepeatedStates": 0
+          },
+          "after": {
+            "episodes": 5,
+            "filled": 4,
+            "collision": 1,
+            "stagnation": 0,
+            "stepLimit": 0,
+            "meanFood": 23.8,
+            "meanSteps": 396.6,
+            "meanRepeatedStates": 61.2
+          }
+        },
+        {
+          "scenario": "8-dense",
+          "id": "tail-safe",
+          "before": {
+            "episodes": 5,
+            "filled": 2,
+            "collision": 0,
+            "stagnation": 3,
+            "stepLimit": 0,
+            "meanFood": 12.8,
+            "meanSteps": 420.6,
+            "meanRepeatedStates": 79.6
+          },
+          "after": {
+            "episodes": 5,
+            "filled": 5,
+            "collision": 0,
+            "stagnation": 0,
+            "stepLimit": 0,
+            "meanFood": 24,
+            "meanSteps": 423,
+            "meanRepeatedStates": 0
+          }
+        },
+        {
+          "scenario": "8-dense",
+          "id": "hamiltonian",
+          "before": {
+            "episodes": 5,
+            "filled": 5,
+            "collision": 0,
+            "stagnation": 0,
+            "stepLimit": 0,
+            "meanFood": 24,
+            "meanSteps": 174.4,
+            "meanRepeatedStates": 0
+          },
+          "after": {
+            "episodes": 5,
+            "filled": 5,
+            "collision": 0,
+            "stagnation": 0,
+            "stepLimit": 0,
+            "meanFood": 24,
+            "meanSteps": 174.4,
+            "meanRepeatedStates": 0
+          }
+        },
+        {
+          "scenario": "8-dense",
+          "id": "hamiltonian-shortcut",
+          "before": {
+            "episodes": 5,
+            "filled": 5,
+            "collision": 0,
+            "stagnation": 0,
+            "stepLimit": 0,
+            "meanFood": 24,
+            "meanSteps": 174.4,
+            "meanRepeatedStates": 0
+          },
+          "after": {
+            "episodes": 5,
+            "filled": 5,
+            "collision": 0,
+            "stagnation": 0,
+            "stepLimit": 0,
+            "meanFood": 24,
+            "meanSteps": 174.4,
+            "meanRepeatedStates": 0
+          }
+        }
+      ]
+    },
+    {
+      "name": "standard",
+      "protocol": {
+        "seeds": [
+          64001,
+          64002,
+          64003
+        ],
+        "initialization": "standard; 8-obstacles uses [18,19,44,45]",
+        "maxSteps": 5000,
+        "maxNoFood": 500,
+        "decisionNodes": 2000,
+        "decisionMs": "Infinity (deterministic offline comparison)"
+      },
+      "groups": [
+        {
+          "scenario": "8-standard",
+          "id": "random",
+          "before": {
+            "episodes": 3,
+            "filled": 0,
+            "collision": 3,
+            "stagnation": 0,
+            "stepLimit": 0,
+            "meanFood": 0,
+            "meanSteps": 10,
+            "meanRepeatedStates": 0
+          },
+          "after": {
+            "episodes": 3,
+            "filled": 0,
+            "collision": 3,
+            "stagnation": 0,
+            "stepLimit": 0,
+            "meanFood": 0,
+            "meanSteps": 10,
+            "meanRepeatedStates": 0
+          }
+        },
+        {
+          "scenario": "8-standard",
+          "id": "legal-random",
+          "before": {
+            "episodes": 3,
+            "filled": 0,
+            "collision": 3,
+            "stagnation": 0,
+            "stepLimit": 0,
+            "meanFood": 4.666666666666667,
+            "meanSteps": 436.6666666666667,
+            "meanRepeatedStates": 22.666666666666668
+          },
+          "after": {
+            "episodes": 3,
+            "filled": 0,
+            "collision": 3,
+            "stagnation": 0,
+            "stepLimit": 0,
+            "meanFood": 4.666666666666667,
+            "meanSteps": 436.6666666666667,
+            "meanRepeatedStates": 22.666666666666668
+          }
+        },
+        {
+          "scenario": "8-standard",
+          "id": "greedy",
+          "before": {
+            "episodes": 3,
+            "filled": 0,
+            "collision": 3,
+            "stagnation": 0,
+            "stepLimit": 0,
+            "meanFood": 9.333333333333334,
+            "meanSteps": 50,
+            "meanRepeatedStates": 0
+          },
+          "after": {
+            "episodes": 3,
+            "filled": 0,
+            "collision": 3,
+            "stagnation": 0,
+            "stepLimit": 0,
+            "meanFood": 9.333333333333334,
+            "meanSteps": 50,
+            "meanRepeatedStates": 0
+          }
+        },
+        {
+          "scenario": "8-standard",
+          "id": "safe-greedy",
+          "before": {
+            "episodes": 3,
+            "filled": 0,
+            "collision": 0,
+            "stagnation": 3,
+            "stepLimit": 0,
+            "meanFood": 19.666666666666668,
+            "meanSteps": 650.6666666666666,
+            "meanRepeatedStates": 423.6666666666667
+          },
+          "after": {
+            "episodes": 3,
+            "filled": 0,
+            "collision": 0,
+            "stagnation": 3,
+            "stepLimit": 0,
+            "meanFood": 19.666666666666668,
+            "meanSteps": 650.6666666666666,
+            "meanRepeatedStates": 423.6666666666667
+          }
+        },
+        {
+          "scenario": "8-standard",
+          "id": "bfs",
+          "before": {
+            "episodes": 3,
+            "filled": 0,
+            "collision": 0,
+            "stagnation": 3,
+            "stepLimit": 0,
+            "meanFood": 31.333333333333332,
+            "meanSteps": 840,
+            "meanRepeatedStates": 371.6666666666667
+          },
+          "after": {
+            "episodes": 3,
+            "filled": 2,
+            "collision": 0,
+            "stagnation": 1,
+            "stepLimit": 0,
+            "meanFood": 60.333333333333336,
+            "meanSteps": 918.6666666666666,
+            "meanRepeatedStates": 42.666666666666664
+          }
+        },
+        {
+          "scenario": "8-standard",
+          "id": "astar",
+          "before": {
+            "episodes": 3,
+            "filled": 0,
+            "collision": 0,
+            "stagnation": 3,
+            "stepLimit": 0,
+            "meanFood": 31.333333333333332,
+            "meanSteps": 858,
+            "meanRepeatedStates": 389
+          },
+          "after": {
+            "episodes": 3,
+            "filled": 2,
+            "collision": 0,
+            "stagnation": 1,
+            "stepLimit": 0,
+            "meanFood": 60.333333333333336,
+            "meanSteps": 1032.6666666666667,
+            "meanRepeatedStates": 42.666666666666664
+          }
+        },
+        {
+          "scenario": "8-standard",
+          "id": "dijkstra",
+          "before": {
+            "episodes": 3,
+            "filled": 0,
+            "collision": 0,
+            "stagnation": 3,
+            "stepLimit": 0,
+            "meanFood": 31.333333333333332,
+            "meanSteps": 840,
+            "meanRepeatedStates": 371.6666666666667
+          },
+          "after": {
+            "episodes": 3,
+            "filled": 2,
+            "collision": 0,
+            "stagnation": 1,
+            "stepLimit": 0,
+            "meanFood": 60.333333333333336,
+            "meanSteps": 918.6666666666666,
+            "meanRepeatedStates": 42.666666666666664
+          }
+        },
+        {
+          "scenario": "8-standard",
+          "id": "best-first",
+          "before": {
+            "episodes": 3,
+            "filled": 0,
+            "collision": 0,
+            "stagnation": 3,
+            "stepLimit": 0,
+            "meanFood": 30.333333333333332,
+            "meanSteps": 785,
+            "meanRepeatedStates": 395
+          },
+          "after": {
+            "episodes": 3,
+            "filled": 0,
+            "collision": 0,
+            "stagnation": 3,
+            "stepLimit": 0,
+            "meanFood": 59,
+            "meanSteps": 1271,
+            "meanRepeatedStates": 162.66666666666666
+          }
+        },
+        {
+          "scenario": "8-standard",
+          "id": "beam",
+          "before": {
+            "episodes": 3,
+            "filled": 0,
+            "collision": 3,
+            "stagnation": 0,
+            "stepLimit": 0,
+            "meanFood": 25.666666666666668,
+            "meanSteps": 210,
+            "meanRepeatedStates": 0
+          },
+          "after": {
+            "episodes": 3,
+            "filled": 1,
+            "collision": 1,
+            "stagnation": 1,
+            "stepLimit": 0,
+            "meanFood": 50.333333333333336,
+            "meanSteps": 793.3333333333334,
+            "meanRepeatedStates": 126.66666666666667
+          }
+        },
+        {
+          "scenario": "8-standard",
+          "id": "mcts",
+          "before": {
+            "episodes": 3,
+            "filled": 0,
+            "collision": 3,
+            "stagnation": 0,
+            "stepLimit": 0,
+            "meanFood": 38.666666666666664,
+            "meanSteps": 319.6666666666667,
+            "meanRepeatedStates": 0
+          },
+          "after": {
+            "episodes": 3,
+            "filled": 2,
+            "collision": 1,
+            "stagnation": 0,
+            "stepLimit": 0,
+            "meanFood": 60.333333333333336,
+            "meanSteps": 827.3333333333334,
+            "meanRepeatedStates": 124.66666666666667
+          }
+        },
+        {
+          "scenario": "8-standard",
+          "id": "tail-safe",
+          "before": {
+            "episodes": 3,
+            "filled": 0,
+            "collision": 0,
+            "stagnation": 3,
+            "stepLimit": 0,
+            "meanFood": 48.666666666666664,
+            "meanSteps": 1191,
+            "meanRepeatedStates": 401.6666666666667
+          },
+          "after": {
+            "episodes": 3,
+            "filled": 3,
+            "collision": 0,
+            "stagnation": 0,
+            "stepLimit": 0,
+            "meanFood": 61,
+            "meanSteps": 794.6666666666666,
+            "meanRepeatedStates": 0
+          }
+        },
+        {
+          "scenario": "12-standard",
+          "id": "random",
+          "before": {
+            "episodes": 3,
+            "filled": 0,
+            "collision": 3,
+            "stagnation": 0,
+            "stepLimit": 0,
+            "meanFood": 0,
+            "meanSteps": 18.333333333333332,
+            "meanRepeatedStates": 0
+          },
+          "after": {
+            "episodes": 3,
+            "filled": 0,
+            "collision": 3,
+            "stagnation": 0,
+            "stepLimit": 0,
+            "meanFood": 0,
+            "meanSteps": 18.333333333333332,
+            "meanRepeatedStates": 0
+          }
+        },
+        {
+          "scenario": "12-standard",
+          "id": "legal-random",
+          "before": {
+            "episodes": 3,
+            "filled": 0,
+            "collision": 1,
+            "stagnation": 2,
+            "stepLimit": 0,
+            "meanFood": 1,
+            "meanSteps": 398.6666666666667,
+            "meanRepeatedStates": 46
+          },
+          "after": {
+            "episodes": 3,
+            "filled": 0,
+            "collision": 1,
+            "stagnation": 2,
+            "stepLimit": 0,
+            "meanFood": 1,
+            "meanSteps": 398.6666666666667,
+            "meanRepeatedStates": 46
+          }
+        },
+        {
+          "scenario": "12-standard",
+          "id": "greedy",
+          "before": {
+            "episodes": 3,
+            "filled": 0,
+            "collision": 3,
+            "stagnation": 0,
+            "stepLimit": 0,
+            "meanFood": 11,
+            "meanSteps": 88.66666666666667,
+            "meanRepeatedStates": 0
+          },
+          "after": {
+            "episodes": 3,
+            "filled": 0,
+            "collision": 3,
+            "stagnation": 0,
+            "stepLimit": 0,
+            "meanFood": 11,
+            "meanSteps": 88.66666666666667,
+            "meanRepeatedStates": 0
+          }
+        },
+        {
+          "scenario": "12-standard",
+          "id": "safe-greedy",
+          "before": {
+            "episodes": 3,
+            "filled": 0,
+            "collision": 0,
+            "stagnation": 3,
+            "stepLimit": 0,
+            "meanFood": 42,
+            "meanSteps": 1033,
+            "meanRepeatedStates": 261.3333333333333
+          },
+          "after": {
+            "episodes": 3,
+            "filled": 0,
+            "collision": 0,
+            "stagnation": 3,
+            "stepLimit": 0,
+            "meanFood": 42,
+            "meanSteps": 1033,
+            "meanRepeatedStates": 261.3333333333333
+          }
+        },
+        {
+          "scenario": "12-standard",
+          "id": "bfs",
+          "before": {
+            "episodes": 3,
+            "filled": 0,
+            "collision": 0,
+            "stagnation": 3,
+            "stepLimit": 0,
+            "meanFood": 64.66666666666667,
+            "meanSteps": 1596,
+            "meanRepeatedStates": 268
+          },
+          "after": {
+            "episodes": 3,
+            "filled": 0,
+            "collision": 0,
+            "stagnation": 3,
+            "stepLimit": 0,
+            "meanFood": 127.66666666666667,
+            "meanSteps": 4277.333333333333,
+            "meanRepeatedStates": 3.3333333333333335
+          }
+        },
+        {
+          "scenario": "12-standard",
+          "id": "astar",
+          "before": {
+            "episodes": 3,
+            "filled": 0,
+            "collision": 0,
+            "stagnation": 3,
+            "stepLimit": 0,
+            "meanFood": 58.666666666666664,
+            "meanSteps": 1370.6666666666667,
+            "meanRepeatedStates": 121.33333333333333
+          },
+          "after": {
+            "episodes": 3,
+            "filled": 1,
+            "collision": 0,
+            "stagnation": 2,
+            "stepLimit": 0,
+            "meanFood": 135.66666666666666,
+            "meanSteps": 4501,
+            "meanRepeatedStates": 27.666666666666668
+          }
+        },
+        {
+          "scenario": "12-standard",
+          "id": "dijkstra",
+          "before": {
+            "episodes": 3,
+            "filled": 0,
+            "collision": 0,
+            "stagnation": 3,
+            "stepLimit": 0,
+            "meanFood": 64.66666666666667,
+            "meanSteps": 1596,
+            "meanRepeatedStates": 268
+          },
+          "after": {
+            "episodes": 3,
+            "filled": 0,
+            "collision": 0,
+            "stagnation": 3,
+            "stepLimit": 0,
+            "meanFood": 127.66666666666667,
+            "meanSteps": 4277.333333333333,
+            "meanRepeatedStates": 3.3333333333333335
+          }
+        },
+        {
+          "scenario": "12-standard",
+          "id": "best-first",
+          "before": {
+            "episodes": 3,
+            "filled": 0,
+            "collision": 0,
+            "stagnation": 3,
+            "stepLimit": 0,
+            "meanFood": 64.66666666666667,
+            "meanSteps": 1741,
+            "meanRepeatedStates": 80
+          },
+          "after": {
+            "episodes": 3,
+            "filled": 2,
+            "collision": 0,
+            "stagnation": 1,
+            "stepLimit": 0,
+            "meanFood": 140.33333333333334,
+            "meanSteps": 4115.666666666667,
+            "meanRepeatedStates": 48
+          }
+        },
+        {
+          "scenario": "12-standard",
+          "id": "beam",
+          "before": {
+            "episodes": 3,
+            "filled": 0,
+            "collision": 3,
+            "stagnation": 0,
+            "stepLimit": 0,
+            "meanFood": 47,
+            "meanSteps": 569,
+            "meanRepeatedStates": 0
+          },
+          "after": {
+            "episodes": 3,
+            "filled": 0,
+            "collision": 3,
+            "stagnation": 0,
+            "stepLimit": 0,
+            "meanFood": 74.33333333333333,
+            "meanSteps": 1095.6666666666667,
+            "meanRepeatedStates": 0
+          }
+        },
+        {
+          "scenario": "12-standard",
+          "id": "mcts",
+          "before": {
+            "episodes": 3,
+            "filled": 0,
+            "collision": 3,
+            "stagnation": 0,
+            "stepLimit": 0,
+            "meanFood": 56,
+            "meanSteps": 785.6666666666666,
+            "meanRepeatedStates": 0
+          },
+          "after": {
+            "episodes": 3,
+            "filled": 0,
+            "collision": 1,
+            "stagnation": 2,
+            "stepLimit": 0,
+            "meanFood": 113,
+            "meanSteps": 2784.3333333333335,
+            "meanRepeatedStates": 187.33333333333334
+          }
+        },
+        {
+          "scenario": "12-standard",
+          "id": "tail-safe",
+          "before": {
+            "episodes": 3,
+            "filled": 0,
+            "collision": 0,
+            "stagnation": 3,
+            "stepLimit": 0,
+            "meanFood": 107.33333333333333,
+            "meanSteps": 4074.6666666666665,
+            "meanRepeatedStates": 172.33333333333334
+          },
+          "after": {
+            "episodes": 3,
+            "filled": 1,
+            "collision": 0,
+            "stagnation": 2,
+            "stepLimit": 0,
+            "meanFood": 139,
+            "meanSteps": 4354,
+            "meanRepeatedStates": 239.33333333333334
+          }
+        },
+        {
+          "scenario": "8-obstacles",
+          "id": "random",
+          "before": {
+            "episodes": 3,
+            "filled": 0,
+            "collision": 3,
+            "stagnation": 0,
+            "stepLimit": 0,
+            "meanFood": 0.3333333333333333,
+            "meanSteps": 10,
+            "meanRepeatedStates": 0
+          },
+          "after": {
+            "episodes": 3,
+            "filled": 0,
+            "collision": 3,
+            "stagnation": 0,
+            "stepLimit": 0,
+            "meanFood": 0.3333333333333333,
+            "meanSteps": 10,
+            "meanRepeatedStates": 0
+          }
+        },
+        {
+          "scenario": "8-obstacles",
+          "id": "legal-random",
+          "before": {
+            "episodes": 3,
+            "filled": 0,
+            "collision": 3,
+            "stagnation": 0,
+            "stepLimit": 0,
+            "meanFood": 4,
+            "meanSteps": 223.66666666666666,
+            "meanRepeatedStates": 10
+          },
+          "after": {
+            "episodes": 3,
+            "filled": 0,
+            "collision": 3,
+            "stagnation": 0,
+            "stepLimit": 0,
+            "meanFood": 4,
+            "meanSteps": 223.66666666666666,
+            "meanRepeatedStates": 10
+          }
+        },
+        {
+          "scenario": "8-obstacles",
+          "id": "greedy",
+          "before": {
+            "episodes": 3,
+            "filled": 0,
+            "collision": 3,
+            "stagnation": 0,
+            "stepLimit": 0,
+            "meanFood": 4.666666666666667,
+            "meanSteps": 28,
+            "meanRepeatedStates": 0
+          },
+          "after": {
+            "episodes": 3,
+            "filled": 0,
+            "collision": 3,
+            "stagnation": 0,
+            "stepLimit": 0,
+            "meanFood": 4.666666666666667,
+            "meanSteps": 28,
+            "meanRepeatedStates": 0
+          }
+        },
+        {
+          "scenario": "8-obstacles",
+          "id": "safe-greedy",
+          "before": {
+            "episodes": 3,
+            "filled": 0,
+            "collision": 0,
+            "stagnation": 3,
+            "stepLimit": 0,
+            "meanFood": 14,
+            "meanSteps": 606.3333333333334,
+            "meanRepeatedStates": 457.6666666666667
+          },
+          "after": {
+            "episodes": 3,
+            "filled": 0,
+            "collision": 0,
+            "stagnation": 3,
+            "stepLimit": 0,
+            "meanFood": 14,
+            "meanSteps": 606.3333333333334,
+            "meanRepeatedStates": 457.6666666666667
+          }
+        },
+        {
+          "scenario": "8-obstacles",
+          "id": "bfs",
+          "before": {
+            "episodes": 3,
+            "filled": 0,
+            "collision": 0,
+            "stagnation": 3,
+            "stepLimit": 0,
+            "meanFood": 27,
+            "meanSteps": 819.3333333333334,
+            "meanRepeatedStates": 382.6666666666667
+          },
+          "after": {
+            "episodes": 3,
+            "filled": 1,
+            "collision": 0,
+            "stagnation": 2,
+            "stepLimit": 0,
+            "meanFood": 55,
+            "meanSteps": 1055,
+            "meanRepeatedStates": 147.33333333333334
+          }
+        },
+        {
+          "scenario": "8-obstacles",
+          "id": "astar",
+          "before": {
+            "episodes": 3,
+            "filled": 0,
+            "collision": 0,
+            "stagnation": 3,
+            "stepLimit": 0,
+            "meanFood": 26.333333333333332,
+            "meanSteps": 751.6666666666666,
+            "meanRepeatedStates": 429.3333333333333
+          },
+          "after": {
+            "episodes": 3,
+            "filled": 3,
+            "collision": 0,
+            "stagnation": 0,
+            "stepLimit": 0,
+            "meanFood": 57,
+            "meanSteps": 937.6666666666666,
+            "meanRepeatedStates": 0
+          }
+        },
+        {
+          "scenario": "8-obstacles",
+          "id": "dijkstra",
+          "before": {
+            "episodes": 3,
+            "filled": 0,
+            "collision": 0,
+            "stagnation": 3,
+            "stepLimit": 0,
+            "meanFood": 27,
+            "meanSteps": 819.3333333333334,
+            "meanRepeatedStates": 382.6666666666667
+          },
+          "after": {
+            "episodes": 3,
+            "filled": 1,
+            "collision": 0,
+            "stagnation": 2,
+            "stepLimit": 0,
+            "meanFood": 55,
+            "meanSteps": 1055,
+            "meanRepeatedStates": 147.33333333333334
+          }
+        },
+        {
+          "scenario": "8-obstacles",
+          "id": "best-first",
+          "before": {
+            "episodes": 3,
+            "filled": 0,
+            "collision": 0,
+            "stagnation": 3,
+            "stepLimit": 0,
+            "meanFood": 23.666666666666668,
+            "meanSteps": 706,
+            "meanRepeatedStates": 423.3333333333333
+          },
+          "after": {
+            "episodes": 3,
+            "filled": 3,
+            "collision": 0,
+            "stagnation": 0,
+            "stepLimit": 0,
+            "meanFood": 57,
+            "meanSteps": 928.6666666666666,
+            "meanRepeatedStates": 5.333333333333333
+          }
+        },
+        {
+          "scenario": "8-obstacles",
+          "id": "beam",
+          "before": {
+            "episodes": 3,
+            "filled": 0,
+            "collision": 3,
+            "stagnation": 0,
+            "stepLimit": 0,
+            "meanFood": 23,
+            "meanSteps": 186.33333333333334,
+            "meanRepeatedStates": 0
+          },
+          "after": {
+            "episodes": 3,
+            "filled": 1,
+            "collision": 2,
+            "stagnation": 0,
+            "stepLimit": 0,
+            "meanFood": 55,
+            "meanSteps": 1068,
+            "meanRepeatedStates": 250.66666666666666
+          }
+        },
+        {
+          "scenario": "8-obstacles",
+          "id": "mcts",
+          "before": {
+            "episodes": 3,
+            "filled": 0,
+            "collision": 3,
+            "stagnation": 0,
+            "stepLimit": 0,
+            "meanFood": 29,
+            "meanSteps": 248.33333333333334,
+            "meanRepeatedStates": 0
+          },
+          "after": {
+            "episodes": 3,
+            "filled": 2,
+            "collision": 0,
+            "stagnation": 1,
+            "stepLimit": 0,
+            "meanFood": 56.333333333333336,
+            "meanSteps": 833,
+            "meanRepeatedStates": 147.33333333333334
+          }
+        },
+        {
+          "scenario": "8-obstacles",
+          "id": "tail-safe",
+          "before": {
+            "episodes": 3,
+            "filled": 0,
+            "collision": 0,
+            "stagnation": 3,
+            "stepLimit": 0,
+            "meanFood": 40,
+            "meanSteps": 1124,
+            "meanRepeatedStates": 409
+          },
+          "after": {
+            "episodes": 3,
+            "filled": 2,
+            "collision": 0,
+            "stagnation": 1,
+            "stepLimit": 0,
+            "meanFood": 56.333333333333336,
+            "meanSteps": 1043.3333333333333,
+            "meanRepeatedStates": 147.33333333333334
+          }
+        }
+      ]
+    }
+  ]
+}

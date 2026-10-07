@@ -62,3 +62,31 @@ UI 的轻量预设为了缩短反馈周期，与设计草案中的研究默认�
 - [gargimahale/Snake](https://github.com/gargimahale/Snake)：Python/Tkinter 项目，提供 Path、Greedy、Hamilton 与 DQN 路线，可借鉴安全检查、实验模式与训练/评估划分。
 
 引用与研究记录见[参考文档](docs/references.md)。两个指定仓库在本次核查中均未见 LICENSE；本次只借鉴设计理念，未复制源码或沿用其成绩。本仓库许可证由维护者后续决定。
+
+## 算法教学
+
+「策略课堂」包含 21 课中文原理、真实搜索单步、Python/JavaScript 可运行构件、边界与练习。标准 A* 等规划无需训练，DQN/GA 需学习参数。实现与逐项验收见 [教学记录](docs/algorithm-lessons.md)。
+
+## 高效填满策略（2026-10-06）
+
+新增有条件 Hamiltonian 安全捷径；同协议独立 30 种子中，8/12/20 三种尺寸充足预算均 30/30 填满，环境步数较纯环减少约 36%/44%/47%。20×20 的 5000 步预算仍全部截断，不宣称任意图必胜。详见 [通关效率报告](docs/efficient-completion.md)。
+
+Optional A* + bounded tail detours, with all 240 comparison episodes and limitations: [tail strategy report](docs/tail-detour.md).
+
+Dijkstra, greedy best-first, bounded Beam and UCT MCTS are available as comparison policies: [implementation and retained failures](docs/planning-policies.md).
+
+Real Q-learning/SARSA Worker training, exact checkpoints and independent before/after results: [tabular learning](docs/tabular-learning.md).
+
+PPO-Clip and behavior cloning now train actual independent linear policies with Adam, resumable rollout/minibatch state and frozen evaluation: [policy learning evidence and limitations](docs/policy-learning.md).
+
+Final scope, complete HP browser evidence, exclusions and local run instructions: [HP handoff](docs/final-handoff.md).
+
+## HP 用户反馈修复（2026-10-06）
+
+训练 Worker 启动恢复与错误详情、四路竞技策略选择及模型存档、策略课堂命名和文案调整、搜索策略动态身体路径恢复、Beam/MCTS 进食后出口检查已实现。本轮前后对照、真实浏览器验证与适用边界见 [修复验收记录](docs/repair-report.md)。先前性能与策略评测属于其记录的历史版本。
+
+## 策略课堂阅读改版（2026-10-07）
+
+课堂改为三组直接点击目录、独立课程文章、前后课导航及可收藏的课程地址。保留全部 21 课交互和 42 份双语代码；加入键盘语言标签、高亮和原文复制，移除课堂示例下载。布局、验证与截图见 [课堂改版验收](docs/classroom-redesign.md)。
+
+全部 21 课已扩写为面向初学者的完整正文，含术语、具体手算、代码映射、失败诊断、练习详解和每课来源；合计约 2.56 万中文字符、34 个来源链接。125 项单元测试、最终 10 项桌面/手机浏览器回归、42 份双语程序运行和 17 项教材数值核对通过，完整证据见 [课堂改版与内容验收](docs/classroom-redesign.md)。

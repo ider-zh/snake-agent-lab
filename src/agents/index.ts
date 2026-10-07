@@ -1,5 +1,8 @@
+import { createLookaheadAgent } from './lookahead';
+import { tailDecision } from './tail';
+import { createShortcutAgent } from './shortcut';
 import { cycle, directionBetween, legalActions, moveCell, SeededRandom, simulateMove } from '../core';
-import type { Agent, AgentId, DebugInfo, Decision, Direction, Observation } from '../core';
+import type { Agent, AgentId, DebugInfo, Decision, Direction, Observation, SearchFrame } from '../core';
 export type { Agent, AgentId, DebugInfo, Decision } from '../core';
 
 export interface SearchBudget { maxNodes: number; maxMs: number; }
@@ -46,14 +49,21 @@ class MinHeap {
   }
 }
 
-function pathToFood(obs: Observation, algorithm: 'bfs' | 'astar', budget: Budget, visited: number[]): number[] | null {
+function pathToFood(obs: Observation, algorithm: 'bfs' | 'astar' | 'dijkstra' | 'best-first', budget: Budget, visited: number[], trace?: SearchFrame[]): number[] | null {
   if (obs.food === null) return null;
   const { width, height } = obs.config, start = obs.snake[0], goal = obs.food;
   const blocked = new Set([...obs.config.obstacles, ...obs.snake.slice(1, -1)]);
   const count = width * height, previous = new Int32Array(count).fill(-1), gScore = new Float64Array(count).fill(Infinity);
   gScore[start] = 0;
   const queue = [start], heap = new MinHeap(); let index = 0, sequence = 0;
-  if (algorithm === 'astar') heap.push({ cell: start, g: 0, f: distance(start, goal, width), sequence: sequence++ });
+  const priority = (g: number, h: number) => algorithm === 'dijkstra' ? g : algorithm === 'best-first' ? h : g + h;
+  if (algorithm !== 'bfs') heap.push({ cell: start, g: 0, f: priority(0, distance(start, goal, width)), sequence: sequence++ });
+  const capture = (current: number) => {
+    if (!trace || trace.length >= 256) return;
+    const node = (cell: number) => { const g = gScore[cell], h = distance(cell, goal, width); return { cell, g, h, f: priority(g,h) }; };
+    const pending = algorithm === 'bfs' ? queue.slice(index) : heap.nodes.filter(n => n.g === gScore[n.cell]).slice().sort((a,b) => a.f-b.f || a.sequence-b.sequence).map(n => n.cell);
+    trace.push({ current: node(current), frontier: [...new Set(pending)].map(node), visited: [...visited] });
+  };
   while (algorithm === 'bfs' ? index < queue.length : heap.nodes.length > 0) {
     let current: number;
     if (algorithm === 'bfs') current = queue[index++];
@@ -61,6 +71,7 @@ function pathToFood(obs: Observation, algorithm: 'bfs' | 'astar', budget: Budget
     if (!budget.visit()) return null;
     visited.push(current);
     if (current === goal) {
+      capture(current);
       const path = [goal];
       while (path[path.length - 1] !== start) path.push(previous[path[path.length - 1]]);
       return path.reverse();
@@ -73,8 +84,9 @@ function pathToFood(obs: Observation, algorithm: 'bfs' | 'astar', budget: Budget
       if (tentative >= gScore[next]) continue;
       previous[next] = current; gScore[next] = tentative;
       if (algorithm === 'bfs') queue.push(next);
-      else heap.push({ cell: next, g: tentative, f: tentative + distance(next, goal, width), sequence: sequence++ });
+      else heap.push({ cell: next, g: tentative, f: priority(tentative, distance(next, goal, width)), sequence: sequence++ });
     }
+    capture(current);
   }
   return null;
 }
@@ -129,7 +141,61 @@ export function validatePath(obs: Observation, path: readonly number[]): Observa
   return simulatePath(obs, path);
 }
 
-function fallback(obs: Observation, budget: Budget): Direction {
+/** With one empty cell the next food location is forced by occupancy, not RNG.
+ * Prove a complete legal finish before rejecting a grown body for static space. */
+function forcedFinish(obs:Observation,budget:Budget):boolean {
+ const available=obs.config.width*obs.config.height-obs.config.obstacles.length;
+ if(obs.snake.length!==available-1||obs.food!==null)return false;
+ const occupied=new Set([...obs.snake,...obs.config.obstacles]);let food=0;while(occupied.has(food))food++;
+ const queue:Observation[]=[{...obs,food}],seen=new Set<string>();
+ const ceiling=Math.min(budget.limits.maxNodes,budget.expanded+available*2);
+ for(let i=0;i<queue.length&&budget.expanded<ceiling;i++){
+  if(!budget.visit())return false;
+  const state=queue[i];
+  for(const action of legalActions(state)){
+   const next=afterMove(state,action)!;if(next.snake.length===available)return true;
+   const key=`${next.direction}/${next.snake.join(',')}`;if(!seen.has(key)){seen.add(key);queue.push(next);}
+  }
+ }
+ return false;
+}
+
+/** Search body configurations when a static occupancy map misses released cells.
+ * Stops at the observed food; no future food or environment RNG is consulted. */
+function movingBodyPath(obs:Observation,budget:Budget):number[]|null {
+  if(obs.food===null)return null;
+  const ceiling=budget.expanded+Math.floor((budget.limits.maxNodes-budget.expanded)*.7);
+  let initialHash=0,power=1;
+  for(const cell of obs.snake){initialHash=(initialHash+Math.imul(cell+1,power))>>>0;power=Math.imul(power,31)>>>0;}
+  const states=[{obs,parent:-1,hash:initialHash}],heap=new MinHeap(),seen=new Map<number,number[]>();let sequence=0;
+  heap.push({cell:0,g:0,f:distance(obs.snake[0],obs.food,obs.config.width),sequence:sequence++});
+  seen.set(initialHash,[0]);
+  // Keep time for the fallback's escape checks as well as reserving nodes.
+  while(heap.nodes.length&&budget.expanded<ceiling&&budget.elapsed()<budget.limits.maxMs*.65){
+    if(!budget.visit())return null;
+    const item=heap.pop()!,node=states[item.cell];
+    if(node.obs.food===null){
+      const safe=spaceCheck(node.obs,budget);
+      if(safe.complete&&safe.tailReachable||forcedFinish(node.obs,budget)){
+        const path:number[]=[];for(let i=item.cell;i>=0;i=states[i].parent)path.push(states[i].obs.snake[0]);return path.reverse();
+      }
+      continue;
+    }
+    for(const action of legalActions(node.obs)){
+      const next=afterMove(node.obs,action)!;
+      const hash=(Math.imul(node.hash,31)+next.snake[0]+1-(next.food===null?0:Math.imul(node.obs.snake.at(-1)!+1,power)))>>>0;
+      const bucket=seen.get(hash)??[];
+      // Hashes only index candidates. Exact comparison preserves correctness
+      // even if two different bodies have the same 32-bit hash.
+      if(bucket.some(i=>states[i].obs.direction===next.direction&&states[i].obs.snake.length===next.snake.length&&states[i].obs.snake.every((cell,j)=>cell===next.snake[j])))continue;
+      const g=item.g+1,index=states.length;states.push({obs:next,parent:item.cell,hash});bucket.push(index);seen.set(hash,bucket);
+      heap.push({cell:index,g,f:g+distance(next.snake[0],obs.food,obs.config.width),sequence:sequence++});
+    }
+  }
+  return null;
+}
+
+function fallback(obs: Observation, budget: Budget, visits: Map<string,number>): Direction {
   const actions = legalActions(obs);
   if (!actions.length) return obs.direction;
   let best = actions[0], bestScore = -Infinity;
@@ -140,7 +206,7 @@ function fallback(obs: Observation, budget: Budget): Direction {
     const closeness = obs.food === null ? 0 : distance(next.snake[0], obs.food, obs.config.width);
     // Reachable tail and flood space dominate distance; local exits remain useful
     // when no search budget is left. Never expand beyond the decision budget.
-    const value = (safety.sufficient ? 1_000_000 : 0) + (safety.tailReachable ? 100_000 : 0) + safety.space * 100 + exits * 10 - closeness / 100;
+    const value = (safety.sufficient ? 1_000_000 : 0) + (safety.tailReachable ? 100_000 : 0) + safety.space * 100 + exits * 10 - closeness / 100 - (visits.get(`${next.food}/${next.direction}/${next.snake.join(',')}`)??0)*10_000;
     if (value > bestScore) { bestScore = value; best = action; }
   }
   return best;
@@ -158,13 +224,27 @@ export function hamiltonianApplicable(obs: Observation): boolean {
 }
 
 /** Agent and environment use separate PRNG instances. Wall-clock debug is not replay state. */
-export function createAgent(id: AgentId, seed = 1, requestedBudget: SearchBudget = DEFAULT_BUDGET): Agent {
-  if (!['random', 'legal-random', 'greedy', 'safe-greedy', 'bfs', 'astar', 'hamiltonian'].includes(id)) throw new Error(`Unknown agent: ${id}`);
+export function createAgent(id: AgentId, seed = 1, requestedBudget: SearchBudget = DEFAULT_BUDGET, options: { trace?: boolean; recovery?:boolean } = {}): Agent {
+  if (!['random', 'legal-random', 'greedy', 'safe-greedy', 'bfs', 'astar', 'hamiltonian', 'hamiltonian-shortcut', 'tail-safe', 'dijkstra', 'best-first', 'beam', 'mcts'].includes(id)) throw new Error(`Unknown agent: ${id}`);
   if (!Number.isInteger(requestedBudget.maxNodes) || requestedBudget.maxNodes < 0 || requestedBudget.maxNodes > 10_000_000 || typeof requestedBudget.maxMs !== 'number' || Number.isNaN(requestedBudget.maxMs) || requestedBudget.maxMs < 0) throw new Error('Invalid decision budget');
-  const limits = { ...requestedBudget }, random = new SeededRandom(seed);
+  if (id === 'beam' || id === 'mcts') return createLookaheadAgent(id,seed,{...requestedBudget});
+  if (id === 'tail-safe') { const limits={...requestedBudget},base=createAgent('astar',seed,limits);return {id,decide:obs=>tailDecision(obs,base.decide(obs),limits,true,Math.floor(obs.noFood/(obs.config.width*obs.config.height)))}; }
+  if (id === 'hamiltonian-shortcut') return createShortcutAgent({ ...requestedBudget });
+  const limits = { ...requestedBudget }, random = new SeededRandom(seed), visits=new Map<string,number>();
+  let lastFood:number|null=null;
+  let committed:number[]=[],expectedBody='',committedFood:number|null=null;
   return { id, decide(obs: Observation): Decision {
     const budget = new Budget(limits), debug: DebugInfo = { path: [], visited: [], expanded: 0, elapsedMs: 0 };
+    if(!obs.terminated&&!obs.truncated&&committed.length>1&&committedFood===obs.food&&expectedBody===`${obs.direction}/${obs.snake.join(',')}`&&committed[0]===obs.snake[0]){
+      const action=directionBetween(committed[0],committed[1],obs.config.width),next=afterMove(obs,action);
+      if(next){const path=[...committed];committed.shift();expectedBody=`${next.direction}/${next.snake.join(',')}`;return {action,debug:{...debug,path,elapsedMs:budget.elapsed(),fallback:'dynamic-body-committed-path'}};}
+    }
+    committed=[];
     let action: Direction = obs.direction;
+    if(obs.food!==lastFood){visits.clear();lastFood=obs.food;}
+    const stateKey=`${obs.food}/${obs.direction}/${obs.snake.join(',')}`;
+    if(options.recovery!==false&&id!=='safe-greedy')visits.set(stateKey,(visits.get(stateKey)??0)+1);
+    if(visits.size>2048)visits.delete(visits.keys().next().value!);
     if (!obs.terminated && !obs.truncated) {
       if (id === 'random') action = random.int(4) as Direction;
       else if (id === 'legal-random') {
@@ -190,21 +270,31 @@ export function createAgent(id: AgentId, seed = 1, requestedBudget: SearchBudget
         for (const candidate of candidates) {
           if (spaceCheck(afterMove(obs, candidate)!, budget).sufficient && !budget.reason) { action = candidate; found = true; break; }
         }
-        if (!found) { action = fallback(obs, budget); debug.fallback = budget.reason ?? 'no-safe-greedy-move'; }
+        if (!found) { action = fallback(obs, budget, visits); debug.fallback = budget.reason ?? 'no-safe-greedy-move'; }
       } else {
         const path = pathToFood(obs, id, budget, debug.visited);
         const simulated = path ? simulatePath(obs, path, budget) : null;
         const safe = simulated ? spaceCheck(simulated, budget) : null;
-        if (path && path.length > 1 && simulated && safe?.sufficient && !budget.reason) {
+        if (path && path.length > 1 && simulated && safe?.complete && (options.recovery===false?safe.sufficient:safe.tailReachable||forcedFinish(simulated,budget)) && !budget.reason) {
           action = directionBetween(path[0], path[1], obs.config.width); debug.path = path;
         } else {
-          action = fallback(obs, budget);
-          debug.fallback = budget.reason ?? (path ? simulated ? 'unsafe-food-path' : 'invalid-dynamic-path' : 'no-food-path');
+          const dynamic=options.recovery!==false&&!budget.reason&&(obs.snake.length>=obs.config.width*obs.config.height/2||obs.noFood>=obs.config.width*obs.config.height)?movingBodyPath(obs,budget):null;
+          if(dynamic){action=directionBetween(dynamic[0],dynamic[1],obs.config.width);debug.path=dynamic;debug.fallback='dynamic-body-food-path';committed=dynamic.slice(1);committedFood=obs.food;const next=afterMove(obs,action)!;expectedBody=`${next.direction}/${next.snake.join(',')}`;}
+          else {action = fallback(obs, budget, visits);
+          debug.fallback = budget.reason ?? (path ? simulated ? 'unsafe-food-path' : 'invalid-dynamic-path' : 'no-food-path');}
         }
       }
       if (!debug.path.length) { const next = moveCell(obs.snake[0], action, obs.config.width, obs.config.height); debug.path = next >= 0 ? [obs.snake[0], next] : [obs.snake[0]]; }
     }
     debug.expanded = budget.expanded; debug.elapsedMs = budget.elapsed();
-    return { action, debug };
+    // Replay the exact search prefix only AFTER deciding. Instrumentation cannot
+    // consume the decision's wall-clock budget or either random stream.
+    if (options.trace && debug.fallback!=='dynamic-body-food-path' && (id === 'bfs' || id === 'astar' || id === 'dijkstra' || id === 'best-first')) {
+      debug.trace = [];
+      pathToFood(obs, id, new Budget({ maxNodes: Math.min(debug.visited.length, 256), maxMs: Infinity }), [], debug.trace);
+      debug.traceTruncated = debug.visited.length > 256;
+    }
+    const decision={action,debug};
+    return decision;
   } };
 }

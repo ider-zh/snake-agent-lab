@@ -1,0 +1,32 @@
+[
+  {
+    "project": "chromium-desktop",
+    "seed": 63001,
+    "initialization": "cycle",
+    "size": 8,
+    "maxNodes": 10000,
+    "maxMs": 20,
+    "results": [
+      "61 食物 · 920 步 · 填满棋盘，胜利！",
+      "61 食物 · 825 步 · 填满棋盘，胜利！",
+      "60 食物 · 1422 步 · 撞到身体",
+      "61 食物 · 580 步 · 填满棋盘，胜利！"
+    ],
+    "stepBatches": 48
+  },
+  {
+    "project": "chromium-mobile",
+    "seed": 63001,
+    "initialization": "cycle",
+    "size": 8,
+    "maxNodes": 10000,
+    "maxMs": 20,
+    "results": [
+      "61 食物 · 931 步 · 填满棋盘，胜利！",
+      "61 食物 · 825 步 · 填满棋盘，胜利！",
+      "60 食物 · 1422 步 · 撞到身体",
+      "61 食物 · 580 步 · 填满棋盘，胜利！"
+    ],
+    "stepBatches": 48
+  }
+]

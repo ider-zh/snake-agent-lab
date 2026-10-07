@@ -1,0 +1,117 @@
+{
+  "stats": {
+    "startTime": "2026-10-07T00:38:57.593Z",
+    "duration": 353259.244,
+    "expected": 10,
+    "skipped": 0,
+    "unexpected": 0,
+    "flaky": 0
+  },
+  "tests": [
+    {
+      "file": "lessons.spec.ts",
+      "title": "overview and all 21 specific lessons retain interactive demos",
+      "project": "chromium-desktop",
+      "status": "expected",
+      "result": "passed",
+      "durationMs": 74317,
+      "retries": 0,
+      "errors": []
+    },
+    {
+      "file": "lessons.spec.ts",
+      "title": "frozen search and highlighted keyboard tabs preserve raw source copy",
+      "project": "chromium-desktop",
+      "status": "expected",
+      "result": "passed",
+      "durationMs": 28636,
+      "retries": 0,
+      "errors": []
+    },
+    {
+      "file": "lessons.spec.ts",
+      "title": "lesson deep links, previous next boundaries and browser history",
+      "project": "chromium-desktop",
+      "status": "expected",
+      "result": "passed",
+      "durationMs": 5541,
+      "retries": 0,
+      "errors": []
+    },
+    {
+      "file": "lessons.spec.ts",
+      "title": "overview and all 21 specific lessons retain interactive demos",
+      "project": "chromium-mobile",
+      "status": "expected",
+      "result": "passed",
+      "durationMs": 84543,
+      "retries": 0,
+      "errors": []
+    },
+    {
+      "file": "lessons.spec.ts",
+      "title": "frozen search and highlighted keyboard tabs preserve raw source copy",
+      "project": "chromium-mobile",
+      "status": "expected",
+      "result": "passed",
+      "durationMs": 26827,
+      "retries": 0,
+      "errors": []
+    },
+    {
+      "file": "lessons.spec.ts",
+      "title": "lesson deep links, previous next boundaries and browser history",
+      "project": "chromium-mobile",
+      "status": "expected",
+      "result": "passed",
+      "durationMs": 5582,
+      "retries": 0,
+      "errors": []
+    },
+    {
+      "file": "planning.spec.ts",
+      "title": "four planning policies execute, replay and display real search statistics",
+      "project": "chromium-desktop",
+      "status": "expected",
+      "result": "passed",
+      "durationMs": 49459,
+      "retries": 0,
+      "errors": []
+    },
+    {
+      "file": "planning.spec.ts",
+      "title": "four planning policies execute, replay and display real search statistics",
+      "project": "chromium-mobile",
+      "status": "expected",
+      "result": "passed",
+      "durationMs": 48494,
+      "retries": 0,
+      "errors": []
+    },
+    {
+      "file": "tail.spec.ts",
+      "title": "tail detour can step, pause, replay and teach its limits",
+      "project": "chromium-desktop",
+      "status": "expected",
+      "result": "passed",
+      "durationMs": 12403,
+      "retries": 0,
+      "errors": []
+    },
+    {
+      "file": "tail.spec.ts",
+      "title": "tail detour can step, pause, replay and teach its limits",
+      "project": "chromium-mobile",
+      "status": "expected",
+      "result": "passed",
+      "durationMs": 13028,
+      "retries": 0,
+      "errors": []
+    }
+  ],
+  "performance": [],
+  "limitations": [
+    "Chromium on HP Windows; phone viewport emulation, not a physical phone or Safari",
+    "SwiftShader software rendering; no hardware-GPU performance claim"
+  ]
+}

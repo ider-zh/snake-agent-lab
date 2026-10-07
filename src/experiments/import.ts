@@ -5,7 +5,7 @@ import { allPairedComparisons, summarizeRows } from './statistics';
 import { EXPERIMENT_VERSION } from './types';
 import type { BatchResult, EpisodeRow, ExperimentProtocol } from './types';
 
-const AGENTS = ['random', 'legal-random', 'greedy', 'safe-greedy', 'bfs', 'astar', 'hamiltonian'];
+const AGENTS = ['random', 'legal-random', 'greedy', 'safe-greedy', 'bfs', 'astar', 'hamiltonian', 'hamiltonian-shortcut', 'tail-safe', 'dijkstra', 'best-first', 'beam', 'mcts'];
 function finite(value: unknown, label: string, min = 0, max = Number.MAX_SAFE_INTEGER): number {
   if (typeof value !== 'number' || !Number.isFinite(value) || value < min || value > max) throw new Error(`${label} is out of range`);
   return value;
@@ -74,7 +74,7 @@ export function validateResults(value: unknown): BatchResult {
     row.decisionLatenciesMs.forEach(latency => finite(latency, 'Decision latency'));
     if (row.latencySamplesDropped !== row.measuredDecisionCount - row.decisionLatenciesMs.length || row.latencySamplesDropped < 0) throw new Error('Latency sample count is inconsistent');
     if (row.stepsPerFood !== (row.score ? row.steps / row.score : null)) throw new Error('Food efficiency is inconsistent');
-    if (row.agentId === 'hamiltonian' && row.initializationGroup !== 'cycle') throw new Error('Hamiltonian must use cycle initialization');
+    if (row.agentId.startsWith('hamiltonian') && row.initializationGroup !== 'cycle') throw new Error('Hamiltonian must use cycle initialization');
     return row;
   });
   finiteInteger(value.plannedEpisodes, 'Planned episodes', rows.length, MAX_BATCH_EPISODES);

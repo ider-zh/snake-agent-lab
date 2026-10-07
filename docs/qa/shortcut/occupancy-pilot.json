@@ -1,0 +1,485 @@
+{
+  "notes": "Development-only seeds 101–105; occupancy cutoff selection. Not an independent test.",
+  "results": [
+    {
+      "size": 8,
+      "occupancy": 0,
+      "meanSteps": 967.2,
+      "rows": [
+        {
+          "seed": 101,
+          "steps": 1022,
+          "reason": "filled"
+        },
+        {
+          "seed": 102,
+          "steps": 1078,
+          "reason": "filled"
+        },
+        {
+          "seed": 103,
+          "steps": 786,
+          "reason": "filled"
+        },
+        {
+          "seed": 104,
+          "steps": 1005,
+          "reason": "filled"
+        },
+        {
+          "seed": 105,
+          "steps": 945,
+          "reason": "filled"
+        }
+      ]
+    },
+    {
+      "size": 8,
+      "occupancy": 0.25,
+      "meanSteps": 724,
+      "rows": [
+        {
+          "seed": 101,
+          "steps": 610,
+          "reason": "filled"
+        },
+        {
+          "seed": 102,
+          "steps": 800,
+          "reason": "filled"
+        },
+        {
+          "seed": 103,
+          "steps": 652,
+          "reason": "filled"
+        },
+        {
+          "seed": 104,
+          "steps": 791,
+          "reason": "filled"
+        },
+        {
+          "seed": 105,
+          "steps": 767,
+          "reason": "filled"
+        }
+      ]
+    },
+    {
+      "size": 8,
+      "occupancy": 0.5,
+      "meanSteps": 587.8,
+      "rows": [
+        {
+          "seed": 101,
+          "steps": 513,
+          "reason": "filled"
+        },
+        {
+          "seed": 102,
+          "steps": 708,
+          "reason": "filled"
+        },
+        {
+          "seed": 103,
+          "steps": 548,
+          "reason": "filled"
+        },
+        {
+          "seed": 104,
+          "steps": 585,
+          "reason": "filled"
+        },
+        {
+          "seed": 105,
+          "steps": 585,
+          "reason": "filled"
+        }
+      ]
+    },
+    {
+      "size": 8,
+      "occupancy": 0.75,
+      "meanSteps": 704.4,
+      "rows": [
+        {
+          "seed": 101,
+          "steps": 573,
+          "reason": "filled"
+        },
+        {
+          "seed": 102,
+          "steps": 806,
+          "reason": "filled"
+        },
+        {
+          "seed": 103,
+          "steps": 700,
+          "reason": "filled"
+        },
+        {
+          "seed": 104,
+          "steps": 705,
+          "reason": "filled"
+        },
+        {
+          "seed": 105,
+          "steps": 738,
+          "reason": "filled"
+        }
+      ]
+    },
+    {
+      "size": 8,
+      "occupancy": 1,
+      "meanSteps": 931,
+      "rows": [
+        {
+          "seed": 101,
+          "steps": 755,
+          "reason": "filled"
+        },
+        {
+          "seed": 102,
+          "steps": 1049,
+          "reason": "filled"
+        },
+        {
+          "seed": 103,
+          "steps": 889,
+          "reason": "filled"
+        },
+        {
+          "seed": 104,
+          "steps": 948,
+          "reason": "filled"
+        },
+        {
+          "seed": 105,
+          "steps": 1014,
+          "reason": "filled"
+        }
+      ]
+    },
+    {
+      "size": 12,
+      "occupancy": 0,
+      "meanSteps": 4842.2,
+      "rows": [
+        {
+          "seed": 101,
+          "steps": 5392,
+          "reason": "filled"
+        },
+        {
+          "seed": 102,
+          "steps": 4619,
+          "reason": "filled"
+        },
+        {
+          "seed": 103,
+          "steps": 4761,
+          "reason": "filled"
+        },
+        {
+          "seed": 104,
+          "steps": 4810,
+          "reason": "filled"
+        },
+        {
+          "seed": 105,
+          "steps": 4629,
+          "reason": "filled"
+        }
+      ]
+    },
+    {
+      "size": 12,
+      "occupancy": 0.25,
+      "meanSteps": 3543,
+      "rows": [
+        {
+          "seed": 101,
+          "steps": 3816,
+          "reason": "filled"
+        },
+        {
+          "seed": 102,
+          "steps": 3455,
+          "reason": "filled"
+        },
+        {
+          "seed": 103,
+          "steps": 3463,
+          "reason": "filled"
+        },
+        {
+          "seed": 104,
+          "steps": 3638,
+          "reason": "filled"
+        },
+        {
+          "seed": 105,
+          "steps": 3343,
+          "reason": "filled"
+        }
+      ]
+    },
+    {
+      "size": 12,
+      "occupancy": 0.5,
+      "meanSteps": 2852.6,
+      "rows": [
+        {
+          "seed": 101,
+          "steps": 3164,
+          "reason": "filled"
+        },
+        {
+          "seed": 102,
+          "steps": 2651,
+          "reason": "filled"
+        },
+        {
+          "seed": 103,
+          "steps": 2751,
+          "reason": "filled"
+        },
+        {
+          "seed": 104,
+          "steps": 2758,
+          "reason": "filled"
+        },
+        {
+          "seed": 105,
+          "steps": 2939,
+          "reason": "filled"
+        }
+      ]
+    },
+    {
+      "size": 12,
+      "occupancy": 0.75,
+      "meanSteps": 3351,
+      "rows": [
+        {
+          "seed": 101,
+          "steps": 3462,
+          "reason": "filled"
+        },
+        {
+          "seed": 102,
+          "steps": 3477,
+          "reason": "filled"
+        },
+        {
+          "seed": 103,
+          "steps": 3257,
+          "reason": "filled"
+        },
+        {
+          "seed": 104,
+          "steps": 3216,
+          "reason": "filled"
+        },
+        {
+          "seed": 105,
+          "steps": 3343,
+          "reason": "filled"
+        }
+      ]
+    },
+    {
+      "size": 12,
+      "occupancy": 1,
+      "meanSteps": 4691.4,
+      "rows": [
+        {
+          "seed": 101,
+          "steps": 4494,
+          "reason": "filled"
+        },
+        {
+          "seed": 102,
+          "steps": 5205,
+          "reason": "filled"
+        },
+        {
+          "seed": 103,
+          "steps": 4624,
+          "reason": "filled"
+        },
+        {
+          "seed": 104,
+          "steps": 4523,
+          "reason": "filled"
+        },
+        {
+          "seed": 105,
+          "steps": 4611,
+          "reason": "filled"
+        }
+      ]
+    },
+    {
+      "size": 20,
+      "occupancy": 0,
+      "meanSteps": 38825.8,
+      "rows": [
+        {
+          "seed": 101,
+          "steps": 38497,
+          "reason": "filled"
+        },
+        {
+          "seed": 102,
+          "steps": 37876,
+          "reason": "filled"
+        },
+        {
+          "seed": 103,
+          "steps": 39619,
+          "reason": "filled"
+        },
+        {
+          "seed": 104,
+          "steps": 39014,
+          "reason": "filled"
+        },
+        {
+          "seed": 105,
+          "steps": 39123,
+          "reason": "filled"
+        }
+      ]
+    },
+    {
+      "size": 20,
+      "occupancy": 0.25,
+      "meanSteps": 25581.8,
+      "rows": [
+        {
+          "seed": 101,
+          "steps": 26645,
+          "reason": "filled"
+        },
+        {
+          "seed": 102,
+          "steps": 24762,
+          "reason": "filled"
+        },
+        {
+          "seed": 103,
+          "steps": 25135,
+          "reason": "filled"
+        },
+        {
+          "seed": 104,
+          "steps": 25610,
+          "reason": "filled"
+        },
+        {
+          "seed": 105,
+          "steps": 25757,
+          "reason": "filled"
+        }
+      ]
+    },
+    {
+      "size": 20,
+      "occupancy": 0.5,
+      "meanSteps": 20577.8,
+      "rows": [
+        {
+          "seed": 101,
+          "steps": 21067,
+          "reason": "filled"
+        },
+        {
+          "seed": 102,
+          "steps": 19226,
+          "reason": "filled"
+        },
+        {
+          "seed": 103,
+          "steps": 21381,
+          "reason": "filled"
+        },
+        {
+          "seed": 104,
+          "steps": 21308,
+          "reason": "filled"
+        },
+        {
+          "seed": 105,
+          "steps": 19907,
+          "reason": "filled"
+        }
+      ]
+    },
+    {
+      "size": 20,
+      "occupancy": 0.75,
+      "meanSteps": 24295.8,
+      "rows": [
+        {
+          "seed": 101,
+          "steps": 23065,
+          "reason": "filled"
+        },
+        {
+          "seed": 102,
+          "steps": 24442,
+          "reason": "filled"
+        },
+        {
+          "seed": 103,
+          "steps": 24993,
+          "reason": "filled"
+        },
+        {
+          "seed": 104,
+          "steps": 25066,
+          "reason": "filled"
+        },
+        {
+          "seed": 105,
+          "steps": 23913,
+          "reason": "filled"
+        }
+      ]
+    },
+    {
+      "size": 20,
+      "occupancy": 1,
+      "meanSteps": 37028.2,
+      "rows": [
+        {
+          "seed": 101,
+          "steps": 34424,
+          "reason": "filled"
+        },
+        {
+          "seed": 102,
+          "steps": 37501,
+          "reason": "filled"
+        },
+        {
+          "seed": 103,
+          "steps": 38122,
+          "reason": "filled"
+        },
+        {
+          "seed": 104,
+          "steps": 39212,
+          "reason": "filled"
+        },
+        {
+          "seed": 105,
+          "steps": 35882,
+          "reason": "filled"
+        }
+      ]
+    }
+  ]
+}
