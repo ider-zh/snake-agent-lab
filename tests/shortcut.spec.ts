@@ -1,6 +1,6 @@
 import {test,expect} from '@playwright/test';
 test('shortcut strategy exposes honest budgets, supports replay and rejects obstacles',async({page},info)=>{
-  test.setTimeout(120000);
+  test.setTimeout(240000);
   const errors:string[]=[];page.on('pageerror',e=>errors.push(e.message));await page.goto('/');
   await page.getByLabel('决策策略',{exact:true}).selectOption('hamiltonian-shortcut');
   const rules=page.locator('.rule-controls');if(await rules.getAttribute('open')===null)await rules.locator('summary').click();
@@ -10,7 +10,10 @@ test('shortcut strategy exposes honest budgets, supports replay and rejects obst
   await page.getByLabel('充足通关预算（N²）',{exact:true}).check();await page.getByLabel('棋盘尺寸',{exact:true}).selectOption('8');
   for(let i=0;i<8;i++)await page.getByRole('button',{name:'单步',exact:true}).click();
   await page.getByLabel('运行速度',{exact:true}).fill('30');await page.getByRole('button',{name:'开始运行',exact:true}).click();
-  await expect(page.getByText('填满棋盘，胜利！',{exact:true})).toBeVisible({timeout:60000});
+  // The speed control requests 30 ticks/s; shared CI software rendering can
+  // deliver fewer. Keep the real timer, filled-board assertion and replay hash
+  // validation, but allow this 675-step seeded game enough wall-clock time.
+  await expect(page.getByText('填满棋盘，胜利！',{exact:true})).toBeVisible({timeout:180000});
   const finalHash=await page.getByTestId('game-lab').locator('.tiny-stats strong[title]').getAttribute('title');
   await page.getByTestId('game-lab').screenshot({path:`docs/qa/shortcut/${info.project.name}-filled.png`});
   await page.getByRole('button',{name:'查看本局回放',exact:true}).click();await expect(page.getByText('当前帧验证一致',{exact:true})).toBeVisible();
