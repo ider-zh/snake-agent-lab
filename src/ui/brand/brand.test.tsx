@@ -19,6 +19,36 @@ beforeEach(() => {
 });
 afterEach(() => { cleanup(); vi.useRealTimers(); vi.restoreAllMocks(); vi.unstubAllGlobals(); });
 
+it('allows deliberate playback with reduced motion, preserves pause and resets consent on preference changes', () => {
+  reduced = true;
+  const { container, unmount } = render(<StrictMode><BrandBoard/></StrictMode>);
+  const board = container.querySelector('.brand-live')!;
+  const play = container.querySelector('button')!;
+  act(() => vi.advanceTimersByTime(1000));
+  expect(board.getAttribute('data-steps')).toBe('0');
+  expect(play.disabled).toBe(false);
+  fireEvent.click(play);
+  act(() => vi.advanceTimersByTime(1000));
+  expect(board.getAttribute('data-steps')).toBe('20');
+  act(() => visibility(false));
+  act(() => vi.advanceTimersByTime(1000));
+  expect(board.getAttribute('data-steps')).toBe('20');
+  act(() => visibility(true));
+  act(() => vi.advanceTimersByTime(1000));
+  expect(board.getAttribute('data-steps')).toBe('40');
+  fireEvent.click(play);
+  act(() => visibility(false)); act(() => visibility(true));
+  act(() => vi.advanceTimersByTime(1000));
+  expect(board.getAttribute('data-steps')).toBe('40');
+  fireEvent.click(play);
+  act(() => { reduced = false; motion(); });
+  act(() => { reduced = true; motion(); });
+  act(() => vi.advanceTimersByTime(1000));
+  expect(board.getAttribute('data-steps')).toBe('40');
+  unmount();
+  expect(vi.getTimerCount()).toBe(0);
+});
+
 it('uses one real engine timer in StrictMode, stops offscreen and preserves a user pause', () => {
   const { container } = render(<StrictMode><BrandBoard/></StrictMode>);
   const board = container.querySelector('.brand-live')!;

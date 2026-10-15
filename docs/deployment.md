@@ -1,10 +1,10 @@
 # Cloudflare Pages 部署
 
-本仓库是纯静态 Vite SPA，不需要服务器、KV、R2、D1、Cloudflare Worker 或第三方训练服务。正式地址为 https://snake-agent-lab.9992099.xyz/ ；维护者已配置 GitHub main 的 Auto Deploy，推送可能触发发布。本次图文核验见 [正式站点记录](deployed-site-tour.md)，未修改 Cloudflare 配置。
+本仓库是纯静态 Vite SPA，不需要服务器、KV、R2、D1、Cloudflare Worker 或第三方训练服务。正式地址为 https://snake-game-lab.9992099.xyz/ ；维护者已配置 GitHub main 的 Auto Deploy，推送可能触发发布。本次图文核验见 [正式站点记录](deployed-site-tour.md)，未修改 Cloudflare 配置。
 
 ## Pages 设置
 
-- Repository: `ider-zh/snake-agent-lab`
+- Repository: `ider-zh/snake-game-lab`
 - Root directory: `/`
 - Build command: `npm run build`
 - Build output directory: `dist`
@@ -33,3 +33,5 @@ Headers 行为依据 [Pages 官方文档](https://developers.cloudflare.com/page
 4. 部署后打开真实 HTTPS URL，再次测试训练 Worker、checkpoint 导入/导出、CSV 与回放
 5. 确认没有 CSP 错误、404、意外网络请求；移动窄屏无横向溢出
 6. 记录最终 commit SHA、浏览器、设备、实际测试结果；未测浏览器不得标成支持验证通过
+
+更名后保留 IndexedDB 的历史数据库标识以兼容已有存档。`wrangler.jsonc` 中的项目标识保留原值：仓库和域名更名并不证明 Cloudflare Pages 内部项目也已更名，部署仍由已有 Auto Deploy 管理，未修改账户或 DNS 设置。历史截图采集域名不改写。

@@ -1,8 +1,8 @@
-# SnakeLab · Snake Agent Lab
+# SnakeLab · Snake Game Lab
 
 **一条蛇，一个可以观察、比较、训练与重放的智能实验室。**
 
-[**在线体验 →**](https://snake-agent-lab.9992099.xyz/) · [**直接进入 Lab →**](https://snake-agent-lab.9992099.xyz/#/lab) · [策略课堂](https://snake-agent-lab.9992099.xyz/#/lessons) · [运行与验证](#快速开始)
+[**在线体验 →**](https://snake-game-lab.9992099.xyz/) · [**直接进入 Lab →**](https://snake-game-lab.9992099.xyz/#/lab) · [策略课堂](https://snake-game-lab.9992099.xyz/#/lessons) · [运行与验证](#快速开始)
 
 ![SnakeLab 正式站点品牌首屏：下一步，让智能发生，右侧为 Hamiltonian 安全捷径棋盘](docs/images/deployed-home.jpg)
 
@@ -14,12 +14,12 @@
 
 | 入口 | 可以做什么 |
 | --- | --- |
-| [品牌页](https://snake-agent-lab.9992099.xyz/) | 实时安全捷径演示、三种策略比较、两段项目原始录像与工作区导航 |
-| [实验台](https://snake-agent-lab.9992099.xyz/#/lab) | 手动 / AI、单步、暂停、重开、种子与规则、路径 / 搜索可视化、保存回放 |
-| [策略竞技](https://snake-agent-lab.9992099.xyz/#/arena) | 四个独立环境共享规则、初态与种子，分别选择策略或已存档模型 |
-| [训练实验室](https://snake-agent-lab.9992099.xyz/#/training) | Worker 内实际训练、预算控制、检查点恢复、模型导入导出与冻结评估 |
-| [批量评测](https://snake-agent-lab.9992099.xyz/#/batch) | 共同种子比较、失败 / 截断分类、分布、配对差与 95% CI、JSON / CSV 导出 |
-| [回放档案](https://snake-agent-lab.9992099.xyz/#/replay) | 保存动作、配置、版本与逐步状态哈希，本地存档和文件导入 |
+| [品牌页](https://snake-game-lab.9992099.xyz/) | 实时安全捷径演示、三种策略比较、两段项目原始录像与工作区导航 |
+| [实验台](https://snake-game-lab.9992099.xyz/#/lab) | 手动 / AI、单步、暂停、重开、种子与规则、路径 / 搜索可视化、保存回放 |
+| [策略竞技](https://snake-game-lab.9992099.xyz/#/arena) | 四个独立环境共享规则、初态与种子，分别选择策略或已存档模型 |
+| [训练实验室](https://snake-game-lab.9992099.xyz/#/training) | Worker 内实际训练、预算控制、检查点恢复、模型导入导出与冻结评估 |
+| [批量评测](https://snake-game-lab.9992099.xyz/#/batch) | 共同种子比较、失败 / 截断分类、分布、配对差与 95% CI、JSON / CSV 导出 |
+| [回放档案](https://snake-game-lab.9992099.xyz/#/replay) | 保存动作、配置、版本与逐步状态哈希，本地存档和文件导入 |
 
 ### 并肩观察，再用证据比较
 
@@ -38,7 +38,7 @@
 
 [![A星策略课堂：三组课程目录和冻结场景，第三帧显示已访问格、frontier与当前扩展格](docs/images/deployed-classroom.jpg)](docs/images/deployed-classroom.jpg)
 
-[策略课堂](https://snake-agent-lab.9992099.xyz/#/lessons)有 **21 课、42 份 JavaScript / Python 代码**，包含术语、手算、真实引擎交互、代码对照、适用边界、练习与来源。上图是 [A* 课](https://snake-agent-lab.9992099.xyz/#/lessons/astar)的第 3 / 5 搜索帧：棋盘保持冻结，扩展格 20，`g=2, h=2, f=4`；只有执行建议动作才推进游戏。
+[策略课堂](https://snake-game-lab.9992099.xyz/#/lessons)有 **21 课、42 份 JavaScript / Python 代码**，包含术语、手算、真实引擎交互、代码对照、适用边界、练习与来源。上图是 [A* 课](https://snake-game-lab.9992099.xyz/#/lessons/astar)的第 3 / 5 搜索帧：棋盘保持冻结，扩展格 20，`g=2, h=2, f=4`；只有执行建议动作才推进游戏。
 
 ## 策略与课程路线
 
@@ -65,8 +65,8 @@
 推荐 **Node 24.15+（24.x）**；完整支持范围见 `package.json`，精确依赖见 `package-lock.json`。
 
 ```sh
-git clone https://github.com/ider-zh/snake-agent-lab.git
-cd snake-agent-lab
+git clone https://github.com/ider-zh/snake-game-lab.git
+cd snake-game-lab
 npm ci
 npm run dev
 # http://127.0.0.1:5173
@@ -101,13 +101,13 @@ npm run test:e2e -- tests/brand.spec.ts tests/welcome.spec.ts tests/lab.spec.ts
 | [品牌页验收](docs/brand-landing-validation.md) | `e9fdaf1` 本地 Windows：typecheck、lint、132 项单元测试、生产构建通过；品牌 / 首访 / Lab 共 24 项桌面与手机尺寸 Chromium 用例通过，媒体生命周期又单独复验 |
 | [首访与 CSP 验收](docs/welcome-demo-validation.md) | 生产响应头下初始化、首次自动演示、回访、手动控制、675 步终局与哈希；后台测试为可见性事件合同，非全部操作系统场景 |
 | [正式站点截图核验](docs/deployed-site-tour.md) | 本次浏览 HTTPS 品牌 / Lab / 竞技 / 训练 / A* 课堂，执行短训练与搜索单步；仅文档更新，未重跑全套应用测试或全部学习算法 |
-| [GitHub Actions](https://github.com/ider-zh/snake-agent-lab/actions) | 云端状态以对应提交的实际 run 为准；旧 `de71d2d` 桌面实时通关曾超时，`e9fdaf1` 已拆分测试并调整预算。本页不把本地通过等同于云端全绿 |
+| [GitHub Actions](https://github.com/ider-zh/snake-game-lab/actions) | 云端状态以对应提交的实际 run 为准；旧 `de71d2d` 桌面实时通关曾超时，`e9fdaf1` 已拆分测试并调整预算。本页不把本地通过等同于云端全绿 |
 
 历史 HP 验收、性能与策略测评仅适用于各报告标明的版本、设备与协议。手机尺寸 Chromium 检查不等于所有实体移动设备或所有浏览器覆盖。
 
 ## 部署
 
-正式站点：[snake-agent-lab.9992099.xyz](https://snake-agent-lab.9992099.xyz/)。维护者已配置 GitHub main 的 Auto Deploy；后续推送可能自动发布，是否完成以部署平台为准。
+正式站点：[snake-game-lab.9992099.xyz](https://snake-game-lab.9992099.xyz/)。维护者已配置 GitHub main 的 Auto Deploy；后续推送可能自动发布，是否完成以部署平台为准。
 
 这是纯静态 Vite 应用：构建命令 `npm run build`，输出目录 `dist`，Node 24.15+（24.x）。仓库提供 `public/_headers`、`public/_redirects` 与 `wrangler.jsonc`，应用无需云函数、数据库或 API token。工作区使用 hash 路由，`/#/lab`、`/#/arena`、`/#/lessons/astar` 等可直接访问和刷新。托管服务的套餐与费用由维护者选择。详见[部署说明](docs/deployment.md)。
 
@@ -127,3 +127,10 @@ npm run test:e2e -- tests/brand.spec.ts tests/welcome.spec.ts tests/lab.spec.ts
 - [gargimahale/Snake](https://github.com/gargimahale/Snake)：Python / Tkinter 项目，借鉴安全检查、实验模式与训练 / 评估划分。
 
 研究来源见[参考文档](docs/references.md)。历史核查时上述两个仓库均未见 LICENSE；本项目仅借鉴设计理念，未复制其源码或沿用其成绩。**本仓库许可证尚待维护者决定**，不因源码公开而推定额外授权。
+
+
+## 2026-10-15：更名与首页播放修复
+
+当前项目名为 **Snake Game Lab**，仓库为 [ider-zh/snake-game-lab](https://github.com/ider-zh/snake-game-lab)，官方入口为 https://snake-game-lab.9992099.xyz/ 。历史截图与验收记录保留采集时的名称和域名，不代表已在新域名重跑。新域名的浏览器存储独立，旧站存档不会自动迁移。
+
+首页在普通动画偏好下自动推进；减少动态效果时默认静止，并说明原因，允许用户主动播放、暂停。播放许可仅对当前页面有效，刷新或重新启用减少动画后恢复静止。实验台已保存设置仍以暂停方式恢复。Cloudflare 统计脚本被严格 CSP 拦截不影响核心游戏；未放宽 CSP。实现与本次实际验收见 [播放修复记录](docs/autoplay-fix-validation.md)。

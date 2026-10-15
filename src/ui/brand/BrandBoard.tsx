@@ -24,6 +24,10 @@ export function BrandBoard({ strategy = 'hamiltonian-shortcut', auto = true }: {
   const current = useRef(initial);
   const [state, setState] = useState(() => current.current.game.observe());
   const [playing, setPlaying] = useState(auto);
+  // Reduced motion suppresses autoplay, but must not disable deliberate playback.
+  const [motionConsent, setMotionConsent] = useState(false);
+  useEffect(() => { setMotionConsent(false); }, [reduced]);
+  const motionPaused = reduced && !motionConsent;
   const terminal = state.terminated || state.truncated;
   const step = () => {
     const { game, agent } = current.current;
@@ -31,15 +35,16 @@ export function BrandBoard({ strategy = 'hamiltonian-shortcut', auto = true }: {
     game.step(agent.decide(game.observe()).action); setState(game.observe());
   };
   useEffect(() => {
-    if (!active || reduced || !playing || terminal) return;
+    if (!active || motionPaused || !playing || terminal) return;
     const timer = setInterval(step, 50);
     return () => clearInterval(timer);
-  }, [active, reduced, playing, terminal]);
-  const running = active && !reduced && playing && !terminal;
+  }, [active, motionPaused, playing, terminal]);
+  const running = active && !motionPaused && playing && !terminal;
   return <div ref={ref} className="brand-live" data-running={running} data-steps={state.steps}>
-    <div className="brand-live-top"><span><i className={running ? 'signal' : ''}/>{terminal ? state.reason === 'filled' ? '棋盘已填满' : '本局已结束' : running ? 'LIVE · 真实引擎运行中' : reduced ? '静态预览 · 减少动态效果' : '演示已暂停'}</span><span>SEED 0042</span></div>
+    <div className="brand-live-top"><span><i className={running ? 'signal' : ''}/>{terminal ? state.reason === 'filled' ? '棋盘已填满' : '本局已结束' : running ? 'LIVE · 真实引擎运行中' : motionPaused ? '静态预览 · 减少动态效果' : '演示已暂停'}</span><span>SEED 0042</span></div>
     <SnakeGraphic state={state}/>
-    <div className="brand-live-bottom"><span><b>{String(state.steps).padStart(3, '0')}</b> STEPS</span><span><b>{state.snake.length}<em>/64</em></b> CELLS</span><div><button aria-label={playing && !reduced ? '暂停实时演示' : '继续实时演示'} disabled={terminal || reduced} onClick={() => setPlaying(value => !value)}>{playing && !reduced ? 'Ⅱ' : '▷'}</button><button aria-label="演示前进一步" disabled={running || terminal} onClick={step}>↦</button><button aria-label="重新开始实时演示" onClick={() => { current.current = session(strategy); setState(current.current.game.observe()); setPlaying(false); }}>↺</button></div></div>
+    <div className="brand-live-bottom"><span><b>{String(state.steps).padStart(3, '0')}</b> STEPS</span><span><b>{state.snake.length}<em>/64</em></b> CELLS</span><div><button aria-label={playing && !motionPaused ? '暂停实时演示' : '继续实时演示'} disabled={terminal} onClick={() => { setMotionConsent(true); setPlaying(motionPaused ? true : !playing); }}>{playing && !motionPaused ? 'Ⅱ' : '▷'}</button><button aria-label="演示前进一步" disabled={running || terminal} onClick={step}>↦</button><button aria-label="重新开始实时演示" onClick={() => { current.current = session(strategy); setState(current.current.game.observe()); setPlaying(false); }}>↺</button></div></div>
+    {motionPaused && <p className="brand-motion-note">已遵循系统“减少动态效果”偏好，自动演示已暂停。可点击“继续实时演示”主动播放。</p>}
     {terminal && <p className="brand-terminal" role="status">{state.reason === 'filled' ? '64 格，全部抵达。' : '边界也是实验的一部分。'} <span>{state.steps} 步 · {state.score} 食物</span></p>}
   </div>;
 }
