@@ -25,3 +25,7 @@
  .brand-hero .brand-visual-label,.brand-hero .brand-visual-foot{padding:8px 0;font-size:7px}
  .brand-hero-bottom{padding-top:20px}
 }
+
+.brand-nav-actions{display:flex;align-items:center;gap:16px}.brand-repository{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:44px;padding:8px 12px;border:1px solid var(--line);border-radius:3px;font-size:12px;white-space:nowrap}.landing .brand-repository{color:var(--lime)}.brand-repository:hover{background:#213326;border-color:#7b995d}
+@media(max-width:720px){.brand-nav{padding-inline:16px}.brand-nav-actions{gap:8px}.brand-nav .brand-repository{padding:8px;font-size:11px}.brand-nav-cta{min-height:44px;gap:8px;padding:8px}.brand-nav .brand-wordmark{font-size:18px}.brand-nav .brand-wordmark img{width:23px;margin-right:6px}.brand-footer .brand-repository{margin-left:auto}}
+@media(max-width:360px){.brand-nav .brand-wordmark{font-size:16px}.brand-nav .brand-wordmark img{width:20px;margin-right:4px}.brand-nav-actions{gap:6px}.brand-nav-cta{font-size:9px}}
