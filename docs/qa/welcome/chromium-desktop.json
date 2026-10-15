@@ -1,0 +1,13 @@
+{
+  "project": "chromium-desktop",
+  "viewport": {
+    "width": 1440,
+    "height": 1000
+  },
+  "csp": "default-src 'self'; script-src 'self'; worker-src 'self' blob:; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; connect-src 'self'; font-src 'self'; object-src 'none'; base-uri 'self'; frame-ancestors 'none'",
+  "steps": 675,
+  "score": 61,
+  "filledCells": 64,
+  "replayHash": "19e52bf6",
+  "consoleErrors": []
+}

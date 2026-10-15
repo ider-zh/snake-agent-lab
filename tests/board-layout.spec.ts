@@ -12,7 +12,7 @@ async function geometry(page:Page){
 test('arena draws larger complete boards and resizes through mobile focus without restarting',async({page})=>{
  test.setTimeout(120000);
  const errors:string[]=[];page.on('pageerror',error=>errors.push(error.message));
- await page.setViewportSize({width:1440,height:1000});await page.goto('/');
+ await page.setViewportSize({width:1440,height:1000});await page.goto('/#/play');
  await page.getByRole('navigation').getByRole('button',{name:'策略竞技',exact:true}).click();
  await page.getByRole('button',{name:'单步',exact:true}).click();
  for(const [width,height,minimum] of [[1440,1000,350],[1920,1080,500],[1024,768,330],[1440,720,350],[390,664,300],[320,664,260],[1440,1000,350]]){

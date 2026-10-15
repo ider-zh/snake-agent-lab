@@ -4,6 +4,8 @@ import userEvent from '@testing-library/user-event';
 import { IDBFactory } from 'fake-indexeddb';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import App from './App';
+import { StrictMode } from 'react';
+import { DEMO, PREFERENCES_KEY } from './welcome';
 import { GameLab } from './GameLab';
 import { TrainingLab } from './TrainingLab';
 import type { Observation } from '../core';
@@ -44,7 +46,8 @@ class TestWorker {
 }
 
 beforeEach(() => {
-  window.history.replaceState(null, '', window.location.pathname);
+  localStorage.clear();
+  window.history.replaceState(null, '', window.location.pathname + '#/play');
   vi.stubGlobal('indexedDB', new IDBFactory());
   vi.stubGlobal('Worker', TestWorker);
   TestWorker.instances = [];
@@ -420,4 +423,43 @@ describe('training UI worker lifecycle', () => {
     // Let real IndexedDB mount reads settle before teardown.
     await listRecords('checkpoint');
   });
+});
+
+
+describe('welcome demo lifecycle', () => {
+ it('autoplays once under StrictMode, pauses, resets, preserves choices and has one timer', () => {
+  vi.useFakeTimers();
+  const view=render(<StrictMode><GameLab welcome arena={false} model={null} onReplay={vi.fn()} notify={vi.fn()}/></StrictMode>);
+  expect(current().config.width).toBe(8);
+  expect(button('暂停')).toBeTruthy();
+  act(()=>vi.advanceTimersByTime(1000));
+  expect(current().steps).toBe(20);
+  fireEvent.click(button('暂停'));
+  act(()=>vi.advanceTimersByTime(1000));expect(current().steps).toBe(20);
+  fireEvent.click(button('重开'));expect(current().steps).toBe(0);
+  act(()=>vi.advanceTimersByTime(1000));expect(current().steps).toBe(0);
+  fireEvent.change(screen.getByLabelText('决策策略'),{target:{value:'bfs'}});
+  expect(button('开始运行')).toBeTruthy();
+  view.unmount();renderGame();
+  expect((screen.getByLabelText('决策策略') as HTMLSelectElement).value).toBe('bfs');
+  expect(current().steps).toBe(0);
+ });
+ it('respects reduced motion and existing preferences', () => {
+  vi.stubGlobal('matchMedia',()=>({matches:true,addEventListener:vi.fn(),removeEventListener:vi.fn()}));
+  const view=render(<GameLab welcome arena={false} model={null} onReplay={vi.fn()} notify={vi.fn()}/>);
+  expect(button('开始运行')).toBeTruthy();view.unmount();
+  localStorage.setItem(PREFERENCES_KEY,JSON.stringify({...DEMO,strategy:'bfs',size:12,speed:7}));
+  render(<GameLab welcome arena={false} model={null} onReplay={vi.fn()} notify={vi.fn()}/>);
+  expect(current().config.width).toBe(12);expect(button('开始运行')).toBeTruthy();
+ });
+ it('stays paused on return from background and resumes with exactly one timer', () => {
+  vi.useFakeTimers();render(<GameLab welcome arena={false} model={null} onReplay={vi.fn()} notify={vi.fn()}/>);
+  act(()=>vi.advanceTimersByTime(100));expect(current().steps).toBe(2);
+  const hidden=vi.spyOn(document,'hidden','get').mockReturnValue(true);
+  fireEvent(document,new Event('visibilitychange'));
+  act(()=>vi.advanceTimersByTime(1000));expect(current().steps).toBe(2);
+  hidden.mockReturnValue(false);fireEvent(document,new Event('visibilitychange'));
+  act(()=>vi.advanceTimersByTime(1000));expect(current().steps).toBe(2);
+  fireEvent.click(button('开始运行'));act(()=>vi.advanceTimersByTime(1000));expect(current().steps).toBe(22);
+ });
 });

@@ -1,7 +1,7 @@
 import {test,expect} from '@playwright/test';
 test('shortcut strategy exposes honest budgets, supports replay and rejects obstacles',async({page},info)=>{
   test.setTimeout(240000);
-  const errors:string[]=[];page.on('pageerror',e=>errors.push(e.message));await page.goto('/');
+  const errors:string[]=[];page.on('pageerror',e=>errors.push(e.message));await page.goto('/#/play');
   await page.getByLabel('决策策略',{exact:true}).selectOption('hamiltonian-shortcut');
   const rules=page.locator('.rule-controls');if(await rules.getAttribute('open')===null)await rules.locator('summary').click();
   await page.getByLabel('棋盘尺寸',{exact:true}).selectOption('20');

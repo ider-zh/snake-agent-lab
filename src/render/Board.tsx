@@ -1,3 +1,5 @@
+import 'pixi.js/unsafe-eval';
+import { rendererError } from './errors';
 import { Application, Container, Graphics, Text } from 'pixi.js';
 import { useEffect, useRef, useState } from 'react';
 import type { DebugInfo, Observation, SearchFrame } from '../core/types';
@@ -115,8 +117,8 @@ export function Board({ views, overlay = true }: { views: BoardView[]; overlay?:
       window.addEventListener('resize', resize);
       app.ticker.add(redraw);
       resize();
-    }).catch(err => { if (!cancelled) setError(`绘图初始化失败：${String(err)}`); });
+    }).catch(err => { if (!cancelled) setError(rendererError(err)); });
     return () => { cancelled = true; observer?.disconnect(); window.removeEventListener('resize', resize); if (ready) app.destroy(true, { children: true }); };
   }, []);
-  return <div className="board-stage">{compact && views.length > 1 && <div className="board-switcher" role="group" aria-label="选择观察策略">{views.map((view, index) => <button key={view.label} aria-pressed={selected === index} onClick={() => setSelected(index)}><strong>{view.label}</strong><small>{view.observation.score} 食物 · {view.observation.steps} 步{view.observation.terminated || view.observation.truncated ? ' · 结束' : ''}</small></button>)}</div>}<div ref={host} className={`board-canvas ${displayed.length > 1 ? 'multi-board' : ''}`} role="img" aria-label={displayed.map(view => `${view.label}，得分 ${view.observation.score}，步数 ${view.observation.steps}`).join('；')}>{error && <p className="error">{error}。请使用支持 WebGL 的浏览器</p>}</div></div>;
+  return <div className="board-stage">{compact && views.length > 1 && <div className="board-switcher" role="group" aria-label="选择观察策略">{views.map((view, index) => <button key={view.label} aria-pressed={selected === index} onClick={() => setSelected(index)}><strong>{view.label}</strong><small>{view.observation.score} 食物 · {view.observation.steps} 步{view.observation.terminated || view.observation.truncated ? ' · 结束' : ''}</small></button>)}</div>}<div ref={host} className={`board-canvas ${displayed.length > 1 ? 'multi-board' : ''}`} role="img" aria-label={displayed.map(view => `${view.label}，得分 ${view.observation.score}，步数 ${view.observation.steps}`).join('；')}>{error && <p className="error">{error}</p>}</div></div>;
 }

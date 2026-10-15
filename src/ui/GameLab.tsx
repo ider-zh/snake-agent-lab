@@ -1,3 +1,4 @@
+import { DEFAULT_PLAY, DEMO, readPreferences, savePreferences } from './welcome';
 import {sameModelRules,type SavedModel} from './model-library';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { Game } from '../core';
@@ -26,10 +27,15 @@ export const AGENTS: {id: AgentId; label: string; description: string; tag: stri
 ];
 const REASONS: Record<string,string> = {'wall':'撞到边界','body':'撞到身体','obstacle':'撞到障碍','filled':'填满棋盘，胜利！','step-limit':'达到步数预算','no-progress':'达到无进展预算'};
 interface Session { game: Game; agent: Agent; actions: Direction[]; scores: number[]; debug?: DebugInfo; }
-interface Props { arena: boolean; model: PlayableModel|null; models?:SavedModel[]; onReplay: (replay: ReplayRecord) => void; notify: (message: string) => void; }
+interface Props { welcome?: boolean; arena: boolean; model: PlayableModel|null; models?:SavedModel[]; onReplay: (replay: ReplayRecord) => void; notify: (message: string) => void; }
 const EMPTY_MODELS:SavedModel[]=[];
-export function GameLab({arena,model,models=EMPTY_MODELS,onReplay,notify}:Props) {
- const [completionBudget,setCompletionBudget]=useState(true); const [manual,setManual]=useState(false); const [strategy,setStrategy]=useState<AgentId|'model'>('astar'); const [size,setSize]=useState(12); const [seed,setSeed]=useState(42); const [obstacles,setObstacles]=useState(false); const [speed,setSpeed]=useState(8); const [running,setRunning]=useState(false); const [overlay,setOverlay]=useState(true); const [states,setStates]=useState<Observation[]>([]); const [revision,setRevision]=useState(0); const [error,setError]=useState(''); const [arenaChoices,setArenaChoices]=useState<string[]>(['astar','bfs','safe-greedy','legal-random']);
+export function GameLab({welcome=false,arena,model,models=EMPTY_MODELS,onReplay,notify}:Props) {
+ const [initial] = useState(() => {
+  const saved = !arena ? readPreferences(AGENTS.map(a => a.id)) : null;
+  const demo = welcome && !arena && !saved;
+  return { settings: saved ?? (demo ? DEMO : DEFAULT_PLAY), demo, autoplay: demo && !(window.matchMedia?.('(prefers-reduced-motion: reduce)').matches ?? false) && !document.hidden };
+ });
+ const [completionBudget,setCompletionBudget]=useState(initial.settings.completionBudget); const [manual,setManual]=useState(initial.settings.manual); const [strategy,setStrategy]=useState<AgentId|'model'>(initial.settings.strategy); const [size,setSize]=useState(initial.settings.size); const [seed,setSeed]=useState(initial.settings.seed); const [obstacles,setObstacles]=useState(initial.settings.obstacles); const [speed,setSpeed]=useState(initial.settings.speed); const [running,setRunning]=useState(false); const [overlay,setOverlay]=useState(initial.settings.overlay); const [states,setStates]=useState<Observation[]>([]); const [revision,setRevision]=useState(0); const [error,setError]=useState(''); const [arenaChoices,setArenaChoices]=useState<string[]>(['astar','bfs','safe-greedy','legal-random']);
  const sessions=useRef<Session[]>([]); const input=useRef<Direction|null>(null); const boardFocus=useRef<HTMLDivElement>(null);
  const [settingsOpen,setSettingsOpen]=useState(()=>window.innerWidth>720);
  useEffect(()=>{const query=window.matchMedia?.('(max-width: 720px)');if(!query)return;const change=()=>setSettingsOpen(!query.matches);query.addEventListener('change',change);return()=>query.removeEventListener('change',change);},[]);
@@ -49,6 +55,8 @@ export function GameLab({arena,model,models=EMPTY_MODELS,onReplay,notify}:Props)
   }catch(err){setError(String(err));sessions.current=[];setStates([]);}
  },[arena,manual,strategy,size,seed,obstacles,activeModel,completionBudget,arenaChoices,ringSelected]);
  useEffect(()=>restart(),[restart]);
+ useEffect(()=>{if(initial.autoplay)setRunning(true);},[initial]);
+ useEffect(()=>{if(!arena && strategy!=='model')savePreferences({strategy,size,seed,speed,manual,obstacles,completionBudget,overlay});},[arena,strategy,size,seed,speed,manual,obstacles,completionBudget,overlay]);
  const tick=useCallback(()=>{
   let active=false;
   sessions.current.forEach((session,index)=>{
@@ -62,6 +70,12 @@ export function GameLab({arena,model,models=EMPTY_MODELS,onReplay,notify}:Props)
   setStates(sessions.current.map(s=>s.game.observe()));setRevision(value=>value+1); if(!active)setRunning(false);
  },[manual,arena,model,strategy,selectedModels]);
  useEffect(()=>{if(!running)return;const timer=setInterval(tick,1000/speed);return()=>clearInterval(timer);},[running,speed,tick]);
+ useEffect(()=>{
+  const query=window.matchMedia?.('(prefers-reduced-motion: reduce)');
+  if(!query)return;
+  const change=()=>{if(query.matches)setRunning(false);};
+  query.addEventListener('change',change);return()=>query.removeEventListener('change',change);
+ },[]);
  const turn=useCallback((action:Direction)=>{const state=sessions.current[0]?.game.observe();if(!manual||arena||input.current!==null||!state)return;if((state.direction+2)%4!==action)input.current=action;},[manual,arena]);
  useEffect(()=>{
   const key=(event:KeyboardEvent)=>{const target=event.target as HTMLElement;if(target.closest('input,select,textarea,button,[contenteditable=true]'))return;
@@ -75,6 +89,7 @@ export function GameLab({arena,model,models=EMPTY_MODELS,onReplay,notify}:Props)
  const save=async()=>{try{const replay=makeReplay();await saveRecord('replay',`replay-${Date.now()}`,replay);notify('回放已保存在本浏览器');}catch(err){notify(String(err));}};
  const current=states[0]; const agent=strategy==='model'?{id:'model',label:`${model?.algorithm.toUpperCase()??''} 冻结模型`,tag:'TRAINED MODEL',description:'使用已训练或导入模型的冻结参数决策；棋盘与规则匹配模型的训练配置。'}:AGENTS.find(a=>a.id===strategy)!; const terminal=current&&(arena?states.every(state=>state.terminated||state.truncated):(current.terminated||current.truncated)); const history=sessions.current[0]?.scores??[];
  return <div className="lab-content" data-testid={arena?'arena-lab':'game-lab'}>
+  {initial.demo&&strategy===DEMO.strategy&&!manual&&size===DEMO.size&&seed===DEMO.seed&&!obstacles&&<div className="notice welcome-demo"><strong>欢迎演示 · 安全捷径填满棋盘</strong><span>8 × 8 无障碍 · #42 · 可随时暂停或切换策略</span><small>此配置已验证通关，其他规则与预算可能不同。回访及后台返回均保持暂停。</small></div>}
   <div className="game-toolbar">
    {!arena&&<div className="segmented" aria-label="控制方式"><button className={!manual?'selected':''} onClick={()=>setManual(false)}>智能体</button><button className={manual?'selected':''} onClick={()=>setManual(true)}>手动游玩</button></div>}
 <details className="rule-controls" open={settingsOpen} onToggle={event=>setSettingsOpen(event.currentTarget.open)}><summary>规则设置 · {current?.config.width??size} × {current?.config.height??size} · #{seed}</summary>

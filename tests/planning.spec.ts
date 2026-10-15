@@ -1,6 +1,6 @@
 import {test,expect} from '@playwright/test';
 test('four planning policies execute, replay and display real search statistics',async({page},info)=>{
-  const errors:string[]=[];page.on('pageerror',e=>errors.push(e.message));await page.goto('/');
+  const errors:string[]=[];page.on('pageerror',e=>errors.push(e.message));await page.goto('/#/play');
   for(const id of ['dijkstra','best-first','beam','mcts']){
     await page.getByLabel('决策策略',{exact:true}).selectOption(id);
     for(let i=0;i<4;i++)await page.getByRole('button',{name:'单步',exact:true}).click();

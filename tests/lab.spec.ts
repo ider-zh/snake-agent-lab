@@ -3,7 +3,7 @@ import type { Page } from '@playwright/test';
 const nav=(page:Page,label:string)=>page.getByRole('navigation').getByRole('button',{name:new RegExp(label)});
 test('manual controls, deterministic restart, responsive canvas and replay',async({page})=>{
  const errors:string[]=[];page.on('pageerror',error=>errors.push(error.message));
- await page.goto('/');await expect(page.getByRole('heading',{name:'从一条蛇，探索智能'})).toBeVisible();
+ await page.goto('/#/play');await expect(page.getByRole('heading',{name:'从一条蛇，探索智能'})).toBeVisible();
  await expect(page.locator('canvas')).toHaveCount(1);
  await page.getByRole('button',{name:'手动游玩',exact:true}).click();
  const board=page.getByRole('img',{name:/手动，得分/});
@@ -19,7 +19,7 @@ test('manual controls, deterministic restart, responsive canvas and replay',asyn
  await page.screenshot({path:test.info().outputPath('manual-replay.png'),fullPage:true});expect(errors).toEqual([]);
 });
 test('AI search, four-board arena, batch export, invalid import guard',async({page})=>{
- await page.goto('/');await page.getByRole('button',{name:'单步',exact:true}).click();await expect(page.getByRole('img',{name:/A\* 安全搜索/})).toHaveAttribute('aria-label',/步数 1/);await page.getByRole('img',{name:/每步得分/}).press('ArrowLeft');await expect(page.locator('[data-testid="game-lab"] .measured-chart figcaption')).toContainText('采样 1 / 2');
+ await page.goto('/#/play');await page.getByRole('button',{name:'单步',exact:true}).click();await expect(page.getByRole('img',{name:/A\* 安全搜索/})).toHaveAttribute('aria-label',/步数 1/);await page.getByRole('img',{name:/每步得分/}).press('ArrowLeft');await expect(page.locator('[data-testid="game-lab"] .measured-chart figcaption')).toContainText('采样 1 / 2');
  await nav(page,'策略竞技').click();await expect(page.locator('canvas')).toHaveCount(1);await page.getByRole('button',{name:'单步',exact:true}).click();await expect(page.locator('.board-canvas')).toHaveAttribute('aria-label',/步数 1/);if(test.info().project.name.includes('mobile')){await page.getByRole('group',{name:'选择观察策略'}).getByRole('button',{name:/BFS/}).click();}await expect(page.getByRole('img',{name:/BFS.*步数/})).toHaveAttribute('aria-label',/BFS.*步数 1/);
  await nav(page,'批量评测').click();await page.getByLabel('共同种子数').selectOption('10');await page.getByLabel('每局步数上限').fill('100');await page.getByRole('button',{name:'运行 40 局'}).click();await expect(page.getByRole('button',{name:'JSON',exact:true})).toBeEnabled({timeout:60000});
  const download=page.waitForEvent('download');await page.getByRole('button',{name:'CSV',exact:true}).click();expect((await download).suggestedFilename()).toBe('snake-benchmark.csv');
@@ -28,7 +28,7 @@ test('AI search, four-board arena, batch export, invalid import guard',async({pa
 });
 test('real DQN training, checkpoint export, frozen evaluation and GA completion',async({page})=>{
  const errors:string[]=[];page.on('pageerror',error=>errors.push(error.message));
- await page.goto('/');await nav(page,'训练实验室').click();await page.getByLabel('训练预算').selectOption('2000');await page.getByRole('button',{name:'开始训练',exact:true}).click();
+ await page.goto('/#/play');await nav(page,'训练实验室').click();await page.getByLabel('训练预算').selectOption('2000');await page.getByRole('button',{name:'开始训练',exact:true}).click();
  await expect(page.getByRole('button',{name:'导出推理模型',exact:true})).toBeEnabled({timeout:60000});
  await expect(page.locator('.status-line')).toContainText('任务完成',{timeout:60000});
  const updates=await page.locator('.metric').filter({hasText:'梯度更新'}).locator('strong').innerText();expect(Number(updates.replaceAll(',',''))).toBeGreaterThan(0);

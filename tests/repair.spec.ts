@@ -1,7 +1,7 @@
 import {test,expect} from '@playwright/test';
 import {readFile} from 'node:fs/promises';
 test('worker bootstrap transient recovery and persistent failure have actionable errors',async({page})=>{
- await page.goto('/');await page.getByRole('navigation').getByRole('button',{name:'训练实验室',exact:true}).click();
+ await page.goto('/#/play');await page.getByRole('navigation').getByRole('button',{name:'训练实验室',exact:true}).click();
  await page.getByRole('checkbox',{name:/Double DQN/}).uncheck();
  let attempts=0;
  await page.route('**/training.worker-*.js',route=>{attempts++;return attempts===1?route.abort('failed'):route.continue();});
@@ -23,7 +23,7 @@ test('worker bootstrap transient recovery and persistent failure have actionable
 
 for(const algorithm of ['q-learning','sarsa','ppo','imitation'] as const)test(`${algorithm} repeated worker start, stop, restart and evaluation`,async({page})=>{
  test.setTimeout(180000);const errors:string[]=[];page.on('pageerror',e=>errors.push(e.message));
- await page.goto('/');await page.getByRole('navigation').getByRole('button',{name:'训练实验室',exact:true}).click();await page.getByRole('button',{name:'Q-learning / SARSA / PPO / 模仿',exact:true}).click();
+ await page.goto('/#/play');await page.getByRole('navigation').getByRole('button',{name:'训练实验室',exact:true}).click();await page.getByRole('button',{name:'Q-learning / SARSA / PPO / 模仿',exact:true}).click();
  await page.getByLabel('新学习算法').selectOption(algorithm);await page.getByLabel('新学习预算').selectOption('100000');
  for(let i=0;i<2;i++){
   await page.getByRole('button',{name:'开始新学习训练',exact:true}).click();await expect(page.locator('[data-testid="learning-lab"] [role="status"]')).toContainText('训练或评估中');
@@ -35,7 +35,7 @@ for(const algorithm of ['q-learning','sarsa','ppo','imitation'] as const)test(`$
 });
 
 test('learning worker bootstrap failure recovers and GA restarts repeatedly',async({page})=>{
- await page.goto('/');await page.getByRole('navigation').getByRole('button',{name:'训练实验室',exact:true}).click();
+ await page.goto('/#/play');await page.getByRole('navigation').getByRole('button',{name:'训练实验室',exact:true}).click();
  await page.getByRole('button',{name:'GA 神经进化',exact:true}).click();await page.getByLabel('训练预算').selectOption('500000');
  for(let i=0;i<2;i++){await page.getByRole('button',{name:'开始训练',exact:true}).click();await expect(page.locator('.status-line')).toContainText('训练中');await page.getByRole('button',{name:'停止',exact:true}).click();await expect(page.locator('.status-line')).toContainText('已停止');}
  await page.getByRole('button',{name:/评估冻结模型/}).click();await expect(page.locator('.status-line')).toContainText('任务完成',{timeout:60000});
@@ -45,7 +45,7 @@ test('learning worker bootstrap failure recovers and GA restarts repeatedly',asy
 });
 
 test('arena independently selects four strategies, resets fairly, and retains saved models',async({page})=>{
- const errors:string[]=[];page.on('pageerror',e=>errors.push(e.message));await page.goto('/');
+ const errors:string[]=[];page.on('pageerror',e=>errors.push(e.message));await page.goto('/#/play');
  await expect(page.getByRole('navigation').getByRole('button',{name:'策略课堂',exact:true})).toBeVisible();
  await expect(page.locator('.privacy-card')).not.toContainText('无账号');
  await page.getByRole('navigation').getByRole('button',{name:'策略竞技',exact:true}).click();

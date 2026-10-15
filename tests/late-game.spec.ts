@@ -1,7 +1,7 @@
 import {test,expect} from '@playwright/test';
 test('late-game arena uses production budgets and exports a valid long replay',async({page},info)=>{
  test.setTimeout(300000);const errors:string[]=[];page.on('pageerror',e=>errors.push(e.message));
- await page.goto('/');await page.getByRole('navigation').getByRole('button',{name:'策略竞技',exact:true}).click();
+ await page.goto('/#/play');await page.getByRole('navigation').getByRole('button',{name:'策略竞技',exact:true}).click();
  const rules=page.locator('.rule-controls');if(await rules.getAttribute('open')===null)await rules.locator('summary').click();
  await page.getByLabel('棋盘尺寸',{exact:true}).selectOption('8');await page.getByLabel('游戏种子',{exact:true}).fill('63001');
  for(const [i,id] of ['astar','beam','mcts','hamiltonian-shortcut'].entries())await page.getByLabel(`棋盘 ${i+1} 策略`,{exact:true}).selectOption(id);

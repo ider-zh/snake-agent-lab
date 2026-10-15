@@ -1,7 +1,7 @@
 import {test,expect} from '@playwright/test';
 import {readFileSync} from 'node:fs';
 for(const algorithm of ['ppo','imitation'])test(`${algorithm} really trains in Worker, restores and evaluates a frozen student`,async({page},info)=>{
-  test.setTimeout(120000);const errors:string[]=[];page.on('pageerror',e=>errors.push(e.message));await page.goto('/');await page.getByRole('button',{name:'训练实验室',exact:true}).click();await page.getByRole('button',{name:'Q-learning / SARSA / PPO / 模仿',exact:true}).click();
+  test.setTimeout(120000);const errors:string[]=[];page.on('pageerror',e=>errors.push(e.message));await page.goto('/#/play');await page.getByRole('button',{name:'训练实验室',exact:true}).click();await page.getByRole('button',{name:'Q-learning / SARSA / PPO / 模仿',exact:true}).click();
   const lab=page.getByTestId('learning-lab');await lab.getByLabel('新学习算法',{exact:true}).selectOption(algorithm);await lab.getByLabel('新学习预算',{exact:true}).selectOption('2000');await lab.getByRole('button',{name:'开始新学习训练',exact:true}).click();
   await expect(lab.getByRole('status')).toContainText('任务完成',{timeout:30000});expect(Number(await lab.locator('.metric').filter({hasText:'优化更新'}).locator('strong').textContent())).toBeGreaterThan(0);expect(Number(await lab.locator('.metric').filter({hasText:'已改变参数'}).locator('strong').textContent())).toBeGreaterThan(0);
   const download=page.waitForEvent('download');await lab.getByRole('button',{name:'导出新学习模型',exact:true}).click();const file=await (await download).path(),model=JSON.parse(readFileSync(file!,'utf8'));expect(model.version).toBe('snake-policy-v1');expect(model.algorithm).toBe(algorithm);expect(model.actor.some((v:number)=>v!==0)).toBe(true);

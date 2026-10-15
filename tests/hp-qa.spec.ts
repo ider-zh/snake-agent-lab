@@ -27,7 +27,7 @@ const downloadJson = async (page: Page, name: string) => {
 };
 
 test('keyboard queue, repeated pause, mode changes and saved replay survive reload', async ({ page }) => {
-  await page.goto('/');
+  await page.goto('/#/play');
   await page.getByRole('button', { name: '打开实验说明', exact: true }).click();
   await expect(page.getByRole('button', { name: '关闭说明', exact: true })).toBeFocused();
   await page.keyboard.press('Shift+Tab'); await expect(page.getByRole('button', { name: '开始探索', exact: true })).toBeFocused();
@@ -72,7 +72,7 @@ test('keyboard queue, repeated pause, mode changes and saved replay survive relo
 });
 
 test('batch worker pauses, resumes, cancels and saves a partial result', async ({ page }) => {
-  await page.goto('/'); await nav(page, '批量评测').click();
+  await page.goto('/#/play'); await nav(page, '批量评测').click();
   await page.getByRole('button', { name: '运行 400 局' }).click();
   await page.getByRole('button', { name: '暂停', exact: true }).click();
   await expect(metric(page, '实验状态')).toHaveText('暂停');
@@ -96,7 +96,7 @@ for (const algorithm of ['dqn', 'ga'] as const) {
   test(`${algorithm} real worker checkpoint roundtrip, invalid model and local restore`, async ({ page }) => {
     test.setTimeout(180000);
     const errors: string[] = []; page.on('pageerror', error => errors.push(error.message));
-    await page.goto('/'); await nav(page, '训练实验室').click();
+    await page.goto('/#/play'); await nav(page, '训练实验室').click();
     if (algorithm === 'ga') await page.getByRole('button', { name: 'GA 神经进化', exact: true }).click();
     await page.getByLabel('训练预算').selectOption('100000');
     await page.getByRole('button', { name: '开始训练', exact: true }).click();
@@ -150,7 +150,7 @@ for (const algorithm of ['dqn', 'ga'] as const) {
 }
 
 test('tablet navigation retains accessible names', async ({ page }) => {
-  await page.setViewportSize({ width: 820, height: 1180 }); await page.goto('/');
+  await page.setViewportSize({ width: 820, height: 1180 }); await page.goto('/#/play');
   await nav(page, '策略竞技').click();
   await expect(page.getByRole('heading', { name: '同一起点，不同的思考' })).toBeVisible();
   await expect(page.locator('canvas')).toHaveCount(1);
@@ -158,7 +158,7 @@ test('tablet navigation retains accessible names', async ({ page }) => {
 });
 
 test('four-board input and frame timing on this device', async ({ page }) => {
-  await page.goto('/'); await nav(page, '策略竞技').click();
+  await page.goto('/#/play'); await nav(page, '策略竞技').click();
   await page.getByLabel('运行速度').fill('30');
   await page.evaluate(() => {
     const measurements = { frames: [] as number[], inputs: [] as number[], last: performance.now(), running: true };

@@ -2,7 +2,7 @@ import {test,expect} from '@playwright/test';
 import {readFile} from 'node:fs/promises';
 test('arena model rules are visible and incompatible peers are excluded',async({page})=>{
  const model=JSON.parse(await readFile('docs/qa/policy/ppo-seed-1-model.json','utf8'));
- await page.goto('/');await page.getByRole('navigation').getByRole('button',{name:'训练实验室',exact:true}).click();await page.getByRole('button',{name:'Q-learning / SARSA / PPO / 模仿',exact:true}).click();
+ await page.goto('/#/play');await page.getByRole('navigation').getByRole('button',{name:'训练实验室',exact:true}).click();await page.getByRole('button',{name:'Q-learning / SARSA / PPO / 模仿',exact:true}).click();
  const input=page.getByLabel('导入新学习模型或检查点');
  await input.setInputFiles({name:'open.json',mimeType:'application/json',buffer:Buffer.from(JSON.stringify(model))});
  await page.getByRole('navigation').getByRole('button',{name:'策略竞技',exact:true}).click();const first=page.getByLabel('棋盘 1 策略',{exact:true});

@@ -1,6 +1,6 @@
 import {test,expect} from '@playwright/test';
 test('tail detour can step, pause, replay and teach its limits',async({page},info)=>{
-  const errors:string[]=[];page.on('pageerror',e=>errors.push(e.message));await page.goto('/');
+  const errors:string[]=[];page.on('pageerror',e=>errors.push(e.message));await page.goto('/#/play');
   await page.getByLabel('决策策略',{exact:true}).selectOption('tail-safe');
   for(let i=0;i<12;i++)await page.getByRole('button',{name:'单步',exact:true}).click();
   await page.getByRole('button',{name:'开始运行',exact:true}).click();
