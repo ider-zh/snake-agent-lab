@@ -216,4 +216,4 @@ Real PPO-Clip/GAE/Adam and supervised behavior cloning are implemented with a cl
 
 当前项目名为 **Snake Game Lab**，仓库为 [ider-zh/snake-game-lab](https://github.com/ider-zh/snake-game-lab)，官方入口为 https://snake-game-lab.9992099.xyz/ 。历史截图与验收记录保留采集时的名称和域名，不代表已在新域名重跑。新域名的浏览器存储独立，旧站存档不会自动迁移。
 
-首页在普通动画偏好下自动推进；减少动态效果时默认静止，并说明原因，允许用户主动播放、暂停。播放许可仅对当前页面有效，刷新或重新启用减少动画后恢复静止。实验台已保存设置仍以暂停方式恢复。Cloudflare 统计脚本被严格 CSP 拦截不影响核心游戏；未放宽 CSP。实现与本次实际验收见 [播放修复记录](autoplay-fix-validation.md)。
+首页可见时在普通与减少动态效果两种偏好下均自动推进，无需点击。减少动画仅关闭非必要装饰、闪烁与过渡；棋盘保留真实步进和暂停按钮。手动暂停不会被重渲染、偏好切换或前台恢复覆盖；刷新和重新进入首页默认开局。实验台已保存设置仍以暂停方式恢复。Cloudflare 统计脚本被严格 CSP 拦截不影响核心游戏；未放宽 CSP。实现与本次实际验收见 [播放修复记录](autoplay-fix-validation.md)。

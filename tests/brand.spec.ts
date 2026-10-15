@@ -82,10 +82,10 @@ test('reduced motion and failed media retain an accessible poster', async ({ pag
   await page.emulateMedia({ reducedMotion: 'reduce' });
   await page.goto('/');
   const hero = page.locator('.brand-hero .brand-live');
-  await expect(hero).toHaveAttribute('data-steps', '0');
+  await expect(hero).not.toHaveAttribute('data-steps', '0');
   await hero.scrollIntoViewIfNeeded();
   await page.waitForTimeout(150);
-  await expect(hero).toHaveAttribute('data-steps', '0');
+  await expect(hero).not.toHaveAttribute('data-steps', '0');
   await page.locator('.film-arena').scrollIntoViewIfNeeded();
   await expect(page.locator('video[src]')).toHaveCount(0);
   await expect(page.locator('.film-arena img')).toBeVisible();
