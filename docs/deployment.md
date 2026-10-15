@@ -1,6 +1,6 @@
 # Cloudflare Pages 部署
 
-本仓库是纯静态 Vite SPA，不需要服务器、KV、R2、D1、Cloudflare Worker 或第三方训练服务。当前尚未部署；维护者决定后续公开地址。
+本仓库是纯静态 Vite SPA，不需要服务器、KV、R2、D1、Cloudflare Worker 或第三方训练服务。正式地址为 https://snake-agent-lab.9992099.xyz/ ；维护者已配置 GitHub main 的 Auto Deploy，推送可能触发发布。本次图文核验见 [正式站点记录](deployed-site-tour.md)，未修改 Cloudflare 配置。
 
 ## Pages 设置
 

@@ -206,3 +206,7 @@ Real PPO-Clip/GAE/Adam and supervised behavior cloning are implemented with a cl
 
 ## 品牌入口与独立实验区
 根页采用暗色编辑式落地页：实时棋盘、大字首屏、策略交互、双实录影像、课堂与开源叙事。`#/lab` 承接首次演示，其他既有深链保留。动态内容遵循可见性与 reduced motion；真实视频均来自项目本身。详见 [验收记录](brand-landing-validation.md)。
+
+## 2026-10-15 文档交付补充
+
+正式站点已由维护者部署；README 以真实浏览器截图说明品牌页与 Lab 的关系、竞技、训练和课堂。此轮仅文档与图片交付，不新增产品能力；截图中短训练不作为学习效果证据。范围与核验见 [正式站点图文记录](deployed-site-tour.md)。

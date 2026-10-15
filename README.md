@@ -1,110 +1,129 @@
-# SnakeLab
+# SnakeLab · Snake Agent Lab
 
-> 2026-10-05 HP training correction: new jobs use versioned relative features, shaped DQN rewards and a 75-coefficient GA policy. Original 0/1-score defaults were reproduced. Actual learning comparisons, budgets, failed pilots and compatibility are in [training effectiveness](docs/training-effectiveness.md). Earlier full-board training descriptions below are the v1 design/history; they do not describe the new UI defaults.
+**一条蛇，一个可以观察、比较、训练与重放的智能实验室。**
 
-A local-first playground for Snake, search agents, and real browser training.
+[**在线体验 →**](https://snake-agent-lab.9992099.xyz/) · [**直接进入 Lab →**](https://snake-agent-lab.9992099.xyz/#/lab) · [策略课堂](https://snake-agent-lab.9992099.xyz/#/lessons) · [运行与验证](#快速开始)
 
-SnakeLab 将手动游戏、自动策略、批量实验、回放和 DQN / GA 训练放在统一、确定性的规则核心上。React 管理界面，PixiJS 单画布绘制最多四局，Web Worker 隔离批量仿真与训练。
+![SnakeLab 正式站点品牌首屏：下一步，让智能发生，右侧为 Hamiltonian 安全捷径棋盘](docs/images/deployed-home.jpg)
 
-**当前状态：P1–P5 功能已实现，并完成 HP 上一轮真实 Chromium 桌面与手机尺寸验收。** 最终复验记录、覆盖范围和限制见 [HP 验证记录](docs/hp-validation.md)，视觉迭代与截图见 [视觉审查](docs/visual-review.md)。Cloudflare 部署由维护者后续执行。
+根入口是品牌页：观察真实策略、比较决策方式、观看项目实录，再进入独立的 **Lab 工作区**。Lab 将手动游戏、自动策略、四路竞技、批量评测、浏览器训练与回放放在统一的确定性规则核心上。无需账号或外部模型服务。
 
-## 运行
+> 本页四张截图于 **2026-10-15** 从正式 HTTPS 站点使用本机 Chrome 截取，仅包含公开产品界面。首屏截图遵循当前浏览器的“减少动态效果”偏好，显示静态预览；其他图为真实交互后的状态。点击图片可查看原图；[截图与核验记录](docs/deployed-site-tour.md)说明参数和边界。
 
-推荐 Node 24；依赖精确版本见 `package-lock.json`。
+## 从观看到实验
+
+| 入口 | 可以做什么 |
+| --- | --- |
+| [品牌页](https://snake-agent-lab.9992099.xyz/) | 实时安全捷径演示、三种策略比较、两段项目原始录像与工作区导航 |
+| [实验台](https://snake-agent-lab.9992099.xyz/#/lab) | 手动 / AI、单步、暂停、重开、种子与规则、路径 / 搜索可视化、保存回放 |
+| [策略竞技](https://snake-agent-lab.9992099.xyz/#/arena) | 四个独立环境共享规则、初态与种子，分别选择策略或已存档模型 |
+| [训练实验室](https://snake-agent-lab.9992099.xyz/#/training) | Worker 内实际训练、预算控制、检查点恢复、模型导入导出与冻结评估 |
+| [批量评测](https://snake-agent-lab.9992099.xyz/#/batch) | 共同种子比较、失败 / 截断分类、分布、配对差与 95% CI、JSON / CSV 导出 |
+| [回放档案](https://snake-agent-lab.9992099.xyz/#/replay) | 保存动作、配置、版本与逐步状态哈希，本地存档和文件导入 |
+
+### 并肩观察，再用证据比较
+
+<table>
+<tr>
+<td width="50%"><a href="docs/images/deployed-arena.jpg"><img src="docs/images/deployed-arena.jpg" alt="真实策略竞技：12乘12棋盘、种子42，A星、BFS、安全贪心、合法随机运行194步后暂停" width="100%"></a></td>
+<td width="50%"><a href="docs/images/deployed-training.jpg"><img src="docs/images/deployed-training.jpg" alt="真实Double DQN短训练：2000个环境样本、469次梯度更新，学习曲线及抽样环境，验证集尚未评估" width="100%"></a></td>
+</tr>
+<tr>
+<td><strong>四路策略竞技</strong><br>12 × 12，种子 42，第 194 步暂停。A* / BFS / 安全贪心 / 合法随机分别获得 22 / 22 / 18 / 0 食物。这是一局过程快照，不是算法排名；同一随机流的食物落点还受各自身占位影响。</td>
+<td><strong>本地训练与检查点</strong><br>8 × 8，种子 7，Double DQN，2,000 样本检查预算已完成，469 次梯度更新。曲线来自真实采样；本次未执行独立测试，也未产生验证集成绩，不据此声称模型已学会通关。</td>
+</tr>
+</table>
+
+### 读原理，也能推进一次真实搜索
+
+[![A星策略课堂：三组课程目录和冻结场景，第三帧显示已访问格、frontier与当前扩展格](docs/images/deployed-classroom.jpg)](docs/images/deployed-classroom.jpg)
+
+[策略课堂](https://snake-agent-lab.9992099.xyz/#/lessons)有 **21 课、42 份 JavaScript / Python 代码**，包含术语、手算、真实引擎交互、代码对照、适用边界、练习与来源。上图是 [A* 课](https://snake-agent-lab.9992099.xyz/#/lessons/astar)的第 3 / 5 搜索帧：棋盘保持冻结，扩展格 20，`g=2, h=2, f=4`；只有执行建议动作才推进游戏。
+
+## 策略与课程路线
+
+| 路线 | 已实现内容 | 需要理解的边界 |
+| --- | --- | --- |
+| 经典规则 | Random、Legal Random、Greedy、Safe Greedy | 眼前合法或空间较大，不等于长期安全 |
+| 搜索与规划 | BFS、A*、Dijkstra、Greedy Best-First、有限 Beam、UCT MCTS、A* + 尾部绕行 | 静态最短路不等于动态蛇身通关；节点 / 时间预算可能导致回退 |
+| 有序环 | Hamiltonian 环、Hamiltonian 安全捷径 | 需要无障碍、可构造覆盖环的尺寸及正确沿环初态；有限预算仍可能截断 |
+| 学习与进化 | Q-learning、SARSA、DQN / Double DQN、GA、PPO-Clip、行为克隆 | 真实参数更新；短训练不保证学会，需多个训练种子和独立测试 |
+| 实验方法 | 12 维观察编码、训练 / 验证 / 测试划分、冻结评估、回放核验 | 训练曲线不能代替独立评估；教学构件不等同于完整生产策略 |
+
+课程分为「经典策略」「搜索决策」「学习与证据」三组，支持独立深链、前后课导航、语言切换和原文复制。详见 [教学记录](docs/algorithm-lessons.md)与[课堂内容验收](docs/classroom-redesign.md)。
+
+## 首次进入与用户控制
+
+首次进入 `#/lab`，默认自动运行 **Hamiltonian 安全捷径**：8 × 8、无障碍、沿环初态、种子 42、20 步/秒，5,000 步及 500 步无食物预算。此配置经真实引擎与逐步回放验证：**675 步、61 食物、64 格填满，终局哈希 `19e52bf6`**。完成后保留成功状态，不自动重播；实际完成时间取决于设备渲染速度。
+
+暂停、重开、手动游玩、策略与规则切换始终由用户控制。回访读取经过校验的 `snake-lab-play-v1` 偏好并保持暂停；`#/play`、课堂等指定深链不会被演示覆盖。启用“减少动态效果”时首次演示保持暂停；实验台切到后台即暂停，返回前台需手动继续。品牌页不修改实验区偏好。存储受限时仍可使用，但偏好可能无法跨访问保留。
+
+安全捷径的多种子结果见[通关效率报告](docs/efficient-completion.md)：原报告的 8 / 12 / 20 三种尺寸在充足预算下各 30 / 30 填满，步数较纯环约减少 36% / 44% / 47%；20 × 20 在 5,000 步预算下全部截断。这些是指定协议的结果，不是任意模式必胜或“所有算法里最强”的承诺。
+
+## 快速开始
+
+推荐 **Node 24.15+（24.x）**；完整支持范围见 `package.json`，精确依赖见 `package-lock.json`。
 
 ```sh
+git clone https://github.com/ider-zh/snake-agent-lab.git
+cd snake-agent-lab
 npm ci
 npm run dev
 # http://127.0.0.1:5173
 ```
 
 ```sh
-npm run check       # TypeScript + ESLint + Vitest + production build
-npm run preview     # static production preview
+npm run check          # TypeScript + ESLint + Vitest + production build
+npm run preview        # 生产构建预览，需先完成 build / check
 npx playwright install chromium
-npm run test:e2e     # desktop + mobile Chromium workflows
+npm run test:e2e        # 桌面 + 手机尺寸 Chromium 工作流
+# 重点回归：
+npm run test:e2e -- tests/brand.spec.ts tests/welcome.spec.ts tests/lab.spec.ts
 ```
 
-受限环境如果默认 npm cache 不可写，可为 npm 命令加 `--cache=/tmp/snake-agent-lab-npm-cache`。开发服务器默认只绑定回环；需要局域网访问时由操作者显式选择 `--host`。
+开发 / 预览默认只绑定回环地址。Playwright 默认独占 `127.0.0.1:4187`，不复用未知服务，并从 `public/_headers` 应用生产响应头。受限环境可为 npm 指定一个可写的 `--cache` 目录。
 
-## 功能
+## 技术与数据边界
 
-- **实验台**：键盘/WASD/触控、单步/暂停/重开、种子与棋盘、路径/搜索可视化、回放保存
-- **策略竞技**：同配置四棋盘；训练或导入的冻结模型可替换第四个策略
-- **经典策略**：Random、Legal Random、Greedy、Safe Greedy、BFS、A*、有条件的 Hamiltonian 环
-- **批量评测**：默认100共同种子，失败/截断分开，原始JSON/CSV、分布、配对差与95%CI；特殊环初态另分组
-- **训练实验室**：真实 TF.js CPU DQN / Double DQN 更新、目标网络、紧凑 replay、Adam 检查点；真实 GA 种群、锦标赛、精英、交叉/变异；暂停、取消、预算、冻结独立评估、导入导出与本地存储
-- **回放档案**：动作、配置、版本与逐步状态哈希验证；本地库与文件导入
-- **P5 扩展**：障碍地图通道、禁用不适用的环策略、Double DQN 独立变体标记
+- **纯 TypeScript 核心**：手动、AI、训练与评测共用 `Game.step` 语义；动作、种子和哈希支持确定性回放。仅节点预算模式用于严格动作重现，墙钟预算受设备负载影响。
+- **React + PixiJS**：实验区按需加载，PixiJS 单画布最多绘制四局；品牌首屏直接调用相同引擎，以 SVG 展示。两段自录 WebM 共 722,113 字节，带 poster、可见性加载 / 暂停、手动暂停、错误回退和 reduced motion 替代。
+- **Web Workers**：批量仿真与训练隔离于 UI。DQN / Double DQN 使用 TF.js CPU、目标网络、紧凑 replay、Huber loss 和 Adam；GA 使用种群、锦标赛、精英、交叉与变异。PPO 与行为克隆是独立线性策略，不宣传大型神经网络能力。
+- **本地数据**：没有应用账号、后端训练服务、应用遥测或外部模型下载。模型与回放存在浏览器；清理站点数据会删除 IndexedDB 存档，应导出备份。不同 origin 的数据不会自动迁移。
+- **续训**：精确续训需先暂停并导出完整检查点。停止会释放 replay；正常预算结束保留可导出的检查点。推理模型与完整检查点用途不同。
+- **严格 CSP**：`script-src 'self'` 不放开动态执行。Board 初始化前导入官方 `pixi.js/unsafe-eval` 静态兼容模块，其名称不代表允许 CSP `unsafe-eval`；错误文案区分 CSP、图形上下文与其他异常。[PixiJS 官方说明](https://github.com/pixijs/pixijs/blob/dev/skills/pixijs-environments/SKILL.md#csp-compliant-setup)。
 
-所有模型与数据留在当前浏览器，不含账号、后端、遥测或外部模型下载。浏览器清理站点数据会删除 IndexedDB 存档，重要结果应导出备份。停止训练会释放 replay；要精确续训，请先暂停并导出完整检查点。达到正常预算上限后保留可导出的检查点。
+新建 8 × 8 DQN / GA 任务使用 v2 的 **12 维相对特征与即时碰撞过滤**：DQN 为 `12 → 64 → 64 → 3`，带距离奖励；GA 固定特征投影，进化 75 个输出系数。终止不 bootstrap，新预设也不对截断 bootstrap。训练、验证、测试种子分离，冻结评估不更新权重；旧模型 / 检查点按原编码恢复。历史设计中的全棋盘编码不代表当前默认配置。真实学习对照、失败试验及预算见[训练有效性报告](docs/training-effectiveness.md)。
 
-## 训练与比较边界
+## 验证范围
 
-8×8 新训练使用 12 维相对特征与即时碰撞过滤。DQN 为 12→64→64→3，使用真实 Huber loss / Adam 和距离奖励；GA 固定特征投影，进化 75 个输出系数。终止不 bootstrap，新预设也不对截断 bootstrap。训练、验证和测试种子分离，冻结评估不更新权重。旧版全盘模型和检查点仍按原编码恢复。
+| 证据 | 范围与限制 |
+| --- | --- |
+| [品牌页验收](docs/brand-landing-validation.md) | `e9fdaf1` 本地 Windows：typecheck、lint、132 项单元测试、生产构建通过；品牌 / 首访 / Lab 共 24 项桌面与手机尺寸 Chromium 用例通过，媒体生命周期又单独复验 |
+| [首访与 CSP 验收](docs/welcome-demo-validation.md) | 生产响应头下初始化、首次自动演示、回访、手动控制、675 步终局与哈希；后台测试为可见性事件合同，非全部操作系统场景 |
+| [正式站点截图核验](docs/deployed-site-tour.md) | 本次浏览 HTTPS 品牌 / Lab / 竞技 / 训练 / A* 课堂，执行短训练与搜索单步；仅文档更新，未重跑全套应用测试或全部学习算法 |
+| [GitHub Actions](https://github.com/ider-zh/snake-agent-lab/actions) | 云端状态以对应提交的实际 run 为准；旧 `de71d2d` 桌面实时通关曾超时，`e9fdaf1` 已拆分测试并调整预算。本页不把本地通过等同于云端全绿 |
 
-UI 的轻量预设为了缩短反馈周期，与设计草案中的研究默认参数不同；完整配置写入模型/检查点。短训练不保证学会，更不能据此宣称胜过搜索。搜索的尾部可达/空间检查是启发式。墙钟决策上限可能受设备负载影响；仅节点预算模式用于严格动作重现。
+历史 HP 验收、性能与策略测评仅适用于各报告标明的版本、设备与协议。手机尺寸 Chromium 检查不等于所有实体移动设备或所有浏览器覆盖。
 
-## 部署到 Cloudflare Pages
+## 部署
 
-这是纯静态 Vite 应用：构建 `npm run build`，输出 `dist`，Node 24。仓库提供 `_headers`、`_redirects` 和 `wrangler.jsonc`。没有云函数、数据库、token 或费用依赖。详见 [部署说明](docs/deployment.md)。部署由维护者后续执行。
+正式站点：[snake-agent-lab.9992099.xyz](https://snake-agent-lab.9992099.xyz/)。维护者已配置 GitHub main 的 Auto Deploy；后续推送可能自动发布，是否完成以部署平台为准。
 
-## 项目文档
+这是纯静态 Vite 应用：构建命令 `npm run build`，输出目录 `dist`，Node 24.15+（24.x）。仓库提供 `public/_headers`、`public/_redirects` 与 `wrangler.jsonc`，应用无需云函数、数据库或 API token。工作区使用 hash 路由，`/#/lab`、`/#/arena`、`/#/lessons/astar` 等可直接访问和刷新。托管服务的套餐与费用由维护者选择。详见[部署说明](docs/deployment.md)。
 
-- [实现与验证记录 / HP 交接](docs/implementation.md)
-- [完整设计与分阶段验收](docs/design-plan.md)
-- [参考项目与技术依据](docs/references.md)
-- [维护约定](AGENTS.md)
+## 深入阅读
 
-## Related Work
+| 主题 | 文档 |
+| --- | --- |
+| 总体设计与维护 | [设计计划](docs/design-plan.md) · [实现记录](docs/implementation.md) · [维护约定](AGENTS.md) |
+| 策略证据 | [安全捷径](docs/efficient-completion.md) · [尾部绕行：240 局与限制](docs/tail-detour.md) · [Dijkstra / Beam / MCTS 等规划策略](docs/planning-policies.md) |
+| 训练证据 | [训练有效性与兼容性](docs/training-effectiveness.md) · [Q-learning / SARSA](docs/tabular-learning.md) · [PPO / 行为克隆](docs/policy-learning.md) |
+| 历史验收 | [HP 验证](docs/hp-validation.md) · [视觉审查](docs/visual-review.md) · [最终交接](docs/final-handoff.md) · [用户反馈修复](docs/repair-report.md) |
+| 教学与展示 | [算法教学](docs/algorithm-lessons.md) · [课堂改版及代码验收](docs/classroom-redesign.md) · [品牌页与媒体出处](docs/brand-landing-validation.md) |
 
-- [dmitryshelomanov/snake](https://github.com/dmitryshelomanov/snake)：TypeScript/React 贪吃蛇，提供 BFS、DFS、Dijkstra、Greedy、A* 及搜索可视化，可借鉴策略接口与手动/AI 共用规则的组织方式。
-- [gargimahale/Snake](https://github.com/gargimahale/Snake)：Python/Tkinter 项目，提供 Path、Greedy、Hamilton 与 DQN 路线，可借鉴安全检查、实验模式与训练/评估划分。
+## 参考与许可
 
-引用与研究记录见[参考文档](docs/references.md)。两个指定仓库在本次核查中均未见 LICENSE；本次只借鉴设计理念，未复制源码或沿用其成绩。本仓库许可证由维护者后续决定。
+- [dmitryshelomanov/snake](https://github.com/dmitryshelomanov/snake)：TypeScript / React 贪吃蛇及搜索可视化，借鉴策略接口与手动 / AI 共用规则的组织思路。
+- [gargimahale/Snake](https://github.com/gargimahale/Snake)：Python / Tkinter 项目，借鉴安全检查、实验模式与训练 / 评估划分。
 
-## 算法教学
-
-「策略课堂」包含 21 课中文原理、真实搜索单步、Python/JavaScript 可运行构件、边界与练习。标准 A* 等规划无需训练，DQN/GA 需学习参数。实现与逐项验收见 [教学记录](docs/algorithm-lessons.md)。
-
-## 高效填满策略（2026-10-06）
-
-新增有条件 Hamiltonian 安全捷径；同协议独立 30 种子中，8/12/20 三种尺寸充足预算均 30/30 填满，环境步数较纯环减少约 36%/44%/47%。20×20 的 5000 步预算仍全部截断，不宣称任意图必胜。详见 [通关效率报告](docs/efficient-completion.md)。
-
-Optional A* + bounded tail detours, with all 240 comparison episodes and limitations: [tail strategy report](docs/tail-detour.md).
-
-Dijkstra, greedy best-first, bounded Beam and UCT MCTS are available as comparison policies: [implementation and retained failures](docs/planning-policies.md).
-
-Real Q-learning/SARSA Worker training, exact checkpoints and independent before/after results: [tabular learning](docs/tabular-learning.md).
-
-PPO-Clip and behavior cloning now train actual independent linear policies with Adam, resumable rollout/minibatch state and frozen evaluation: [policy learning evidence and limitations](docs/policy-learning.md).
-
-Final scope, complete HP browser evidence, exclusions and local run instructions: [HP handoff](docs/final-handoff.md).
-
-## HP 用户反馈修复（2026-10-06）
-
-训练 Worker 启动恢复与错误详情、四路竞技策略选择及模型存档、策略课堂命名和文案调整、搜索策略动态身体路径恢复、Beam/MCTS 进食后出口检查已实现。本轮前后对照、真实浏览器验证与适用边界见 [修复验收记录](docs/repair-report.md)。先前性能与策略评测属于其记录的历史版本。
-
-## 策略课堂阅读改版（2026-10-07）
-
-课堂改为三组直接点击目录、独立课程文章、前后课导航及可收藏的课程地址。保留全部 21 课交互和 42 份双语代码；加入键盘语言标签、高亮和原文复制，移除课堂示例下载。布局、验证与截图见 [课堂改版验收](docs/classroom-redesign.md)。
-
-全部 21 课已扩写为面向初学者的完整正文，含术语、具体手算、代码映射、失败诊断、练习详解和每课来源；合计约 2.56 万中文字符、34 个来源链接。125 项单元测试、最终 10 项桌面/手机浏览器回归、42 份双语程序运行和 17 项教材数值核对通过，完整证据见 [课堂改版与内容验收](docs/classroom-redesign.md)。
-
-
-## 首次访问演示与 CSP（2026-10-15）
-
-首次访问实验区 #/lab 会自动运行 Hamiltonian 安全捷径：8 × 8、无障碍、沿环初态、种子 42、20 步/秒、5000 步及 500 步无食物预算。真实引擎验证结果为 675 步、61 食物、64 格填满，终局哈希 19e52bf6；约 34 秒完成后保留成功状态，不自动重播。这是该配置的验证结果，不代表所有模式必胜或算法的绝对排名。
-
-暂停、重开、手动、策略与规则切换保留用户控制。回访读取 snake-lab-play-v1 中经过校验的内置策略、规则和显示偏好，始终暂停。#/play 及课堂等指定深链不自动演示；减少动态效果时首次演示也暂停，运行中启用该偏好会暂停。切到后台立即暂停，回到前台需手动继续。存储不可用时页面仍可使用，但无法跨访问保留偏好。
-
-Board 在初始化前导入 pixi.js/unsafe-eval（名字虽包含 unsafe-eval，实际替换动态代码生成），保持 public/_headers 原有 script-src 'self'。初始化错误分别解释 CSP 兼容问题、图形上下文问题和其他异常。来源：[PixiJS 官方 CSP 说明](https://github.com/pixijs/pixijs/blob/dev/skills/pixijs-environments/SKILL.md#csp-compliant-setup)。
-
-Playwright 的生产预览现在从 public/_headers 读取全局响应头，默认独占 4187 端口；不会复用未知服务。运行 npm run build 后用 npm run test:e2e -- tests/welcome.spec.ts 验证首次自动运行、生产 CSP、完整填满与回放、手动控制、回访和 reduced motion。详见 [验收报告](docs/welcome-demo-validation.md)。
-
-
-## 品牌落地页（2026-10-15）
-
-根入口现在是可滚动品牌页，首屏运行真实 Hamiltonian 策略，并提供策略比较、项目实录视频、课堂预览及各工作区入口。进入实验室使用 `#/lab`；旧 `#/play`、`#/arena`、`#/lessons/...` 等深链继续可用，刷新不需要服务器重写子路径。品牌页不修改实验区偏好。
-
-两段自录 WebM 共 722,113 字节，具有 poster、可见性加载/暂停、手动暂停、错误回退和 reduced motion 静态替代。实验区按需加载。实现、媒体出处、测试和截图见 [品牌页验收报告](docs/brand-landing-validation.md)。
+研究来源见[参考文档](docs/references.md)。历史核查时上述两个仓库均未见 LICENSE；本项目仅借鉴设计理念，未复制其源码或沿用其成绩。**本仓库许可证尚待维护者决定**，不因源码公开而推定额外授权。
