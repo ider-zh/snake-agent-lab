@@ -1,11 +1,11 @@
 import { test, expect } from '@playwright/test';
 import { mkdirSync, writeFileSync } from 'node:fs';
 
-test('first visit runs a complete demo under production CSP, with deterministic replay', async ({ page }) => {
+test('first lab visit autostarts under production CSP and preserves pause and restart', async ({ page }) => {
   const errors: string[] = [];
   page.on('pageerror', error => errors.push(error.message));
   page.on('console', message => { if (message.type() === 'error') errors.push(message.text()); });
-  const response = await page.goto('/');
+  const response = await page.goto('/#/lab');
   const csp = response!.headers()['content-security-policy'];
   expect(csp).toContain("script-src 'self';");
   expect(csp).not.toContain("'unsafe-eval'");
@@ -27,8 +27,26 @@ test('first visit runs a complete demo under production CSP, with deterministic 
   await expect(board).toHaveAttribute('aria-label', /步数 0$/);
   await page.waitForTimeout(150);
   await expect(board).toHaveAttribute('aria-label', /步数 0$/);
-  await page.getByRole('button', { name: '开始运行', exact: true }).click();
-  await expect(page.locator('.end-banner')).toContainText('填满棋盘，胜利！', { timeout: 85000 });
+  expect(errors).toEqual([]);
+});
+
+test('long-running real demo fills the board and verifies the exact replay hash', async ({ page }) => {
+  // Published CI reached step 534/675 before the old 90s whole-test limit.
+  // Software WebGL renderers can delay real-time ticks; this is not an engine step budget.
+  test.setTimeout(240000);
+  const started = Date.now();
+  const errors: string[] = [];
+  page.on('pageerror', error => errors.push(error.message));
+  const response = await page.goto('/#/lab');
+  const csp = response!.headers()['content-security-policy'];
+  expect(csp).toContain("script-src 'self';");
+  expect(csp).not.toContain("'unsafe-eval'");
+  const board = page.locator('.board-canvas');
+  await expect(board).not.toHaveAttribute('aria-label', /步数 0$/);
+  const first = await board.getAttribute('aria-label');
+  await expect(board).not.toHaveAttribute('aria-label', first!, {timeout:15000});
+  mkdirSync('docs/qa/welcome', { recursive: true });
+  await expect(page.locator('.end-banner')).toContainText('填满棋盘，胜利！', { timeout: 210000 });
   await expect(board).toHaveAttribute('aria-label', /得分 61，步数 675$/);
   const terminal = await board.getAttribute('aria-label');
   await page.waitForTimeout(250);
@@ -42,11 +60,11 @@ test('first visit runs a complete demo under production CSP, with deterministic 
   await expect(page.locator('.board-canvas')).toHaveAttribute('aria-label', new RegExp(`得分 61，步数 ${steps}`));
   await expect(page.locator('.hash-value')).toHaveText('19e52bf6');
   expect(errors).toEqual([]);
-  writeFileSync(`docs/qa/welcome/${test.info().project.name}.json`, JSON.stringify({ project: test.info().project.name, viewport: page.viewportSize(), csp, steps: Number(steps), score: 61, filledCells: 64, replayHash: '19e52bf6', consoleErrors: errors }, null, 2));
+  writeFileSync(`docs/qa/welcome/${test.info().project.name}.json`, JSON.stringify({ project: test.info().project.name, viewport: page.viewportSize(), elapsedMs: Date.now()-started, csp, steps: Number(steps), score: 61, filledCells: 64, replayHash: '19e52bf6', consoleErrors: errors }, null, 2));
 });
 
 test('switching strategy, returning preferences and explicit routes keep user control', async ({ page }) => {
-  await page.goto('/');
+  await page.goto('/#/lab');
   await page.getByLabel('决策策略').selectOption('bfs');
   await expect(page.getByRole('button', { name: '开始运行', exact: true })).toBeVisible();
   await page.reload();
@@ -62,14 +80,14 @@ test('switching strategy, returning preferences and explicit routes keep user co
 
 test('reduced motion starts the demonstration paused', async ({ page }) => {
   await page.emulateMedia({ reducedMotion: 'reduce' });
-  await page.goto('/');
+  await page.goto('/#/lab');
   await expect(page.getByLabel('决策策略')).toHaveValue('hamiltonian-shortcut');
   await expect(page.getByRole('button', { name: '开始运行', exact: true })).toBeVisible();
   await expect(page.locator('.board-canvas')).toHaveAttribute('aria-label', /步数 0$/);
 });
 
 test('visibility events pause the demo until explicit resume', async ({ page }) => {
-  await page.goto('/');
+  await page.goto('/#/lab');
   const board = page.locator('.board-canvas');
   await expect(board).not.toHaveAttribute('aria-label', /步数 0$/);
   // Dispatch the browser visibility contract deterministically; exact timer counts

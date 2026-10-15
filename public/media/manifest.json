@@ -1,0 +1,29 @@
+{
+  "recordedOn": "2026-10-15",
+  "baseCommit": "de71d2d1c764a60a169cb10087cd25936c078d18",
+  "method": "Chromium MediaRecorder captureStream(20) from the real Pixi canvas; 700000 bps target; original project footage, no external stock assets",
+  "media": [
+    {
+      "file": "arena.webm",
+      "poster": "arena-poster.png",
+      "width": 838,
+      "height": 890,
+      "durationSeconds": 11.76,
+      "source": "SnakeLab #/arena; A*, BFS, safe-greedy, legal-random; default 12x12, seed 42; 30 steps/s",
+      "codec": "VP9 / WebM",
+      "bytes": 210358,
+      "sha256": "237818b23cc15b018f822238a51a82d6894281116741f72ae6ab1453b9f2e608"
+    },
+    {
+      "file": "shortcut.webm",
+      "poster": "shortcut-poster.png",
+      "width": 720,
+      "height": 720,
+      "durationSeconds": 23.87,
+      "source": "SnakeLab #/play; Hamiltonian shortcut; 8x8 cycle, seed 42; 30 steps/s",
+      "codec": "VP9 / WebM",
+      "bytes": 511755,
+      "sha256": "8bd4b81250f7b27412eaa24f8b7057088363db143cfe2c6b73c58cb0b482db83"
+    }
+  ]
+}

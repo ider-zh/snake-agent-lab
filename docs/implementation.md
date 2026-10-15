@@ -84,10 +84,17 @@ The completed implementation scope and final full-project/browser results are co
 
 ## 首次访问演示与 CSP（2026-10-15）
 
-无 hash / 查询参数的首次首页访问会自动运行 Hamiltonian 安全捷径：8 × 8、无障碍、沿环初态、种子 42、20 步/秒、5000 步及 500 步无食物预算。真实引擎验证结果为 675 步、61 食物、64 格填满，终局哈希 19e52bf6；约 34 秒完成后保留成功状态，不自动重播。这是该配置的验证结果，不代表所有模式必胜或算法的绝对排名。
+首次访问实验区 #/lab 会自动运行 Hamiltonian 安全捷径：8 × 8、无障碍、沿环初态、种子 42、20 步/秒、5000 步及 500 步无食物预算。真实引擎验证结果为 675 步、61 食物、64 格填满，终局哈希 19e52bf6；约 34 秒完成后保留成功状态，不自动重播。这是该配置的验证结果，不代表所有模式必胜或算法的绝对排名。
 
 暂停、重开、手动、策略与规则切换保留用户控制。回访读取 snake-lab-play-v1 中经过校验的内置策略、规则和显示偏好，始终暂停。#/play 及课堂等指定深链不自动演示；减少动态效果时首次演示也暂停，运行中启用该偏好会暂停。切到后台立即暂停，回到前台需手动继续。存储不可用时页面仍可使用，但无法跨访问保留偏好。
 
 Board 在初始化前导入 pixi.js/unsafe-eval（名字虽包含 unsafe-eval，实际替换动态代码生成），保持 public/_headers 原有 script-src 'self'。初始化错误分别解释 CSP 兼容问题、图形上下文问题和其他异常。来源：[PixiJS 官方 CSP 说明](https://github.com/pixijs/pixijs/blob/dev/skills/pixijs-environments/SKILL.md#csp-compliant-setup)。
 
 Playwright 的生产预览现在从 public/_headers 读取全局响应头，默认独占 4187 端口；不会复用未知服务。运行 npm run build 后用 npm run test:e2e -- tests/welcome.spec.ts 验证首次自动运行、生产 CSP、完整填满与回放、手动控制、回访和 reduced motion。详见 [验收报告](welcome-demo-validation.md)。
+
+
+## 品牌落地页（2026-10-15）
+
+根入口现在是可滚动品牌页，首屏运行真实 Hamiltonian 策略，并提供策略比较、项目实录视频、课堂预览及各工作区入口。进入实验室使用 `#/lab`；旧 `#/play`、`#/arena`、`#/lessons/...` 等深链继续可用，刷新不需要服务器重写子路径。品牌页不修改实验区偏好。
+
+两段自录 WebM 共 722,113 字节，具有 poster、可见性加载/暂停、手动暂停、错误回退和 reduced motion 静态替代。实验区按需加载。实现、媒体出处、测试和截图见 [品牌页验收报告](brand-landing-validation.md)。

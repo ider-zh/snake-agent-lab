@@ -3,7 +3,7 @@ import { act, cleanup, fireEvent, render, screen, waitFor, within } from '@testi
 import userEvent from '@testing-library/user-event';
 import { IDBFactory } from 'fake-indexeddb';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
-import App from './App';
+import App from './Dashboard';
 import { StrictMode } from 'react';
 import { DEMO, PREFERENCES_KEY } from './welcome';
 import { GameLab } from './GameLab';

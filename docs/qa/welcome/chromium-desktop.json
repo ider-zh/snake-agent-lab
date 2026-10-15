@@ -4,6 +4,7 @@
     "width": 1440,
     "height": 1000
   },
+  "elapsedMs": 58511,
   "csp": "default-src 'self'; script-src 'self'; worker-src 'self' blob:; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; connect-src 'self'; font-src 'self'; object-src 'none'; base-uri 'self'; frame-ancestors 'none'",
   "steps": 675,
   "score": 61,

@@ -202,3 +202,7 @@ Real PPO-Clip/GAE/Adam and supervised behavior cloning are implemented with a cl
 
 ## 2026-10-15 首页演示更新
 已实现首次首页自动运行固定配置的 Hamiltonian 安全捷径，完成后停留；回访、深链和 reduced motion 保持用户控制。生产 CSP 兼容采用官方静态模块，不放宽响应头。实现与验收见 [演示验收报告](welcome-demo-validation.md)。
+
+
+## 品牌入口与独立实验区
+根页采用暗色编辑式落地页：实时棋盘、大字首屏、策略交互、双实录影像、课堂与开源叙事。`#/lab` 承接首次演示，其他既有深链保留。动态内容遵循可见性与 reduced motion；真实视频均来自项目本身。详见 [验收记录](brand-landing-validation.md)。
