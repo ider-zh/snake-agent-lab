@@ -1,0 +1,166 @@
+{
+  "protocol": {
+    "seeds": "31001–31030",
+    "initialization": "standard",
+    "initialLength": 3,
+    "walls": true,
+    "foodCount": 1,
+    "maxSteps": 5000,
+    "maxNoFood": 500,
+    "maxNodes": 10000,
+    "maxMs": "Infinity; research harness only",
+    "episodeWallMs": 120000,
+    "maxDetours": 16
+  },
+  "groups": [
+    {
+      "size": 8,
+      "obstacles": false,
+      "policy": "astar",
+      "episodes": 30,
+      "meanFood": 27.2,
+      "meanFill": 0.471875,
+      "filled": 0,
+      "reasons": {
+        "no-progress": 30
+      },
+      "successfulSteps": {
+        "mean": null,
+        "median": null,
+        "p95": null
+      },
+      "meanDecisionP95Ms": 0.10318333333333385
+    },
+    {
+      "size": 8,
+      "obstacles": false,
+      "policy": "tail-safe",
+      "episodes": 30,
+      "meanFood": 53.43333333333333,
+      "meanFill": 0.8817708333333333,
+      "filled": 8,
+      "reasons": {
+        "no-progress": 22,
+        "filled": 8
+      },
+      "successfulSteps": {
+        "mean": 1001.125,
+        "median": 895.5,
+        "p95": 1352
+      },
+      "meanDecisionP95Ms": 0.16806000000005952
+    },
+    {
+      "size": 8,
+      "obstacles": true,
+      "policy": "astar",
+      "episodes": 30,
+      "meanFood": 24.833333333333332,
+      "meanFill": 0.4638888888888888,
+      "filled": 0,
+      "reasons": {
+        "no-progress": 30
+      },
+      "successfulSteps": {
+        "mean": null,
+        "median": null,
+        "p95": null
+      },
+      "meanDecisionP95Ms": 0.0801599999999477
+    },
+    {
+      "size": 8,
+      "obstacles": true,
+      "policy": "tail-safe",
+      "episodes": 30,
+      "meanFood": 41.666666666666664,
+      "meanFill": 0.7444444444444444,
+      "filled": 3,
+      "reasons": {
+        "no-progress": 27,
+        "filled": 3
+      },
+      "successfulSteps": {
+        "mean": 978.6666666666666,
+        "median": 1058,
+        "p95": 1065
+      },
+      "meanDecisionP95Ms": 0.14392000000016197
+    },
+    {
+      "size": 12,
+      "obstacles": false,
+      "policy": "astar",
+      "episodes": 30,
+      "meanFood": 58.63333333333333,
+      "meanFill": 0.4280092592592592,
+      "filled": 0,
+      "reasons": {
+        "no-progress": 30
+      },
+      "successfulSteps": {
+        "mean": null,
+        "median": null,
+        "p95": null
+      },
+      "meanDecisionP95Ms": 0.15362999999979365
+    },
+    {
+      "size": 12,
+      "obstacles": false,
+      "policy": "tail-safe",
+      "episodes": 30,
+      "meanFood": 108.9,
+      "meanFill": 0.7770833333333333,
+      "filled": 1,
+      "reasons": {
+        "no-progress": 22,
+        "filled": 1,
+        "step-limit": 7
+      },
+      "successfulSteps": {
+        "mean": 4980,
+        "median": 4980,
+        "p95": 4980
+      },
+      "meanDecisionP95Ms": 0.44085333333344656
+    },
+    {
+      "size": 12,
+      "obstacles": true,
+      "policy": "astar",
+      "episodes": 30,
+      "meanFood": 58.4,
+      "meanFill": 0.43857142857142856,
+      "filled": 0,
+      "reasons": {
+        "no-progress": 30
+      },
+      "successfulSteps": {
+        "mean": null,
+        "median": null,
+        "p95": null
+      },
+      "meanDecisionP95Ms": 0.17242999999992512
+    },
+    {
+      "size": 12,
+      "obstacles": true,
+      "policy": "tail-safe",
+      "episodes": 30,
+      "meanFood": 85,
+      "meanFill": 0.6285714285714287,
+      "filled": 0,
+      "reasons": {
+        "no-progress": 29,
+        "step-limit": 1
+      },
+      "successfulSteps": {
+        "mean": null,
+        "median": null,
+        "p95": null
+      },
+      "meanDecisionP95Ms": 0.42515333333431043
+    }
+  ]
+}

@@ -1,0 +1,546 @@
+{
+  "stats": {
+    "startTime": "2026-10-06T07:08:52.814Z",
+    "duration": 966261.933,
+    "expected": 50,
+    "skipped": 0,
+    "unexpected": 0,
+    "flaky": 0
+  },
+  "tests": [
+    {
+      "file": "board-layout.spec.ts",
+      "title": "arena draws larger complete boards and resizes through mobile focus without restarting",
+      "project": "chromium-desktop",
+      "status": "expected",
+      "result": "passed",
+      "durationMs": 17835,
+      "retries": 0,
+      "errors": []
+    },
+    {
+      "file": "board-layout.spec.ts",
+      "title": "arena draws larger complete boards and resizes through mobile focus without restarting",
+      "project": "chromium-mobile",
+      "status": "expected",
+      "result": "passed",
+      "durationMs": 50802,
+      "retries": 0,
+      "errors": []
+    },
+    {
+      "file": "hp-qa.spec.ts",
+      "title": "keyboard queue, repeated pause, mode changes and saved replay survive reload",
+      "project": "chromium-desktop",
+      "status": "expected",
+      "result": "passed",
+      "durationMs": 20059,
+      "retries": 0,
+      "errors": []
+    },
+    {
+      "file": "hp-qa.spec.ts",
+      "title": "batch worker pauses, resumes, cancels and saves a partial result",
+      "project": "chromium-desktop",
+      "status": "expected",
+      "result": "passed",
+      "durationMs": 3940,
+      "retries": 0,
+      "errors": []
+    },
+    {
+      "file": "hp-qa.spec.ts",
+      "title": "dqn real worker checkpoint roundtrip, invalid model and local restore",
+      "project": "chromium-desktop",
+      "status": "expected",
+      "result": "passed",
+      "durationMs": 7766,
+      "retries": 0,
+      "errors": []
+    },
+    {
+      "file": "hp-qa.spec.ts",
+      "title": "ga real worker checkpoint roundtrip, invalid model and local restore",
+      "project": "chromium-desktop",
+      "status": "expected",
+      "result": "passed",
+      "durationMs": 7421,
+      "retries": 0,
+      "errors": []
+    },
+    {
+      "file": "hp-qa.spec.ts",
+      "title": "tablet navigation retains accessible names",
+      "project": "chromium-desktop",
+      "status": "expected",
+      "result": "passed",
+      "durationMs": 2346,
+      "retries": 0,
+      "errors": []
+    },
+    {
+      "file": "hp-qa.spec.ts",
+      "title": "four-board input and frame timing on this device",
+      "project": "chromium-desktop",
+      "status": "expected",
+      "result": "passed",
+      "durationMs": 36795,
+      "retries": 0,
+      "errors": []
+    },
+    {
+      "file": "hp-qa.spec.ts",
+      "title": "keyboard queue, repeated pause, mode changes and saved replay survive reload",
+      "project": "chromium-mobile",
+      "status": "expected",
+      "result": "passed",
+      "durationMs": 16443,
+      "retries": 0,
+      "errors": []
+    },
+    {
+      "file": "hp-qa.spec.ts",
+      "title": "batch worker pauses, resumes, cancels and saves a partial result",
+      "project": "chromium-mobile",
+      "status": "expected",
+      "result": "passed",
+      "durationMs": 4797,
+      "retries": 0,
+      "errors": []
+    },
+    {
+      "file": "hp-qa.spec.ts",
+      "title": "dqn real worker checkpoint roundtrip, invalid model and local restore",
+      "project": "chromium-mobile",
+      "status": "expected",
+      "result": "passed",
+      "durationMs": 9644,
+      "retries": 0,
+      "errors": []
+    },
+    {
+      "file": "hp-qa.spec.ts",
+      "title": "ga real worker checkpoint roundtrip, invalid model and local restore",
+      "project": "chromium-mobile",
+      "status": "expected",
+      "result": "passed",
+      "durationMs": 8687,
+      "retries": 0,
+      "errors": []
+    },
+    {
+      "file": "hp-qa.spec.ts",
+      "title": "tablet navigation retains accessible names",
+      "project": "chromium-mobile",
+      "status": "expected",
+      "result": "passed",
+      "durationMs": 5070,
+      "retries": 0,
+      "errors": []
+    },
+    {
+      "file": "hp-qa.spec.ts",
+      "title": "four-board input and frame timing on this device",
+      "project": "chromium-mobile",
+      "status": "expected",
+      "result": "passed",
+      "durationMs": 27752,
+      "retries": 0,
+      "errors": []
+    },
+    {
+      "file": "lab.spec.ts",
+      "title": "manual controls, deterministic restart, responsive canvas and replay",
+      "project": "chromium-desktop",
+      "status": "expected",
+      "result": "passed",
+      "durationMs": 7821,
+      "retries": 0,
+      "errors": []
+    },
+    {
+      "file": "lab.spec.ts",
+      "title": "AI search, four-board arena, batch export, invalid import guard",
+      "project": "chromium-desktop",
+      "status": "expected",
+      "result": "passed",
+      "durationMs": 7662,
+      "retries": 0,
+      "errors": []
+    },
+    {
+      "file": "lab.spec.ts",
+      "title": "real DQN training, checkpoint export, frozen evaluation and GA completion",
+      "project": "chromium-desktop",
+      "status": "expected",
+      "result": "passed",
+      "durationMs": 15459,
+      "retries": 0,
+      "errors": []
+    },
+    {
+      "file": "lab.spec.ts",
+      "title": "manual controls, deterministic restart, responsive canvas and replay",
+      "project": "chromium-mobile",
+      "status": "expected",
+      "result": "passed",
+      "durationMs": 7115,
+      "retries": 0,
+      "errors": []
+    },
+    {
+      "file": "lab.spec.ts",
+      "title": "AI search, four-board arena, batch export, invalid import guard",
+      "project": "chromium-mobile",
+      "status": "expected",
+      "result": "passed",
+      "durationMs": 8467,
+      "retries": 0,
+      "errors": []
+    },
+    {
+      "file": "lab.spec.ts",
+      "title": "real DQN training, checkpoint export, frozen evaluation and GA completion",
+      "project": "chromium-mobile",
+      "status": "expected",
+      "result": "passed",
+      "durationMs": 17252,
+      "retries": 0,
+      "errors": []
+    },
+    {
+      "file": "late-game.spec.ts",
+      "title": "late-game arena uses production budgets and exports a valid long replay",
+      "project": "chromium-desktop",
+      "status": "expected",
+      "result": "passed",
+      "durationMs": 83943,
+      "retries": 0,
+      "errors": []
+    },
+    {
+      "file": "late-game.spec.ts",
+      "title": "late-game arena uses production budgets and exports a valid long replay",
+      "project": "chromium-mobile",
+      "status": "expected",
+      "result": "passed",
+      "durationMs": 31134,
+      "retries": 0,
+      "errors": []
+    },
+    {
+      "file": "lessons.spec.ts",
+      "title": "lessons use real frozen search, explicit moves and accessible bilingual code",
+      "project": "chromium-desktop",
+      "status": "expected",
+      "result": "passed",
+      "durationMs": 46548,
+      "retries": 0,
+      "errors": []
+    },
+    {
+      "file": "lessons.spec.ts",
+      "title": "lessons use real frozen search, explicit moves and accessible bilingual code",
+      "project": "chromium-mobile",
+      "status": "expected",
+      "result": "passed",
+      "durationMs": 57282,
+      "retries": 0,
+      "errors": []
+    },
+    {
+      "file": "planning.spec.ts",
+      "title": "four planning policies execute, replay and display real search statistics",
+      "project": "chromium-desktop",
+      "status": "expected",
+      "result": "passed",
+      "durationMs": 59371,
+      "retries": 0,
+      "errors": []
+    },
+    {
+      "file": "planning.spec.ts",
+      "title": "four planning policies execute, replay and display real search statistics",
+      "project": "chromium-mobile",
+      "status": "expected",
+      "result": "passed",
+      "durationMs": 63487,
+      "retries": 0,
+      "errors": []
+    },
+    {
+      "file": "policy.spec.ts",
+      "title": "ppo really trains in Worker, restores and evaluates a frozen student",
+      "project": "chromium-desktop",
+      "status": "expected",
+      "result": "passed",
+      "durationMs": 11082,
+      "retries": 0,
+      "errors": []
+    },
+    {
+      "file": "policy.spec.ts",
+      "title": "imitation really trains in Worker, restores and evaluates a frozen student",
+      "project": "chromium-desktop",
+      "status": "expected",
+      "result": "passed",
+      "durationMs": 13296,
+      "retries": 0,
+      "errors": []
+    },
+    {
+      "file": "policy.spec.ts",
+      "title": "ppo really trains in Worker, restores and evaluates a frozen student",
+      "project": "chromium-mobile",
+      "status": "expected",
+      "result": "passed",
+      "durationMs": 10433,
+      "retries": 0,
+      "errors": []
+    },
+    {
+      "file": "policy.spec.ts",
+      "title": "imitation really trains in Worker, restores and evaluates a frozen student",
+      "project": "chromium-mobile",
+      "status": "expected",
+      "result": "passed",
+      "durationMs": 13089,
+      "retries": 0,
+      "errors": []
+    },
+    {
+      "file": "repair.spec.ts",
+      "title": "worker bootstrap transient recovery and persistent failure have actionable errors",
+      "project": "chromium-desktop",
+      "status": "expected",
+      "result": "passed",
+      "durationMs": 14042,
+      "retries": 0,
+      "errors": []
+    },
+    {
+      "file": "repair.spec.ts",
+      "title": "q-learning repeated worker start, stop, restart and evaluation",
+      "project": "chromium-desktop",
+      "status": "expected",
+      "result": "passed",
+      "durationMs": 4227,
+      "retries": 0,
+      "errors": []
+    },
+    {
+      "file": "repair.spec.ts",
+      "title": "sarsa repeated worker start, stop, restart and evaluation",
+      "project": "chromium-desktop",
+      "status": "expected",
+      "result": "passed",
+      "durationMs": 3434,
+      "retries": 0,
+      "errors": []
+    },
+    {
+      "file": "repair.spec.ts",
+      "title": "ppo repeated worker start, stop, restart and evaluation",
+      "project": "chromium-desktop",
+      "status": "expected",
+      "result": "passed",
+      "durationMs": 3573,
+      "retries": 0,
+      "errors": []
+    },
+    {
+      "file": "repair.spec.ts",
+      "title": "imitation repeated worker start, stop, restart and evaluation",
+      "project": "chromium-desktop",
+      "status": "expected",
+      "result": "passed",
+      "durationMs": 3603,
+      "retries": 0,
+      "errors": []
+    },
+    {
+      "file": "repair.spec.ts",
+      "title": "learning worker bootstrap failure recovers and GA restarts repeatedly",
+      "project": "chromium-desktop",
+      "status": "expected",
+      "result": "passed",
+      "durationMs": 4908,
+      "retries": 0,
+      "errors": []
+    },
+    {
+      "file": "repair.spec.ts",
+      "title": "arena independently selects four strategies, resets fairly, and retains saved models",
+      "project": "chromium-desktop",
+      "status": "expected",
+      "result": "passed",
+      "durationMs": 22861,
+      "retries": 0,
+      "errors": []
+    },
+    {
+      "file": "repair.spec.ts",
+      "title": "worker bootstrap transient recovery and persistent failure have actionable errors",
+      "project": "chromium-mobile",
+      "status": "expected",
+      "result": "passed",
+      "durationMs": 12287,
+      "retries": 0,
+      "errors": []
+    },
+    {
+      "file": "repair.spec.ts",
+      "title": "q-learning repeated worker start, stop, restart and evaluation",
+      "project": "chromium-mobile",
+      "status": "expected",
+      "result": "passed",
+      "durationMs": 2924,
+      "retries": 0,
+      "errors": []
+    },
+    {
+      "file": "repair.spec.ts",
+      "title": "sarsa repeated worker start, stop, restart and evaluation",
+      "project": "chromium-mobile",
+      "status": "expected",
+      "result": "passed",
+      "durationMs": 2841,
+      "retries": 0,
+      "errors": []
+    },
+    {
+      "file": "repair.spec.ts",
+      "title": "ppo repeated worker start, stop, restart and evaluation",
+      "project": "chromium-mobile",
+      "status": "expected",
+      "result": "passed",
+      "durationMs": 2815,
+      "retries": 0,
+      "errors": []
+    },
+    {
+      "file": "repair.spec.ts",
+      "title": "imitation repeated worker start, stop, restart and evaluation",
+      "project": "chromium-mobile",
+      "status": "expected",
+      "result": "passed",
+      "durationMs": 2731,
+      "retries": 0,
+      "errors": []
+    },
+    {
+      "file": "repair.spec.ts",
+      "title": "learning worker bootstrap failure recovers and GA restarts repeatedly",
+      "project": "chromium-mobile",
+      "status": "expected",
+      "result": "passed",
+      "durationMs": 4375,
+      "retries": 0,
+      "errors": []
+    },
+    {
+      "file": "repair.spec.ts",
+      "title": "arena independently selects four strategies, resets fairly, and retains saved models",
+      "project": "chromium-mobile",
+      "status": "expected",
+      "result": "passed",
+      "durationMs": 14610,
+      "retries": 0,
+      "errors": []
+    },
+    {
+      "file": "shortcut.spec.ts",
+      "title": "shortcut strategy exposes honest budgets, supports replay and rejects obstacles",
+      "project": "chromium-desktop",
+      "status": "expected",
+      "result": "passed",
+      "durationMs": 68432,
+      "retries": 0,
+      "errors": []
+    },
+    {
+      "file": "shortcut.spec.ts",
+      "title": "shortcut strategy exposes honest budgets, supports replay and rejects obstacles",
+      "project": "chromium-mobile",
+      "status": "expected",
+      "result": "passed",
+      "durationMs": 61132,
+      "retries": 0,
+      "errors": []
+    },
+    {
+      "file": "tabular.spec.ts",
+      "title": "tabular Worker trains, resumes checkpoints, imports safely, evaluates and plays",
+      "project": "chromium-desktop",
+      "status": "expected",
+      "result": "passed",
+      "durationMs": 11063,
+      "retries": 0,
+      "errors": []
+    },
+    {
+      "file": "tabular.spec.ts",
+      "title": "tabular Worker trains, resumes checkpoints, imports safely, evaluates and plays",
+      "project": "chromium-mobile",
+      "status": "expected",
+      "result": "passed",
+      "durationMs": 9378,
+      "retries": 0,
+      "errors": []
+    },
+    {
+      "file": "tail.spec.ts",
+      "title": "tail detour can step, pause, replay and teach its limits",
+      "project": "chromium-desktop",
+      "status": "expected",
+      "result": "passed",
+      "durationMs": 17781,
+      "retries": 0,
+      "errors": []
+    },
+    {
+      "file": "tail.spec.ts",
+      "title": "tail detour can step, pause, replay and teach its limits",
+      "project": "chromium-mobile",
+      "status": "expected",
+      "result": "passed",
+      "durationMs": 14293,
+      "retries": 0,
+      "errors": []
+    }
+  ],
+  "performance": [
+    {
+      "project": "chromium-desktop",
+      "frameP95Ms": 99.90000000000146,
+      "inputToNextFrameP95Ms": 12,
+      "frameCount": 449,
+      "inputCount": 32,
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/153.0.8010.12 Safari/537.36",
+      "hardwareConcurrency": 8,
+      "renderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)",
+      "viewport": [
+        1440,
+        1000
+      ]
+    },
+    {
+      "project": "chromium-mobile",
+      "frameP95Ms": 66.60000000000218,
+      "inputToNextFrameP95Ms": 4.800000011920929,
+      "frameCount": 520,
+      "inputCount": 32,
+      "userAgent": "Mozilla/5.0 (iPhone; CPU iPhone OS 15_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/26.6 Mobile/15E148 Safari/604.1",
+      "hardwareConcurrency": 8,
+      "renderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)",
+      "viewport": [
+        390,
+        664
+      ]
+    }
+  ],
+  "limitations": [
+    "Chromium on HP Windows; phone viewport emulation, not a physical phone or Safari",
+    "SwiftShader software rendering; no hardware-GPU performance claim"
+  ]
+}

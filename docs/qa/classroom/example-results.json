@@ -1,0 +1,184 @@
+{
+  "node": "v24.15.0",
+  "python": "Python 3.13.12",
+  "results": [
+    {
+      "lesson": "ppo",
+      "matched": true,
+      "output": [
+        1.2,
+        -0.8
+      ]
+    },
+    {
+      "lesson": "imitation",
+      "matched": true,
+      "output": {
+        "before": 1.0986122886681098,
+        "after": 0.2231435513142097
+      }
+    },
+    {
+      "lesson": "q-learning",
+      "matched": true,
+      "output": 2.7
+    },
+    {
+      "lesson": "sarsa",
+      "matched": true,
+      "output": 1.98
+    },
+    {
+      "lesson": "beam",
+      "matched": true,
+      "output": [
+        {
+          "id": 1,
+          "value": 0.8
+        },
+        {
+          "id": 2,
+          "value": 0.6
+        }
+      ]
+    },
+    {
+      "lesson": "mcts",
+      "matched": true,
+      "output": 1
+    },
+    {
+      "lesson": "tail-safe",
+      "matched": true,
+      "output": [
+        36,
+        37,
+        29,
+        28
+      ]
+    },
+    {
+      "lesson": "hamiltonian-shortcut",
+      "matched": true,
+      "output": [
+        true,
+        false,
+        false
+      ]
+    },
+    {
+      "lesson": "random",
+      "matched": true,
+      "output": 2
+    },
+    {
+      "lesson": "legal-random",
+      "matched": true,
+      "output": 1
+    },
+    {
+      "lesson": "greedy",
+      "matched": true,
+      "output": 0
+    },
+    {
+      "lesson": "safe-greedy",
+      "matched": true,
+      "output": {
+        "space": 62,
+        "tailReachable": true
+      }
+    },
+    {
+      "lesson": "hamiltonian",
+      "matched": true,
+      "output": 12
+    },
+    {
+      "lesson": "encoding",
+      "matched": true,
+      "output": [
+        0,
+        0,
+        0,
+        -0.25,
+        -0.25,
+        0.5,
+        0.375,
+        0.375,
+        0.5,
+        0.375,
+        0.375,
+        0.047619047619047616
+      ]
+    },
+    {
+      "lesson": "dqn",
+      "matched": true,
+      "output": {
+        "double": 3.7,
+        "dqn": 6.4,
+        "terminal": 1
+      }
+    },
+    {
+      "lesson": "ga",
+      "matched": true,
+      "output": 374.9515
+    },
+    {
+      "lesson": "evaluation",
+      "matched": true,
+      "output": {
+        "mean": 4,
+        "median": 3,
+        "min": 0,
+        "max": 10
+      }
+    },
+    {
+      "lesson": "bfs",
+      "matched": true,
+      "output": [
+        36,
+        28,
+        20,
+        19,
+        18
+      ]
+    },
+    {
+      "lesson": "astar",
+      "matched": true,
+      "output": [
+        36,
+        28,
+        20,
+        19,
+        18
+      ]
+    },
+    {
+      "lesson": "dijkstra",
+      "matched": true,
+      "output": [
+        36,
+        28,
+        20,
+        19,
+        18
+      ]
+    },
+    {
+      "lesson": "best-first",
+      "matched": true,
+      "output": [
+        36,
+        28,
+        20,
+        19,
+        18
+      ]
+    }
+  ]
+}

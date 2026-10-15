@@ -9,7 +9,7 @@ export const DEFAULT_SEEDS: readonly number[] = Object.freeze(Array.from({length
 export const MAX_BATCH_EPISODES = 700;
 export const MAX_DECISION_SAMPLES = 512;
 export const WARMUP_DECISIONS = 5;
-const AGENTS: AgentId[] = ['random', 'legal-random', 'greedy', 'safe-greedy', 'bfs', 'astar', 'hamiltonian'];
+const AGENTS: AgentId[] = ['random', 'legal-random', 'greedy', 'safe-greedy', 'bfs', 'astar', 'hamiltonian', 'hamiltonian-shortcut', 'tail-safe', 'dijkstra', 'best-first', 'beam', 'mcts'];
 const delay = () => new Promise<void>(resolve => setTimeout(resolve, 0));
 const clock = () => globalThis.performance?.now() ?? Date.now();
 function integer(value: number, name: string, min: number, max: number): number {
@@ -32,9 +32,9 @@ export function createProtocols(spec: BatchSpec): ExperimentProtocol[] {
   integer(budget.maxNodes, 'Node budget', 1, 100000);
   if (!Number.isFinite(budget.maxMs) || budget.maxMs < .1 || budget.maxMs > 100) throw new Error('Decision time budget must be between 0.1 and 100 ms');
   const base = normalizeConfig({...spec.config, maxSteps: spec.config?.maxSteps ?? 5000, maxNoFood: spec.config?.maxNoFood ?? 500});
-  integer(base.maxSteps, 'Episode step budget', 1, 50000);
+  integer(base.maxSteps, 'Episode step budget', 1, 250000);
   integer(base.maxNoFood, 'No-food step budget', 1, 50000);
-  const groups = new Set(spec.agents.map(id => id === 'hamiltonian' ? 'cycle' as const : base.initialization));
+  const groups = new Set(spec.agents.map(id => id.startsWith('hamiltonian') ? 'cycle' as const : base.initialization));
   return [...groups].map(initializationGroup => {
     const config = normalizeConfig({...base, initialization: initializationGroup});
     if (initializationGroup === 'cycle' && (config.obstacles.length || config.width < 2 || config.height < 2 || (config.width % 2 && config.height % 2))) throw new Error('Cycle initialization requires an obstacle-free rectangle with at least one even side');
@@ -76,7 +76,7 @@ export async function runBatch(spec: BatchSpec, options: BatchOptions = {}): Pro
     await checkpoint();
     if (options.signal?.aborted) { status = 'cancelled'; break outer; }
     if (wallTime() >= wallLimit) { status = 'wall-clock'; break outer; }
-    const group = agentId === 'hamiltonian' ? 'cycle' : baseInitialization;
+    const group = agentId.startsWith('hamiltonian') ? 'cycle' : baseInitialization;
     const protocol = protocols.find(item => item.initializationGroup === group)!;
     const game = new Game(protocol.config, seed);
     const policySeed = (seed ^ 0x9e3779b9) >>> 0;

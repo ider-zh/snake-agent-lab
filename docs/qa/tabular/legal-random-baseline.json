@@ -1,0 +1,176 @@
+{
+  "policy": "legal-random",
+  "strategySeed": "same integer as environment seed, separate RNG instance",
+  "game": {
+    "width": 8,
+    "height": 8,
+    "initialLength": 3,
+    "initialization": "standard",
+    "obstacles": [],
+    "maxSteps": 1000,
+    "maxNoFood": 200
+  },
+  "episodes": [
+    {
+      "seed": 42001,
+      "score": 2,
+      "steps": 140,
+      "reason": "wall",
+      "fill": 0.078125,
+      "hash": "139e7755"
+    },
+    {
+      "seed": 42002,
+      "score": 4,
+      "steps": 232,
+      "reason": "wall",
+      "fill": 0.109375,
+      "hash": "f784fe70"
+    },
+    {
+      "seed": 42003,
+      "score": 4,
+      "steps": 329,
+      "reason": "wall",
+      "fill": 0.109375,
+      "hash": "496bc304"
+    },
+    {
+      "seed": 42004,
+      "score": 6,
+      "steps": 184,
+      "reason": "wall",
+      "fill": 0.140625,
+      "hash": "dc8ca218"
+    },
+    {
+      "seed": 42005,
+      "score": 3,
+      "steps": 424,
+      "reason": "wall",
+      "fill": 0.09375,
+      "hash": "850d4fd0"
+    },
+    {
+      "seed": 42006,
+      "score": 3,
+      "steps": 158,
+      "reason": "wall",
+      "fill": 0.09375,
+      "hash": "08b3e025"
+    },
+    {
+      "seed": 42007,
+      "score": 0,
+      "steps": 200,
+      "reason": "no-progress",
+      "fill": 0.046875,
+      "hash": "abdef7b6"
+    },
+    {
+      "seed": 42008,
+      "score": 3,
+      "steps": 239,
+      "reason": "wall",
+      "fill": 0.09375,
+      "hash": "c0990630"
+    },
+    {
+      "seed": 42009,
+      "score": 3,
+      "steps": 205,
+      "reason": "wall",
+      "fill": 0.09375,
+      "hash": "88c1c69d"
+    },
+    {
+      "seed": 42010,
+      "score": 6,
+      "steps": 362,
+      "reason": "wall",
+      "fill": 0.140625,
+      "hash": "d2b8e5cd"
+    },
+    {
+      "seed": 42011,
+      "score": 2,
+      "steps": 34,
+      "reason": "wall",
+      "fill": 0.078125,
+      "hash": "46f356e6"
+    },
+    {
+      "seed": 42012,
+      "score": 2,
+      "steps": 193,
+      "reason": "wall",
+      "fill": 0.078125,
+      "hash": "d2e5be29"
+    },
+    {
+      "seed": 42013,
+      "score": 0,
+      "steps": 200,
+      "reason": "no-progress",
+      "fill": 0.046875,
+      "hash": "b08a11cf"
+    },
+    {
+      "seed": 42014,
+      "score": 5,
+      "steps": 247,
+      "reason": "body",
+      "fill": 0.125,
+      "hash": "88cdae1c"
+    },
+    {
+      "seed": 42015,
+      "score": 4,
+      "steps": 387,
+      "reason": "wall",
+      "fill": 0.109375,
+      "hash": "26f6468d"
+    },
+    {
+      "seed": 42016,
+      "score": 2,
+      "steps": 125,
+      "reason": "wall",
+      "fill": 0.078125,
+      "hash": "1021fd03"
+    },
+    {
+      "seed": 42017,
+      "score": 7,
+      "steps": 588,
+      "reason": "body",
+      "fill": 0.15625,
+      "hash": "4cffa48a"
+    },
+    {
+      "seed": 42018,
+      "score": 2,
+      "steps": 67,
+      "reason": "wall",
+      "fill": 0.078125,
+      "hash": "150657c2"
+    },
+    {
+      "seed": 42019,
+      "score": 7,
+      "steps": 433,
+      "reason": "body",
+      "fill": 0.15625,
+      "hash": "fdf5b0cb"
+    },
+    {
+      "seed": 42020,
+      "score": 0,
+      "steps": 200,
+      "reason": "no-progress",
+      "fill": 0.046875,
+      "hash": "91a75943"
+    }
+  ],
+  "meanScore": 3.25
+}

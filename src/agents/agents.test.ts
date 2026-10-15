@@ -69,6 +69,20 @@ describe('agent behavior', () => {
 });
 
 describe('100-seed sample properties', () => {
+  it('escapes the recorded late-game static-map stagnation with bounded body-state recovery', () => {
+    const config={width:8,height:8,initialization:'cycle' as const,maxSteps:4096,maxNoFood:256};
+    const oldGame=new Game(config,61001),old=createAgent('astar',61001^0xabc124,{maxNodes:2000,maxMs:Infinity},{recovery:false});
+    while(!oldGame.observe().terminated&&!oldGame.observe().truncated)oldGame.step(old.decide(oldGame.observe()).action);
+    expect(oldGame.observe().reason).toBe('no-progress');expect(oldGame.observe().score).toBe(29);
+    const game=new Game(config,61001),agent=createAgent('astar',61001^0xabc124,{maxNodes:2000,maxMs:Infinity});let recoveries=0;
+    while(!game.observe().terminated&&!game.observe().truncated){const d=agent.decide(game.observe());expect(d.debug.expanded).toBeLessThanOrEqual(2000);if(d.debug.fallback==='dynamic-body-food-path')recoveries++;game.step(d.action);}
+    expect(recoveries).toBeGreaterThan(0);expect(game.observe().reason).toBe('filled');
+  });
+  it('checks grown-body exits in beam search on the recorded crowded initialization',()=>{
+    const game=new Game({width:8,height:8,initialization:'cycle',initialLength:40,maxSteps:4096,maxNoFood:256},61001),agent=createAgent('beam',61001^0xabc124,{maxNodes:2000,maxMs:Infinity});
+    while(!game.observe().terminated&&!game.observe().truncated){const d=agent.decide(game.observe());expect(d.debug.expanded).toBeLessThanOrEqual(2000);game.step(d.action);}
+    expect(game.observe().reason).toBe('filled');
+  });
   it('Hamiltonian fills every eligible 4x4 board without collision across 100 seeds', () => {
     for (let seed = 0; seed < 100; seed++) {
       const game = new Game({ width: 4, height: 4, initialization: 'cycle', maxSteps: 1000, maxNoFood: 0 }, seed);

@@ -1,0 +1,37 @@
+{
+  "stats": {
+    "startTime": "2026-10-06T07:34:25.015Z",
+    "duration": 15871.953,
+    "expected": 2,
+    "skipped": 0,
+    "unexpected": 0,
+    "flaky": 0
+  },
+  "tests": [
+    {
+      "file": "model-rules.spec.ts",
+      "title": "arena model rules are visible and incompatible peers are excluded",
+      "project": "chromium-desktop",
+      "status": "expected",
+      "result": "passed",
+      "durationMs": 8023,
+      "retries": 0,
+      "errors": []
+    },
+    {
+      "file": "model-rules.spec.ts",
+      "title": "arena model rules are visible and incompatible peers are excluded",
+      "project": "chromium-mobile",
+      "status": "expected",
+      "result": "passed",
+      "durationMs": 5337,
+      "retries": 0,
+      "errors": []
+    }
+  ],
+  "performance": [],
+  "limitations": [
+    "Chromium on HP Windows; phone viewport emulation, not a physical phone or Safari",
+    "SwiftShader software rendering; no hardware-GPU performance claim"
+  ]
+}

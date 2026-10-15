@@ -1,7 +1,7 @@
 import { Application, Container, Graphics, Text } from 'pixi.js';
 import { useEffect, useRef, useState } from 'react';
-import type { DebugInfo, Observation } from '../core/types';
-export interface BoardView { observation: Observation; label: string; color?: number; debug?: DebugInfo; }
+import type { DebugInfo, Observation, SearchFrame } from '../core/types';
+export interface BoardView { observation: Observation; label: string; color?: number; debug?: DebugInfo; search?: SearchFrame; }
 export function Board({ views, overlay = true }: { views: BoardView[]; overlay?: boolean }) {
   const host = useRef<HTMLDivElement>(null);
   const [compact, setCompact] = useState(() => window.matchMedia?.('(max-width: 720px)').matches ?? false);
@@ -69,6 +69,8 @@ export function Board({ views, overlay = true }: { views: BoardView[]; overlay?:
         if (current.overlay) {
           view.debug?.visited.forEach(id => square(id, 0x6bc7c4, .11, 2));
           view.debug?.path.forEach(id => square(id, 0x93cfa7, .22, cell * .3));
+          view.search?.frontier.forEach(({cell:id}) => g.roundRect((id % state.config.width)*cell+3,Math.floor(id/state.config.width)*cell+3,cell-6,cell-6,3).stroke({color:0xd9ad7c,width:2}));
+          if(view.search) square(view.search.current.cell,0x8ed0cd,.5,3);
         }
         if (state.food !== null) {
           const x = (state.food % state.config.width) * cell + cell / 2;
@@ -91,6 +93,10 @@ export function Board({ views, overlay = true }: { views: BoardView[]; overlay?:
           for (const side of [-1,1]) g.circle(x + dx * cell * .18 + dy * cell * .13 * side, y + dy * cell * .18 - dx * cell * .13 * side, Math.max(1.1, cell * .043)).fill(0x182416);
         }
         g.roundRect(0, 0, w, h, 3).stroke({ color: 0x687f5e, width: 1 });
+        if(view.search) for(let id=0;id<state.config.width*state.config.height;id++) {
+          const label=new Text({text:String(id),style:{fontFamily:'Consolas,monospace',fontSize:Math.max(9,cell*.2),fill:'#e2eadb'}});
+          label.x=(id%state.config.width)*cell+3;label.y=Math.floor(id/state.config.width)*cell+2;container.addChild(label);
+        }
       });
       if (host.current) host.current.dataset.boardRects = JSON.stringify(rectangles);
     };

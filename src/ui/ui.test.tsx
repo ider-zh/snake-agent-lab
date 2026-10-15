@@ -44,6 +44,7 @@ class TestWorker {
 }
 
 beforeEach(() => {
+  window.history.replaceState(null, '', window.location.pathname);
   vi.stubGlobal('indexedDB', new IDBFactory());
   vi.stubGlobal('Worker', TestWorker);
   TestWorker.instances = [];
@@ -100,7 +101,7 @@ describe('workspace navigation and real game controls', () => {
     const nav = screen.getByRole('navigation', { name: '工作区导航' });
     for (const [name, title] of [
       ['策略竞技', '同一起点，不同的思考'], ['批量评测', '让证据说话'],
-      ['训练实验室', '智能不是预设，是学来的'], ['回放档案', '回到每一个关键决定'],
+      ['训练实验室', '从经验中学习，让策略成长'], ['回放档案', '回到每一个关键决定'],
     ]) {
       const link = within(nav).getByRole('button', { name: new RegExp(name) });
       await user.click(link);

@@ -166,3 +166,35 @@ AI 模式显示策略、种子、步数、速度及终局原因，支持单步�
 5. 模型默认只保存在本地；共享模型、托管部署与许可证在维护者评审后单独决定。
 
 返回 [README](../README.md) · 阅读[参考依据](references.md)。
+
+## 12. 教学与新增算法扩展（2026-10-06）
+
+教学使用真实引擎冻结场景与 opt-in 搜索轨迹，代码构件支持 Python/JavaScript。规划无需训练与学习/进化需训练明确区分。已授权后续 Q-learning、SARSA、Beam、MCTS、Dijkstra、贪心最佳优先、条件 Hamiltonian 捷径、PPO、模仿学习；逐项实现/验证状态见 [教学与扩展记录](algorithm-lessons.md)。不更改已验证的 DQN/GA 默认参数。
+
+质量优先级更新：先交付并验证保持环序的安全捷径，保留纯环同协议基线；后续算法数量不替代填满成功率、成功总步数与截断证据。当前实现见 [通关效率报告](efficient-completion.md)。
+
+## Third batch: bounded tail detours
+
+Added an optional A* fallback policy and lesson 13. The default A* remains unchanged. Held-out 240-episode results improve mean food across all four groups, but show persistent no-progress and step-limit failures. Full protocol, raw data and limits: [tail detour report](tail-detour.md). The remaining eight authorized algorithms are still pending; this is not full-scope completion.
+
+## Fourth batch: planning comparisons
+
+Dijkstra, greedy best-first, Beam and UCT MCTS now have independent decision logic, classroom examples and bounded multi-seed comparisons. Beam/MCTS failures are retained and neither replaces the default. See [planning policies](planning-policies.md). Q-learning, SARSA, PPO and imitation learning remain pending at this stage.
+
+## Fifth batch: Q-learning and SARSA
+
+Real tabular TD training, separate versioned models, exact pending-action/RNG checkpoints, frozen inference and bilingual lessons are implemented. Three training seeds per algorithm have bounded before/after independent evaluations; no filled-board claim is made. See [tabular learning](tabular-learning.md). PPO and imitation learning remain pending at this stage.
+
+## Sixth batch: PPO and imitation learning
+
+Real PPO-Clip/GAE/Adam and supervised behavior cloning are implemented with a clearly labeled linear actor/critic. Both have separate model validation, exact mid-rollout/minibatch resume, Worker/UI integration, independent three-seed results and bilingual lessons (21 total). See [policy learning](policy-learning.md). This completes the nine requested additions in implementation scope; final full-browser status is recorded separately, and weak or failed completion outcomes are not hidden.
+
+## HP 用户反馈修复（2026-10-06）
+
+训练 Worker 启动恢复与错误详情、四路竞技策略选择及模型存档、策略课堂命名和文案调整、搜索策略动态身体路径恢复、Beam/MCTS 进食后出口检查已实现。本轮前后对照、真实浏览器验证与适用边界见 [修复验收记录](repair-report.md)。先前性能与策略评测属于其记录的历史版本。
+
+## 策略课堂阅读改版（2026-10-07）
+
+课堂按文档阅读组织：总览介绍路线，三组目录直接进入 21 课，正文呈现学习目标、交互与代码，结尾连接前后课。课程使用 hash 地址兼容静态托管。示例仅保留双语切换、语法高亮与复制；训练和模型导出不变。已实现状态、真实浏览器与截图验收见 [课堂改版验收](classroom-redesign.md)。
+
+全部 21 课已扩写为面向初学者的完整正文，含术语、具体手算、代码映射、失败诊断、练习详解和每课来源；合计约 2.56 万中文字符、34 个来源链接。125 项单元测试、最终 10 项桌面/手机浏览器回归、42 份双语程序运行和 17 项教材数值核对通过，完整证据见 [课堂改版与内容验收](classroom-redesign.md)。

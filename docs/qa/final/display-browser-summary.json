@@ -1,0 +1,77 @@
+{
+  "stats": {
+    "startTime": "2026-10-06T03:24:14.033Z",
+    "duration": 127014.83,
+    "expected": 6,
+    "skipped": 0,
+    "unexpected": 0,
+    "flaky": 0
+  },
+  "tests": [
+    {
+      "file": "lessons.spec.ts",
+      "title": "lessons use real frozen search, explicit moves and accessible bilingual code",
+      "project": "chromium-desktop",
+      "status": "expected",
+      "result": "passed",
+      "durationMs": 38926,
+      "retries": 0,
+      "errors": []
+    },
+    {
+      "file": "lessons.spec.ts",
+      "title": "lessons use real frozen search, explicit moves and accessible bilingual code",
+      "project": "chromium-mobile",
+      "status": "expected",
+      "result": "passed",
+      "durationMs": 44321,
+      "retries": 0,
+      "errors": []
+    },
+    {
+      "file": "policy.spec.ts",
+      "title": "ppo really trains in Worker, restores and evaluates a frozen student",
+      "project": "chromium-desktop",
+      "status": "expected",
+      "result": "passed",
+      "durationMs": 7911,
+      "retries": 0,
+      "errors": []
+    },
+    {
+      "file": "policy.spec.ts",
+      "title": "imitation really trains in Worker, restores and evaluates a frozen student",
+      "project": "chromium-desktop",
+      "status": "expected",
+      "result": "passed",
+      "durationMs": 9286,
+      "retries": 0,
+      "errors": []
+    },
+    {
+      "file": "policy.spec.ts",
+      "title": "ppo really trains in Worker, restores and evaluates a frozen student",
+      "project": "chromium-mobile",
+      "status": "expected",
+      "result": "passed",
+      "durationMs": 9093,
+      "retries": 0,
+      "errors": []
+    },
+    {
+      "file": "policy.spec.ts",
+      "title": "imitation really trains in Worker, restores and evaluates a frozen student",
+      "project": "chromium-mobile",
+      "status": "expected",
+      "result": "passed",
+      "durationMs": 13524,
+      "retries": 0,
+      "errors": []
+    }
+  ],
+  "performance": [],
+  "limitations": [
+    "Chromium on HP Windows; phone viewport emulation, not a physical phone or Safari",
+    "SwiftShader software rendering; no hardware-GPU performance claim"
+  ]
+}

@@ -1,0 +1,151 @@
+{
+  "scope": "Original teaching fixtures only; not application benchmark scores",
+  "results": [
+    {
+      "name": "board A FIFO shortest route",
+      "actual": 5,
+      "expected": 5,
+      "passed": true
+    },
+    {
+      "name": "board A h priority with explicit newest-first ties",
+      "actual": 7,
+      "expected": 7,
+      "passed": true
+    },
+    {
+      "name": "board B areas with all non-head body cells frozen",
+      "actual": [
+        17,
+        2,
+        17
+      ],
+      "expected": [
+        17,
+        2,
+        17
+      ],
+      "passed": true
+    },
+    {
+      "name": "4x4 cycle covers every cell and all edges close",
+      "actual": true,
+      "expected": true,
+      "passed": true
+    },
+    {
+      "name": "shortcut 1 to 6 is physically adjacent",
+      "actual": 1,
+      "expected": 1,
+      "passed": true
+    },
+    {
+      "name": "shortcut food and tail distances",
+      "actual": [
+        5,
+        7,
+        14
+      ],
+      "expected": [
+        5,
+        7,
+        14
+      ],
+      "passed": true
+    },
+    {
+      "name": "corrected shortcut exercise is adjacent and skips food",
+      "actual": [
+        1,
+        9,
+        5,
+        12
+      ],
+      "expected": [
+        1,
+        9,
+        5,
+        12
+      ],
+      "passed": true
+    },
+    {
+      "name": "corner food has no legal exit after growth",
+      "actual": 0,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "name": "Q-learning fixed update",
+      "actual": 2.7,
+      "expected": 2.7,
+      "passed": true
+    },
+    {
+      "name": "SARSA sampled-action update",
+      "actual": 1.98,
+      "expected": 1.98,
+      "passed": true
+    },
+    {
+      "name": "Double vs ordinary DQN target",
+      "actual": [
+        3.7,
+        6.4
+      ],
+      "expected": [
+        3.7,
+        6.4
+      ],
+      "passed": true
+    },
+    {
+      "name": "PPO positive and negative advantages",
+      "actual": [
+        1.2,
+        -0.8
+      ],
+      "expected": [
+        1.2,
+        -0.8
+      ],
+      "passed": true
+    },
+    {
+      "name": "two-term GAE",
+      "actual": 2.44,
+      "expected": 2.44,
+      "passed": true
+    },
+    {
+      "name": "UCT tutorial c=.5, rounded 3 decimals",
+      "actual": [
+        0.916,
+        0.983
+      ],
+      "expected": [
+        0.916,
+        0.983
+      ],
+      "passed": true
+    },
+    {
+      "name": "UCT backup mean",
+      "actual": 0.62,
+      "expected": 0.62,
+      "passed": true
+    },
+    {
+      "name": "BC independent-error thought experiment percent",
+      "actual": 13.4,
+      "expected": 13.4,
+      "passed": true
+    },
+    {
+      "name": "GA fixed fitness",
+      "actual": 374.9515,
+      "expected": 374.9515,
+      "passed": true
+    }
+  ]
+}
